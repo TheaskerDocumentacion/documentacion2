@@ -3,11 +3,28 @@
 #### Uso básico de Docker
 Ejecución de un container con consola interactiva
 
-	docker run -i -t ubuntu:12.10 bash
+	docker run --name test -h test -it ubuntu bash
+
+  * **--name test**: Le damos un nombre a la sesión
+  * **-h test**: El hostname
+  * **-it**: Consola interactiva
+  * **bash**: Comando que ejecutamos
 
 Ver los dockers que se han ejecutado
 
 	docker ps -a
+
+Información de un container:
+
+	docker inspect <ID CONTAINER>
+
+Creación de una nueva imagen basada en un container:
+
+	docker commit test ubuntu_apache
+
+ * **test**: Nombre del contenedor en el que nos basamos.
+ * **ubuntu_apache**: Nombre que le damos al conetenedor.
+
 
 Para ver las diferencias del contenedor con las diferentes instancias. El hash que pongamos es a partir del cual nos mostrará las diferencias del contenedor:
 
