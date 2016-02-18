@@ -45,15 +45,18 @@ Mostrar la salida de un contenedor en ejecución:
 
 Ejectuar un comando dentro de un container en ejecución:
 
-	
+	docker exec web bash -c "apt-get update && apt-get install nano"	
+	docker exec -it web bash -c "apt-get update && apt-get install nano"	
+
+Otra forma de entrar en un container en ejecución sería con 'docker attach <hash>' entramos en forma interactiva a ese container
+
+	docker attach fce2354f3f1ae07c81f4f57f86eb181c8cb3768ebb12676ca92313f61950f543
 
 Para ver las diferencias del contenedor con las diferentes instancias. El hash que pongamos es a partir del cual nos mostrará las diferencias del contenedor:
 
 	docker diff 8a46cfae0b49
 
-Con 'docker attach <hash>' entramos en forma interactiva a ese container
 
-	docker attach fce2354f3f1ae07c81f4f57f86eb181c8cb3768ebb12676ca92313f61950f543
 
 #### Busquedas en la nube
 
