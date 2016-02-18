@@ -50,13 +50,13 @@ Ejectuar un comando dentro de un container en ejecución:
 
 Otra forma de entrar en un container en ejecución sería con 'docker attach <hash>' entramos en forma interactiva a ese container
 
-	docker attach fce2354f3f1ae07c81f4f57f86eb181c8cb3768ebb12676ca92313f61950f543
+	docker attach fce2354f3
+
+ * **--sig-proxy=true**: Lo que hace es decirle que todo lo que ejecutemos en la consola que abrimos le mande las señales a la consola principal, por lo que si hicieramos un 'Crtl+c' mataríamos el comando principal con el que ejecutamos el contenedor (docker ... bash -c "apache2ctl -D FOREGROUND")
 
 Para ver las diferencias del contenedor con las diferentes instancias. El hash que pongamos es a partir del cual nos mostrará las diferencias del contenedor:
 
 	docker diff 8a46cfae0b49
-
-
 
 #### Busquedas en la nube
 
