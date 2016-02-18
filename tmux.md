@@ -1,3 +1,5 @@
-
-
 [comandos tmux](https://gist.github.com/MohamedAlaa/2961058)
+
+Lo primero que tenemos que saber es el comando básico a través del cual se ejecutarán las demás ordenes. Dicho comando es la combinación de teclas ctrl+b. Una vez pulsada esa combinación podremos ejecutar diferentes acciones como por ejemplo, añadir un panel vertical pulsando % u horizontal pulsando ". Podremos crear nuevas pestañas (ventanas según tmux) con c, darles un nombre con ,, movernos por ellas con n o p y cerrarlas con x.
+
+Pero mi característica favorita es poder ejecutar un comando y ser capaces de salirnos de la terminal para ejecutar otra tarea. Esto es fantástico si estamos administrando un servidor, ya que solo tenemos una terminal. Para ello, qué mejor que poner un ejemplo práctico. Supongamos que estamos haciendo alguna tarea de copia de seguridad o simplemente actualizando el sistema. Si pulsamos después de ctrl+b la tecla d, dejaremos la sesión (el comando seguirá ejecutándose en segundo plano) y podremos iniciar otra sesión diferente. Podremos retomar la sesión con tmux a y si esto lo hacemos vía SSH en el PC de otra persona, si esa persona entra a la sesión seréis capaces de usar colaborativamente la terminal, al más puro estilo Google Docs.
