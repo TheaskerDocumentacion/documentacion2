@@ -54,6 +54,12 @@ Otra forma de entrar en un container en ejecución sería con 'docker attach <ha
 
  * **--sig-proxy=true**: Lo que hace es decirle que todo lo que ejecutemos en la consola que abrimos le mande las señales a la consola principal, por lo que si hicieramos un 'Crtl+c' mataríamos el comando principal con el que ejecutamos el contenedor (docker ... bash -c "apache2ctl -D FOREGROUND")
 
+Copiar un fichero al container:
+
+	docker cp temp.txt web:/tmp
+
+ * **web:/tmp**: 'web es el nombre del container y '/tmp' es la ruta donde quero copiar el fichero
+
 Para ver las diferencias del contenedor con las diferentes instancias. El hash que pongamos es a partir del cual nos mostrará las diferencias del contenedor:
 
 	docker diff 8a46cfae0b49
@@ -66,21 +72,87 @@ Busca los contenedores con gentoo y directamente podemos arrancarlos y si no los
 
 #### Parada y comienzo de un container
 
-	docker stop <id>
+	docker stop <id/name>
 
-	docker start <id>
+	docker start <id/name>
 
-#### Redireccionamiento de puertos
+#### Publicar una imagen a dockerhub
 
-	docker run -p 80:8000 -d curso/webogram
+Ponerle una etiqueta a la imagene que queremos subir.
 
-'-p 80:8000' es el puerto público 80 con el puerto 8000 de la máquina docker, por lo que para poder usar el puerto de alguna aplicación que usa el puerto 8000 en el respositorio lo redireccionamos al puerto 80, por lo que en el host sólo tendríamos que poner la ip del respositorio en nuestro navegador para hacerlo funcionar y poder acceder.
+	docker tag ubuntu_apache theasker/ubuntu_apache
 
-#### Dockerfile
+Subimos la imagen
 
-### Publicar un repositorio
+	doker push theasker/ubuntu_apache
 
-	docker push theasker/repositorio
+#### Networking
+
+### Exponer un puerto
+
+Publicamos los puertos que usa el contenedor
+
+	docker run -it --expose 80 --expose 3306 --name test debian bash
+
+### Publicar un puerto
+
+"Publicamos" 
+
+Publicamos el puerto 80 del contenedor en un puerto aleatorio del host
+
+	docker run -it --name test -p 80 debian bash
+
+
+Publicamos el puerto 80 del contenedor en el 8080 del host
+
+	docker run -it --name test -p 8080:80 debian bash
+
+
+Publicamos todos los puertos expuestos a puertos aleatorios del host
+
+	docker run -it --name test -P debian bash
+
+
+Comprobación de puertos publicados de un contenedor
+
+	docker port test
+	80/tcp -> 0.0.0.0:32788
+
+	docker port test1 80
+	0.0.0.0:32788
+
+### Enlazar contenedores
+
+Crear un contenedor añadiendole cierta información de otro contenedor ya existente para que el acceso entre ambas sea más sencillo con variables de entorno.
+
+	docker run -it --name test1 -h test1 mijack/apache2 bash
+	docker run --link test1 -rm -it --name test2 -h test2 debian bash
+
+
+Docker modifica el fichero '/etc/hosts' añadiendo la ip de la máquina enlazada para que su acceso sea rápido
+
+	root@test2:/# cat /etc/hosts
+	[...]
+	172.17.0.2      test1 test1
+	172.17.0.3      test2
+
+Crea unas variables de entorno por cada puerto expuesto en test1 para que sea más fácil su acceso, así como el hostname del contenedor enlazado, así como su variable HOME y PATH.
+
+	root@test2:/# env
+	TEST1_NAME=/test2/test1
+	TEST1_PORT_80_TCP_ADDR=172.17.0.2
+	HOSTNAME=test2
+	TEST1_PORT_80_TCP=tcp://172.17.0.2:80
+	TERM=xterm
+	TEST1_PORT_80_TCP_PROTO=tcp
+	TEST1_PORT=tcp://172.17.0.2:80
+	PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+	TEST1_PORT_80_TCP_PORT=80
+	PWD=/
+	SHLVL=1
+	HOME=/root
+	_=/usr/bin/env
+
 
 #### Enlaces
 
