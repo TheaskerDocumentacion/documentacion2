@@ -36,36 +36,20 @@ Ejecutar un container basado en una imagen con un servidor web activo en FOREGRO
  * **bash -c "apache2ctl -D FOREGROUND"**: Comando que ejecutamos desde bash
 
 Comandos que se están ejecutando en un contenedor:
+
 	docker top <CONTAINER NAME/ID>
+
+Mostrar la salida de un contenedor en ejecución:
+
+	docker logs <CONTAINER NAME/ID>
+
+Ejectuar un comando dentro de un container en ejecución:
+
+	
 
 Para ver las diferencias del contenedor con las diferentes instancias. El hash que pongamos es a partir del cual nos mostrará las diferencias del contenedor:
 
 	docker diff 8a46cfae0b49
-
-Ejecutar un container en segundo plano
-
-	theasker@TheaskerGentoo ~ $ docker run -d ubuntu /bin/sh -c "ls"
-	fce2354f3f1ae07c81f4f57f86eb181c8cb3768ebb12676ca92313f61950f543
-	theasker@TheaskerGentoo ~ $ docker logs fce2354f3f1ae07c81f4f57f86eb181c8cb3768ebb12676ca92313f61950f543
-	bin
-	boot
-	dev
-	etc
-	home
-	lib
-	lib64
-	media
-	mnt
-	opt
-	proc
-	root
-	run
-	sbin
-	srv
-	sys
-	tmp
-	usr
-	var
 
 Con 'docker attach <hash>' entramos en forma interactiva a ese container
 
