@@ -58,10 +58,15 @@ Busca los contenedores con gentoo y directamente podemos arrancarlos y si no los
 
 	docker run -p 80:8000 -d curso/webogram
 
+'-p 80:8000' es el puerto público 80 con el puerto 8000 de la máquina docker, por lo que para poder usar el puerto de alguna aplicación que usa el puerto 8000 en el respositorio lo redireccionamos al puerto 80, por lo que en el host sólo tendríamos que poner la ip del respositorio en nuestro navegador para hacerlo funcionar y poder acceder.
+
 #### Dockerfile
+
+### Publicar un repositorio
+
+	docker push theasker/repositorio
 
 #### Enlaces
 
   * Home page: https://www.docker.com/
-  * Compilar y documentar tu servidor usando Dockerfile: https://platzi.com/blog/imagenes-con-dockerfile/
-  * 
+  * Compilar y documentar tu servidor usando Dockerfile: https://platzi.com/blog/imagenes-con-dockerfile/ 
