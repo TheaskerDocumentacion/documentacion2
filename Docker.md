@@ -35,6 +35,9 @@ Ejecutar un container basado en una imagen con un servidor web activo en FOREGRO
  * **ubuntu_apache**: imagen en la que nos basamos para ejecutar el contenedor.
  * **bash -c "apache2ctl -D FOREGROUND"**: Comando que ejecutamos desde bash
 
+Comandos que se están ejecutando en un contenedor:
+	docker top <CONTAINER NAME/ID>
+
 Para ver las diferencias del contenedor con las diferentes instancias. El hash que pongamos es a partir del cual nos mostrará las diferencias del contenedor:
 
 	docker diff 8a46cfae0b49
