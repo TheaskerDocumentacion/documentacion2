@@ -25,6 +25,15 @@ Creación de una nueva imagen basada en un container:
  * **test**: Nombre del contenedor en el que nos basamos.
  * **ubuntu_apache**: Nombre que le damos al conetenedor.
 
+Ejecutar un container basado en una imagen con un servidor web activo en FOREGROUND:
+
+	docker run -d --name web -h web ubuntu_apache bash -c "apache2ctl -D FOREGROUND"
+
+ * **-d**: Desatachado, es decir, sin consola virtual interactiva (ejecutado de fondo o background).
+ * **--name web**: Nombre que le damos al contenedor.
+ * **-h web**: Hostname
+ * **ubuntu_apache**: imagen en la que nos basamos para ejecutar el contenedor.
+ * **bash -c "apache2ctl -D FOREGROUND"**: Comando que ejecutamos desde bash
 
 Para ver las diferencias del contenedor con las diferentes instancias. El hash que pongamos es a partir del cual nos mostrará las diferencias del contenedor:
 
