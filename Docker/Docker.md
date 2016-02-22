@@ -1,6 +1,6 @@
-##### Docker
+# Docker
 
-#### Uso básico de Docker
+## Uso básico de Docker
 Ejecución de un container con consola interactiva
 
 	docker run --name test -h test -it ubuntu bash
@@ -64,19 +64,19 @@ Para ver las diferencias del contenedor con las diferentes instancias. El hash q
 
 	docker diff 8a46cfae0b49
 
-#### Busquedas en la nube
+### Busquedas en la nube
 
 	docker search gentoo
 
 Busca los contenedores con gentoo y directamente podemos arrancarlos y si no los tiene los descarga.
 
-#### Parada y comienzo de un container
+### Parada y comienzo de un container
 
 	docker stop <id/name>
 
 	docker start <id/name>
 
-#### Publicar una imagen a dockerhub
+### Publicar una imagen a dockerhub
 
 Ponerle una etiqueta a la imagene que queremos subir.
 
@@ -86,7 +86,7 @@ Subimos la imagen
 
 	doker push theasker/ubuntu_apache
 
-#### Networking
+## Networking
 
 ### Exponer un puerto
 
@@ -214,7 +214,7 @@ Ahora nos podemos conectar a MySQL desde el contenedor web
 	mysql>
 
 
-#### Volumenes
+## Volumenes
 
 Creamos un contenedor que monta el directorio '/home/theasker/Descargas' del host en '/mnt/datos' del contenedor.
 
@@ -234,7 +234,7 @@ Ahora podemos crear un container que le diremos que monte los volúmenes del con
 
 Podremos poner varios nombres de containers después de '-volumes-from' para que nuestro container monte todos los volúmenes que queremos.
 
-#### Supervisor
+## Supervisor
 
 Es un servicio que sin tener que usar el sistema de runlevels podamos lanzar varios procesos. Podemos crear archivos .conf en el directorio '/etc/supervisor/conf.d/*.conf' con las configuraciones que queramos del estilo a:
 
@@ -251,7 +251,7 @@ La opción 'autorestart=true' hace que si en algún momento el comando sale o no
 
 	docker run -it --name superv -h superv supervisor_web bash -c "/usr/bin/supervisord"
 
-#### Dockerfile
+## Dockerfile
 
 Un ejemplo de Dockerfile para crear una imagen de Wordpress
 
@@ -306,7 +306,7 @@ Para probarlo podemos usar el comando create de docker para crear un contenedor 
 	docker create -P --name test -h test wordpress
 	docker start test
 
-#### Enlaces
+## Enlaces
 
  * [Curso de Docker de Miguel Arranz](https://www.youtube.com/playlist?list=PLfW3im2fiA7W9F4DbjmRDIZgAHsea20ON)
  * Home page: https://www.docker.com/
