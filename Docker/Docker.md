@@ -269,8 +269,7 @@ Un ejemplo de Dockerfile para crear una imagen de Wordpress
 	RUN apt-get install apache2 php5-mysql php5 libapache2-mod-php5 mysql-server-5.5 wget nano curl -y
 	
 	# mysql permission set
-	RUN /etc/init.d/mysql start && mysql -uroot -proot -e "create database wordpress" && mysql -uroot -proot -e "grant all on wordpress.* to 'wordpress'@'localhost' identified by 'dbpassword';flush privileges "
-	
+	RUN /etc/init.d/mysql start && mysql -uroot -proot -e "create database wordpress;" && mysql -uroot -proot -e "grant all on wordpress.* to wordpress@localhost identified by 'dbpassword';flush privileges "
 	
 	# Wordpress download and install
 	
@@ -304,8 +303,8 @@ Ahora en comando para crear la imagen:
 
 Para probarlo podemos usar el comando create de docker para crear un contenedor sin ejecutar ningún comando, ya que todo lo que necesitamos ejecutar lo hace supervisor, aunque con esta opción, hay que iniciar el contenedor:
 
-	docker create --name test -h test wordpress
-
+	docker create -P --name test -h test wordpress
+	docker start test
 
 #### Enlaces
 
