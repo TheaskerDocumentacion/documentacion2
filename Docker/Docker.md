@@ -25,7 +25,7 @@ Creación de una nueva imagen basada en un container:
  * **test**: Nombre del contenedor en el que nos basamos.
  * **ubuntu_apache**: Nombre que le damos al conetenedor.
 
-Ejecutar un container basado en una imagen con un servidor web activo en FOREGROUND:
+Ejecutar un container en segundo plano basado en una imagen con un servidor web activo en FOREGROUND:
 
 	docker run -d --name web -h web ubuntu_apache bash -c "apache2ctl -D FOREGROUND"
 
@@ -34,6 +34,10 @@ Ejecutar un container basado en una imagen con un servidor web activo en FOREGRO
  * **-h web**: Hostname
  * **ubuntu_apache**: imagen en la que nos basamos para ejecutar el contenedor.
  * **bash -c "apache2ctl -D FOREGROUND"**: Comando que ejecutamos desde bash
+
+Para salir de un container dejándolo en ejecución en segundo plano:
+
+	 CTRL-p CTRL-q
 
 Comandos que se están ejecutando en un contenedor:
 
