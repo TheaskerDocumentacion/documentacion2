@@ -240,7 +240,82 @@ recuperará el valor de la primera casilla de selección activada que jQuery enc
 
 ### Dominar las manipulaciones
 
-#### Preparación
-#### ¡Hacé clic en el botón, ya!
-#### Agregar un cuerpo
-#### Eliminá lo seleccionado
+Creamos una lista con cosas que hacer. Al pulsar un boton, agrega el texto introducido en un formulario y lo agrega a una lista:
+
+```html
+<h2>Cosas para hacer</h2>
+<form name="checkListForm">
+	<input type="text" name="checkListItem"/>
+</form>
+<div id="boton">¡Agregar!</div>
+<br/>
+<div class="lista"></div>
+```
+
+```javascript
+$(document).ready(function(){
+    $('#boton').click(function(){
+        var Agregar = $('input[name=checkListItem]').val();
+        $('.lista').append('<div class="item">' + Agregar + '</div>')
+    })
+});
+```
+
+Ahora quiero eliminar elementos de la lista. Podría pensar que podríamos hacer esto.
+
+```javascript
+$('.item').click(function() {
+  $(this).remove();
+});
+```
+y no es mala idea. El problema es que no funcionaría; jQuery busca todos los .item cuando DOM se carga, así que, para cuando tu documento esté listo, ya habrá decidido que no hay ningún `.item` para eliminar con `.remove()`, y tu código no funcionará.
+
+Para esto necesitaremos un nuevo controlador de eventos: `.on()`. Imaginate que .on() es un controlador general que toma el evento, su selector, y una acción como datos de entrada. La sintaxis queda así:
+
+```javascript
+$(document).on('evento', 'selector', function() {
+	¡Realizar una acción!
+});
+```
+
+En este caso, 'evento' será 'click', 'selector' será '.item', y lo que queremos hacer es llamar a `.remove()` en this.
+
+```javascript
+$(document).on('click', '.item', function() {
+  $(this).remove();
+});
+```
+
+El script completo sería:
+
+```javascript
+$(document).ready(function(){
+  $('#boton').click(function(){
+    var Agregar = $('input[name=checkListItem]').val();
+    $('.lista').append('<div class="item">' + Agregar + '</div>')
+  });
+  $(document).on('click', '.item', function() {
+    $(this).remove();
+  });
+});
+```
+
+o también haciendo todo con el nuevo controlador de eventos `.on()`
+
+```javascript
+$(document).ready(function(){
+	/*
+  $('#boton').click(function(){
+    var Agregar = $('input[name=checkListItem]').val();
+    $('.lista').append('<div class="item">' + Agregar + '</div>');
+  });
+  */
+  $(document).on('click', '#boton', function(){
+  	var Agregar = $('input[name=checkListItem]').val();
+    $('.lista').append('<div class="item">' + Agregar + '</div>');
+  });
+  $(document).on('click', '.item', function() {
+    $(this).remove();
+  });
+});
+```
