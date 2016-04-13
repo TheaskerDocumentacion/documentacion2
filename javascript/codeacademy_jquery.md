@@ -319,3 +319,114 @@ $(document).ready(function(){
   });
 });
 ```
+
+## Eventos de JQuery
+
+### Hover (pasar sobre algo)
+
+Nuestro efecto hover puede asumir dos funciones `functions(){}` separadas por una coma. La coma es muy importante.
+
+La primera función `function(){}` que pongamos se ejecutará la primera vez que pasemos el botón por nuestro objetivo. Acá aplicamos un tipo de resaltado.
+
+La segunda función `function(){}` se llamará cuando nuestro mouse se vaya del objeto. Acá es cuando sacamos el resaltado.
+
+La segunda función `function(){}` no tiene porqué ser opuesta a la primera función, pero es muy común que lo sea.
+
+```javascript
+$(document).ready(function(){
+  $('div').hover(
+    function(){
+        $(this).addClass('active');
+    },
+    function(){
+        $(this).removeClass('active');
+    }
+  );
+});
+```
+
+### ¡Vamos a usar .focus()!
+
+El controlador de eventos `.focus()` solamente funciona en los elementos que pueden recibir foco; la lista de estos elementos es un poco vaga, pero los elementos de HTML como `<textarea>` e `<input>` son los principales sospechosos.
+
+Creamos una línea roja alrededor del campo de texto de un input
+
+```javascript
+$(document).ready(function(){
+    $('input').focus(function(){
+        $('input').css('outline-color','solid');
+        $('input').css('outline-color','#FF0000');
+    });
+});
+```
+
+### El evento .keydown()
+
+El evento `.keydown()` se activa cuando se presiona un botón en el teclado. Solo funciona en cualquier elemento de la página que tenga foco, así que, para ver su efecto, tendrás que hacer clic en la ventana que contiene tu div antes de tocar una tecla.
+
+Combinemos nuestro evento con un nuevo efecto: `.animate().` Lo usaremos para mover un objeto en la pantalla cuando toquemos una tecla.
+
+El efecto .animate() toma dos parámetros: la animación que se va a realizar, y el tiempo en el cuál se realizará. Acá hay un ejemplo:
+
+```javascript
+$(document).ready(function(){
+    $(document).keydown(function(){
+        $('div').animate({left:'+=10px'},500);
+    });
+});
+```
+
+Esto tomará el primer div que encuentre y lo moverá diez pixeles a la derecha cuando presionenos una tecla. Acordate de que al aumentar la distancia desde el margen izquierdo se mueve algo hacia la derecha; la parte de += es solamente una manera de decir "sumale diez al número que está ahí." En este caso, le agrega diez pixeles a la distancia actual desde el margen izquierdo.
+
+Vamos a mover un sprite con los cursores:
+
+```javascript
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<style>
+		img {
+	    position: relative;
+	    left: 0;
+	    top: 0;
+		}
+	</style>
+	<script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+	<script>
+		$(document).ready(function() {
+	    $(document).keydown(function(key) {
+        switch(parseInt(key.which,10)) {
+	            // fecha izquierda
+					case 37:
+						$('img').animate({left: "-=10px"}, 'fast');
+						break;
+					// fecha arriba
+					case 38:
+					    $('img').animate({top: "-=10px"}, 'fast');
+						break;
+					// fecha derecha
+					case 39:
+					    $('img').animate({left: "+=10px"}, 'fast');
+						break;
+					// fecha abajo
+					case 40:
+					    $('img').animate({top: "+=10px"}, 'fast');
+						break;
+				}
+			});
+		});
+	</script>
+</head>
+<body>
+	<div></div>
+	<img src="http://i1061.photobucket.com/albums/t480/ericqweinstein/mario.jpg"/>
+</body>
+</html>
+```
+
+> **`parseInt(key.which,10)`**: La sentencia `parseInt` convierte (parsea) un argumento de tipo cadena y devuelve un entero de la base especificada.
+
+> La sentencia `KeyboardEvent.which` es una propiedad de solo lectura que devuelve el código de la tecla presionada , o el código del caracter de una tecla alfanumérica.
+
+> `parseInt` tiene como primer argumento `key.which`, que devuelve el código de la tecla presionada, y como segundo argumento 10, que es valor de la base del sistema numeración. Se encarga de convertir la cadena en un número entero (`Int`).
