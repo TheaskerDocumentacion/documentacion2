@@ -1,3 +1,55 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Codeacademy JQuery](#codeacademy-jquery)
+  - [Enlaces](#enlaces)
+    - [Selectores](#selectores)
+  - [Uso de funciones para seleccionar elementos HTML](#uso-de-funciones-para-seleccionar-elementos-html)
+    - [Selección mediante clases](#selecci%C3%B3n-mediante-clases)
+    - [Selección mediante ID](#selecci%C3%B3n-mediante-id)
+    - [Selecciones flexibles](#selecciones-flexibles)
+    - [¡'this' es importante!](#%C2%A1this-es-importante)
+    - [jQuery funcional](#jquery-funcional)
+    - [Hacé clic y tirá](#hac%C3%A9-clic-y-tir%C3%A1)
+    - [Cómo deslizar nuestro panel](#c%C3%B3mo-deslizar-nuestro-panel)
+  - [Modificar elementos de HTML](#modificar-elementos-de-html)
+    - [Agregar y eliminar elementos de HTML](#agregar-y-eliminar-elementos-de-html)
+      - [Crear elementos de HTML](#crear-elementos-de-html)
+- [Hola](#hola)
+      - [Insertar elementos](#insertar-elementos)
+      - [Antes y después](#antes-y-despu%C3%A9s)
+      - [Mover elementos](#mover-elementos)
+      - [Eliminar elementos](#eliminar-elementos)
+    - [Modificar clases y contenido](#modificar-clases-y-contenido)
+      - [Agregar o eliminar clases](#agregar-o-eliminar-clases)
+      - [Activar y desactivar clases](#activar-y-desactivar-clases)
+      - [Cambiar tu estilo](#cambiar-tu-estilo)
+      - [Modificar el contenido](#modificar-el-contenido)
+    - [Dominar las manipulaciones](#dominar-las-manipulaciones)
+  - [Cosas para hacer](#cosas-para-hacer)
+  - [Eventos de JQuery](#eventos-de-jquery)
+    - [Hover (pasar sobre algo)](#hover-pasar-sobre-algo)
+    - [¡Vamos a usar .focus()!](#%C2%A1vamos-a-usar-focus)
+    - [El evento .keydown()](#el-evento-keydown)
+  - [Efectos de JQuery](#efectos-de-jquery)
+    - [Presentamos JQuery UI](#presentamos-jquery-ui)
+      - [`.effect('explode')](#effectexplode)
+      - [`.effect('bounce')](#effectbounce)
+      - [.slide()](#slide)
+    - [Interacciones de JQuery UI](#interacciones-de-jquery-ui)
+  - [Pichar y arrastrar](#pichar-y-arrastrar)
+    - [Cambiar el tamaño](#cambiar-el-tama%C3%B1o)
+    - [Seleccionar elementos](#seleccionar-elementos)
+    - [Ordenando elementos](#ordenando-elementos)
+  - [JQuery efectivo](#jquery-efectivo)
+    - [Menu de acordeón .accordion()](#menu-de-acorde%C3%B3n-accordion)
+    - [Sección 1](#secci%C3%B3n-1)
+    - [Sección 2](#secci%C3%B3n-2)
+    - [Sección 3](#secci%C3%B3n-3)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Codeacademy JQuery
 
 
