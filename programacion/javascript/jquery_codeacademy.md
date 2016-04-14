@@ -1,6 +1,4 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+# Codeacademy JQuery
 
 - [Codeacademy JQuery](#codeacademy-jquery)
   - [Enlaces](#enlaces)
@@ -16,7 +14,6 @@
   - [Modificar elementos de HTML](#modificar-elementos-de-html)
     - [Agregar y eliminar elementos de HTML](#agregar-y-eliminar-elementos-de-html)
       - [Crear elementos de HTML](#crear-elementos-de-html)
-- [Hola](#hola)
       - [Insertar elementos](#insertar-elementos)
       - [Antes y después](#antes-y-despu%C3%A9s)
       - [Mover elementos](#mover-elementos)
@@ -44,15 +41,6 @@
     - [Ordenando elementos](#ordenando-elementos)
   - [JQuery efectivo](#jquery-efectivo)
     - [Menu de acordeón .accordion()](#menu-de-acorde%C3%B3n-accordion)
-    - [Sección 1](#secci%C3%B3n-1)
-    - [Sección 2](#secci%C3%B3n-2)
-    - [Sección 3](#secci%C3%B3n-3)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-# Codeacademy JQuery
-
-
 
 ## Enlaces
 

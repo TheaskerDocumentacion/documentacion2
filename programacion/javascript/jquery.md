@@ -1,6 +1,18 @@
 # Jquery
 
-[TOC]
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Jquery](#jquery)
+  - [Selectores avanzados](#selectores-avanzados)
+  - [Filtros de Contenido](#filtros-de-contenido)
+  - [Filtros de Visibilidad](#filtros-de-visibilidad)
+  - [Filtros hijo](#filtros-hijo)
+  - [Filtros de Formulario](#filtros-de-formulario)
+  - [Enlaces](#enlaces)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Selectores avanzados
 
@@ -18,8 +30,6 @@ Podemos filtrar por atributo de la siguiente manera:
 
 
 ```javascript
-<script type="text/javascript">
-
     $("document").ready(function() {
 
       // seleccionar todos los párrafos que tengan el atributo class
@@ -35,12 +45,10 @@ Podemos filtrar por atributo de la siguiente manera:
       $('p[id^=para][align*=center]');
 
     });
-
-</script>
 ```
 
 
-##Filtros de Contenido
+## Filtros de Contenido
 
 Éstos permiten examinar el contenido de elementos seleccionados para determinar si deben ser incluidos o no en los resultados.
 
@@ -55,7 +63,7 @@ $('p:contains(Luigi)');
 ```
 
 Ahora si probáramos con `$(':contains(a)');`, estaríamos seleccionando todos los elementos que contengas una letra "a" sin importar de que tipo sean. Entonces nos retornaría: `p, p, body`, ¿Por qué body?, porque como los padres contienen a los hijos entonces su contenido es considerado como propio. Tendriamos que hacer una búsqueda un poco mas especifica si quisiéramos solo los
-```
+
 
 Sigamos:
 
