@@ -1,5 +1,16 @@
 # Codeacademy JQuery
 
+
+
+## Enlaces
+
+
+ * [http://jquery.com/](http://jquery.com/)
+ * [http://jqueryui.com/](http://jqueryui.com/)
+
+___
+
+
 Insertaremos el código de jquery cuando la página HTML esté completamente cargada:
 
 ```javascript
@@ -430,3 +441,44 @@ Vamos a mover un sprite con los cursores:
 > La sentencia `KeyboardEvent.which` es una propiedad de solo lectura que devuelve el código de la tecla presionada , o el código del caracter de una tecla alfanumérica.
 
 > `parseInt` tiene como primer argumento `key.which`, que devuelve el código de la tecla presionada, y como segundo argumento 10, que es valor de la base del sistema numeración. Se encarga de convertir la cadena en un número entero (`Int`).
+
+## Efectos de JQuery
+
+### Presentamos JQuery UI
+
+JQuery UI es una librería:
+
+```html
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+```
+#### `.effect('explode')
+
+Podemos hacer explotar algo:
+
+```javascript
+$(document).ready(function(){
+    $('div').click(function(){
+        $("div").effect( "explode", {pieces: 16}, 2000 );
+        //$("div").effect( "explode" );
+    });
+});
+```
+
+#### `.effect('bounce')
+
+Otro efecto posible es `bounce`. Lo usamos como un parámetro de `.effect()` igual que `'explode'`, pero agregamos un parámetro adicional para decirle cuántas veces rebotar. El siguiente código hará que nuestro 'div' rebote dos veces en 200 milisegundos:
+
+```javascript
+$('div').effect('bounce', {times:2}, 200);
+```
+
+#### .slide()
+
+Efecto que aparece el objeto.
+
+```javascript
+$('div').effect('slide');
+```
+
+### Interacciones de JQuery UI
+
