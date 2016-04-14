@@ -482,3 +482,73 @@ $('div').effect('slide');
 
 ### Interacciones de JQuery UI
 
+## Pichar y arrastrar
+
+```javascript
+$(document).ready(function(){
+  $( "#auto" ).draggable();
+});
+```
+
+### Cambiar el tamaño
+
+```javascript
+$(document).ready(function(){
+    $('div').resizable();
+});
+```
+
+### Seleccionar elementos
+
+```css
+ol .ui-selected {
+	background: #F39814; color: white;
+}
+```
+
+```javascript
+$(document).ready(function(){
+    $('ol').selectable();
+});
+```
+
+### Ordenando elementos
+
+Pinchamos y arrastramos los elementos donde queramos.
+
+```javascript
+$(document).ready(function(){
+    $('ol').sortable();
+});
+```
+
+## JQuery efectivo
+
+### Menu de acordeón .accordion()
+
+```html
+<div id="menu">
+  <h3>Sección 1</h3>
+  <div>
+    <p>¡Soy la primera sección!</p>
+  </div>
+  <h3>Sección 2</h3>
+  <div>
+    <p>¡Soy la segunda sección!</p>
+    <p>¡Soy la segunda sección!</p>
+  </div>
+  <h3>Sección 3</h3>
+  <div>
+    <p>¡Soy la tercera sección!</p>
+    <p>¡Soy la tercera sección!</p>
+  </div>
+</div>
+```
+
+```javascript
+$(document).ready(function(){
+  $('#menu').accordion({
+    collapsible: true
+  });
+});
+```
