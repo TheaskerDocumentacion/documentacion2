@@ -21,39 +21,68 @@
 
 ## Manipulating the DOM
 
- * **3.3 Creating a DOM Node**: Crea un mensaje antes de la clase `.book`
+ * **Creating a DOM Node**: Crea un mensaje antes de la clase `.book`
 
 ```javascript
 var message = $('<span>mensaje</span>');
 $('.book').before(message);
 ```
-
- * **3.4 Adding to the DOM I**
- * **3.5 Adding to the DOM II**
- * **3.6 Removing From the DOM**
+ * **Adding to the DOM I**: Crea el mensaje después de la clase `.usa' -> `$('.usa').append(message);`
+ * **Removing From the DOM**: Elimino la clase book -> `$('.book').remove();`
  
 ## Acting on Interaction
 
- * **3.7 Acting on Interaction**
- * **3.8 Click Interaction**
- * **3.9 Acting on Click**
- * **3.10 On Page Load**
- 
+ * **Click Interaction**: Creo el evento `click` sobre cualquier boton:
+
+```javascript
+$(document).ready(function(){
+  $('button').on('click', function() {
+    var message = $('<span>Call 1-555-jquery-air to book this tour</span>');
+    $('.usa').append(message);
+    $('button').remove();
+  });
+});
+```
+
 ## Refactor Using Traversing
 
- * **3.11 Refactor Using Traversing**
- * **3.12 Removing the Clicked Button**
- * **3.13 Relative Traversing I**
- * **3.14 Relative Traversing II**
- * **3.15 Relative Traversing III**
+ * **Removing the Clicked Button**: Borro el botón que hacemos click -> '$(this).remove()' 
+ * **Relative Traversing I**: Añadir justo después del botón que pulsamos -> `$(this).after(message);`
+ * **Relative Traversing II**: **`closest()`**: Esta función solo nos seleccionara el primer elemento padre encontrado con el selector dado.
+ 
+```html
+<div id="tours">
+  <h1>Guided Tours</h1>
+  <ul>
+    <li class="usa tour">
+      <h2>New York, New York</h2>
+      <span class="details">$1,899 for 7 nights</span>
+      <div>
+        <button class="book">Book Now</button>
+      </div>
+    </li>
+  </ul>
+```
+
+```javascript
+$(document).ready(function() {
+  $('button').on('click', function() {
+    var message = $('<span>Call 1-555-jquery-air to book this tour</span>');
+    $(this).closest(message);
+    $(this).remove();
+  });
+});
+```
+ 
+ * **Relative Traversing III**
  
 ## Traversing and Filtering
 
- * **3.16 Traversing and Filtering**
- * **3.17 Fetching Data From the DOM I**
- * **3.18 Fetching Data From the DOM II**
- * **3.19 Refactoring**
- * **3.20 Better On Handlers**
- * **3.21 New Filter I**
- * **3.22 New Filter II**
- * **3.23 New Filter III**
+ * **Traversing and Filtering**
+ * **Fetching Data From the DOM I**
+ * **Fetching Data From the DOM II**
+ * **Refactoring**
+ * **Better On Handlers**
+ * **New Filter I**
+ * **New Filter II**
+ * **New Filter III**
