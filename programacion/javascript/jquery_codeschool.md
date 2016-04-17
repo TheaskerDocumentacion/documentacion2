@@ -64,17 +64,29 @@ $(document).ready(function(){
   </ul>
 ```
 
+Al hacer click en el boton (this) buscamos el primer padre del botón que tenga como clase `.tour` y añadimos el span de mensaje. -> `$(this).closest('.tour').append(message);`
+
 ```javascript
 $(document).ready(function() {
   $('button').on('click', function() {
     var message = $('<span>Call 1-555-jquery-air to book this tour</span>');
-    $(this).closest(message);
+    $(this).closest('.tour').append(message);
     $(this).remove();
   });
 });
 ```
  
- * **Relative Traversing III**
+ * **Relative Traversing III**: Permito que el click se haga en el tag `li` por lo que ya no necesito el `closest()`, pero tengo que buscar el boton para elminarlo.
+
+```javascript
+$(document).ready(function() {
+  $('.tour').on('click', function() {
+    var message = $('<span>Call 1-555-jquery-air to book this tour</span>');
+    $(this).append(message);
+    $(this).find('button').remove();
+  });
+});
+```
  
 ## Traversing and Filtering
 
