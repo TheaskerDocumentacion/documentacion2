@@ -165,13 +165,20 @@ $(document).ready(function() {
 
  * **On DOM Load**: Número de imagenes cargadas en la página -> `var n = $("img").length;`
  * **On Load I**: Creamos un evento 'click' para todos los tags `button`del id=tour `$('#tour').on('click', 'button',function(){ ... });`
- * **On Load II**
- * **Slide Effect I**
- * **Slide Effect II**
+ * **Slide Effect I**: Muestra las fotos del elemento `.photos' con un `slideDown()` al hacer click en los 'button' del ir=tour:
+
+```javascript
+$(document).ready(function() {
+  $('#tour').on('click', 'button', function() {
+    $('.photos').slideDown();
+  });
+});
+```
+
+ * **Slide Effect II**: Para que cuando volvamos a hacer click se esconda usamos `.slideToggle()`: `$('.photos').slideToggle();'
 
 ### Expanding on on()
 
- * **Expanding on on()**
  * **Mouseover I**
  * **Mouseover II**
  * **Mouseleave**
@@ -179,7 +186,6 @@ $(document).ready(function() {
 
 ### Keyboard Events
 
- * **Keyboard Events**
  * **Keyup Event**
  * **Keyup Event Handler I**
  * **Keyup Event Handler II**
@@ -187,7 +193,6 @@ $(document).ready(function() {
 
 ### Link Layover
 
- * **Link Layover**
  * **Link Events I**
  * **Link Events II**
  * **Event Parameter I**
