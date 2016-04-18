@@ -175,14 +175,52 @@ $(document).ready(function() {
 });
 ```
 
- * **Slide Effect II**: Para que cuando volvamos a hacer click se esconda usamos `.slideToggle()`: `$('.photos').slideToggle();'
+ * **Slide Effect II**: Para que cuando volvamos a hacer click se esconda usamos `.slideToggle()`: `$('.photos').slideToggle();`
 
 ### Expanding on on()
 
- * **Mouseover I**
- * **Mouseover II**
- * **Mouseleave**
- * **Named Functions**
+ * **Mouseover**: Realizar un evento '.mouseenter()` con `.on()` para los `li` de la clase `.photos`. Luego hacer que el elemento por el que pasamos el ratón (`this`) muestre el mensaje almacenado en el tag `span` con `.slideToggle()`:
+
+```javascript
+$('.photos').on('mouseenter', 'li', function() {
+  $(this).find('span').slideToggle();
+});
+```
+
+ * **Mouseleave**: Cuando sale el ratón del elemento `li`, nosotros queremos que la descripción (`span`) se oculte. Lo haremos con otro controlador de eventos que apunte al mismo elemento pero con `.mouseleave`.
+
+```javascript
+$(document).ready(function() {
+  $('#tour').on('click', 'button', function() {
+    $('.photos').slideToggle();
+  });
+  $('.photos').on('mouseenter', 'li', function() {
+    $(this).find('span').slideToggle();
+  });
+  // add another event handler
+  $('.photos').on('mouseleave', 'li', function() {
+    $(this).find('span').slideToggle();
+  });
+});
+```
+
+ * **Named Functions**: Refactorizamos la parte que está duplicada y la ponemos en una función:
+
+```javascript
+$(document).ready(function() {
+  $('#tour').on('click', 'button', function() {
+    $('.photos').slideToggle();
+  });
+
+  // create showPhotos() function
+  function showPhotos(){
+    $(this).find('span').slideToggle();
+  }
+
+  $('.photos').on('mouseenter', 'li', showPhotos);
+  $('.photos').on('mouseleave', 'li', showPhotos);
+});
+```
 
 ### Keyboard Events
 
