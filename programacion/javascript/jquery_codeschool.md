@@ -163,8 +163,8 @@ $(document).ready(function() {
 
 ### On DOM Load
 
- * **On DOM Load**
- * **On Load I**
+ * **On DOM Load**: Número de imagenes cargadas en la página -> `var n = $("img").length;`
+ * **On Load I**: Creamos un evento 'click' para todos los tags `button`del id=tour `$('#tour').on('click', 'button',function(){ ... });`
  * **On Load II**
  * **Slide Effect I**
  * **Slide Effect II**
