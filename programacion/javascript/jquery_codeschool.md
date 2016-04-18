@@ -224,12 +224,75 @@ $(document).ready(function() {
 
 ### Keyboard Events
 
- * **Keyup Event**
- * **Keyup Event Handler I**
- * **Keyup Event Handler II**
- * **Another Event Handler**
+```html
+<div class="tour" data-daily-price="357">
+  <h2>Paris, France Tour</h2>
+  <p>$<span id="total">2,499</span> for <span id="nights-count">7</span> Nights</p>
+  <p>
+    <label for="nights">Number of Nights</label>
+  </p>
+  <p>
+    <input type="number" id="nights" value="7">
+  </p>
+</div>
+```
 
+ * **Keyup Event Handler**: Cada vez que indroduzcamos un dígito en el campo de texto se actualizará la cifra de las noches y el importe a pagar.
+
+```javascript
+$(document).ready(function() {
+  $('#nights').on('keyup', function() {
+    var nights = $(this).val();
+    $('#nights-count').text(nights);
+    var price = $(this).closest('.tour').data('daily-price');
+    $('#total').text(price*nights);
+  });
+});
+```
+
+ * **Another Event Handler**: Cuando el campo input (`#nights') obtenga el foco actualizaremos el número de noches de ese campo de texto a 7:
+
+```javascript
+$('#nights').on('focus', function() {
+  $('#nights').val(7);
+});
+```
 ### Link Layover
+
+```html
+<div id="all-tours" class="links">
+  <h1>Guided Tours</h1>
+  <ul>
+    <li class="tour usa" data-discount="199">
+      <h2>New York, New York</h2>
+      <span class="details">$1,899 for 7 nights</span>
+      <button class="book">Book Now</button>
+      <a href="#" class="see-photos">See Photos</a>
+      <ul class="photos">
+        <li>
+          <img src="/assets/photos/paris1.jpg">
+          <span>Arc de Triomphe</span>
+        </li>
+        <li>
+          <img src="/assets/photos/paris2.jpg">
+          <span>The Eiffel Tower</span>
+        </li>
+        <li>
+          <img src="/assets/photos/paris3.jpg">
+          <span>Notre Dame de Paris</span>
+        </li>
+      </ul>
+    </li>
+    <li>
+    	...
+    </li>
+    <li>
+    	...
+    </li>
+  </ul>
+</div>
+```
+
 
  * **Link Events I**
  * **Link Events II**
