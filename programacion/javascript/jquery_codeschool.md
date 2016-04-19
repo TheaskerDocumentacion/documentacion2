@@ -292,9 +292,31 @@ $('#nights').on('focus', function() {
   </ul>
 </div>
 ```
+> [http://qbit.com.mx/blog/2013/01/07/la-diferencia-entre-return-false-preventdefault-y-stoppropagation-en-jquery/]
 
+> **`event.PreventDefault()`** se utiliza para detener una acción por omisión, utilizada comunmente sobre etiquetas (a) o botones input:submit ..
 
- * **Link Events I**
- * **Link Events II**
- * **Event Parameter I**
- * **Event Parameter II**
+> ```html
+<a href="#" class="see-photos">See Photos</a>
+```
+
+> Con `.PreventDefault()` evitaremos que cuando hagamos click en el enlace vaya al principio de la página (#)
+
+> **`event.stopPropagation()`** en cambio detiene la propagación de un evento, con el objetivo de que no se realice otra ejecución u otro listener lo escuche a través del DOM. Esto se conoce como **bubbling** y es algo que quizás no hayan notado antes.. pero al dar click a un elemento, ese evento de click lo pueden escuchar los padres de ese elemento..
+
+___
+
+En nuestro caso añadimos el controlador del evento com parámetro de la funcion manejadora (`event`) y añadiremos `event.stopPropagation();` y `event.preventDefault();` para detener la ejecución del enlace del tag `<a>`.
+
+```javascript
+$(document).ready(function() {
+  $('.see-photos').on('click', function(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    $(this).closest('.tour').find('.photos').slideToggle();
+  });
+  $('.tour').on('click', function() {
+    alert('This event handler should not be called.');
+  });
+});
+```
