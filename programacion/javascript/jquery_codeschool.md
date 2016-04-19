@@ -422,5 +422,18 @@ $(document).ready(function() {
 
 ```
  
- * **Animation Speed**
- * **Animate III**
+ * **Animation Speed**: Hacemos la animación rápida (`fast`) -> `$(this).find('.per-night').animate({'opacity': '1','top': '-14px'});`
+ * **Animate III**: Hacemos que la animación contraria cuando sale el ratón:
+
+```javascript
+$(document).ready(function() {
+  $('.tour').on('mouseenter', function() {
+    $(this).addClass('highlight');
+    $(this).find('.per-night').animate({'top': '-14px', 'opacity': '1'}, 'fast');
+  });
+  $('.tour').on('mouseleave', function() {
+    $(this).removeClass('highlight');
+    $(this).find('.per-night').animate({'top': '0px', 'opacity': '0'}, 'fast');
+  });
+});
+```
