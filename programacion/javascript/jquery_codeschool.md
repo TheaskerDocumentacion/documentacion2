@@ -292,7 +292,7 @@ $('#nights').on('focus', function() {
   </ul>
 </div>
 ```
-> [http://qbit.com.mx/blog/2013/01/07/la-diferencia-entre-return-false-preventdefault-y-stoppropagation-en-jquery/]
+> [http://qbit.com.mx/blog/2013/01/07/la-diferencia-entre-return-false-preventdefault-y-stoppropagation-en-jquery/](LA DIFERENCIA ENTRE RETURN FALSE, PREVENTDEFAULT Y STOPPROPAGATION EN JQUERY)
 
 > **`event.PreventDefault()`** se utiliza para detener una acción por omisión, utilizada comunmente sobre etiquetas (a) o botones input:submit ..
 
@@ -320,3 +320,107 @@ $(document).ready(function() {
   });
 });
 ```
+
+## StylingBadge-05
+
+```html
+<div id="all-tours">
+  <h1>Guided Tours</h1>
+  <ul>
+    <li class="tour usa">
+      <h2>New York, New York</h2>
+      <span class="details">$1,899 for 7 nights</span>
+      <span class="per-night"><span class="price">$275</span>/night</span>
+      <button class="book">Book Now</button>
+      <ul class="photos">
+        <li>
+          <img src="/assets/photos/newyork1.jpg">
+          <span>Notre Dame de Paris</span>
+        </li>
+      </ul>
+    </li>
+    <li class="tour france" data-discount="99">
+      ...
+    </li>
+    <li class="tour uk" data-discount="149">
+      ...
+    </li>
+  </ul>
+</div>
+```
+
+### Taming CSS
+
+ * **Taming CSS**: Cambiamos el color de fondo y el grosor de letra cuando pasamos el ratón por encima de un elemento de la clase `.tour`. Usamos un objeto javascript con todo el contenido css que
+
+```javascript
+$(document).ready(function() {
+  $('.tour').on('mouseenter', function() {
+    $(this).css({'background-color': '#252b30',
+                 'font-weight': 'bold'});
+  });
+});
+```
+
+ * **Show Photo**: Mostramos las fotos -> `$(this).find('.photos').show();`
+ * **Refactoring to CSS**: Añadimos una clase cuando entra el raton y la eliminamos cuando sale:
+
+```javascript
+$(document).ready(function() {
+  $('.tour').on('mouseenter', function() {
+    $(this).css({'background-color': '#252b30', 'font-weight': 'bold'});
+    $(this).find('.photos').show();
+    $(this).addClass('highlight');
+  });
+  // add a new event handler
+  $('.tour').on('mouseleave', function() {
+    $(this).removeClass('highlight');
+  });
+});
+```
+
+### Animation
+
+```html
+<div id="all-tours">
+  <h1>Guided Tours</h1>
+  <ul>
+    <li class="tour usa">
+      <h2>New York, New York</h2>
+      <span class="details">$1,899 for 7 nights</span>
+      <span class="per-night"><span class="price">$275</span>/night</span>
+      <button class="book">Book Now</button>
+      <ul class="photos">
+        <li>
+          <img src="/assets/photos/newyork1.jpg">
+          <span>Notre Dame de Paris</span>
+        </li>
+      </ul>
+    </li>
+    <li class="tour france" data-discount="99">
+      ...
+    </li>
+    <li class="tour uk" data-discount="149">
+      ...
+    </li>
+  </ul>
+</div>
+```
+
+ * **Animation**: Mostramos el precio por noche de la clase `.per-night` cuando pasamos el ratón por encima con la funcion `.animate()` poniendo `opacity` a `1` y `top`a `-14`:
+
+```javascript
+$(document).ready(function() {
+  $('.tour').on('mouseenter', function() {
+    $(this).addClass('highlight');
+    $(this).find('.per-night').animate({'opacity': '1','top': '-14px'});
+  });
+  $('.tour').on('mouseleave', function() {
+    $(this).removeClass('highlight');
+  });
+});
+
+```
+ 
+ * **Animation Speed**
+ * **Animate III**
