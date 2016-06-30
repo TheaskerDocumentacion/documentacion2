@@ -4,3 +4,6 @@
   * http://electron.atom.io/docs/tutorial/quick-start/
   * [Trabajando con Sass](http://html5facil.com/tutoriales/maquetando-sass-html5-parte-1/)
   * [Tutorial Typescript en aprendefaclmente.com](http://www.aprende-facilmente.com/typescript/tutorial-de-typescript-parte-1/)
+  * [Udemy - Dominando Wordpress](https://www.udemy.com/dominando-wordpress)
+  * [Coursera - Desarrollo de Aplicaciones móviles con Android](https://www.coursera.org/specializations/programacion-android)
+  * [Udacity - Google Courses](https://www.udacity.com/google)
