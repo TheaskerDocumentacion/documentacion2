@@ -8,3 +8,7 @@
   * [Coursera - Desarrollo de Aplicaciones móviles con Android](https://www.coursera.org/specializations/programacion-android)
   * [Udacity - Google Courses](https://www.udacity.com/google)
   * [ECO - Curso de Autocad](https://hub11.ecolearning.eu/course/iniciacion-al-autocad-control-de-escalas-y-formato/classroom/#unit79/kq243)
+  * **Cursos de Python**
+    * https://www.codeavengers.com/profile#python
+    * https://www.codecademy.com/es/tracks/python-traduccion-al-espanol-america-latina-clone-1
+    *
