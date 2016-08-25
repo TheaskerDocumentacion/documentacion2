@@ -11,4 +11,5 @@
   * **Cursos de Python**
     * https://www.codeavengers.com/profile#python
     * https://www.codecademy.com/es/tracks/python-traduccion-al-espanol-america-latina-clone-1
-    *
+  * **Cursos programación para niños**
+    * https://codecombat.com/
