@@ -13,3 +13,10 @@
     * https://www.codecademy.com/es/tracks/python-traduccion-al-espanol-america-latina-clone-1
   * **Cursos programación para niños**
     * https://codecombat.com/
+  * **Retropie**
+    * [https://github.com/retropie/retropie-setup/wiki/Managing-ROMs](Retropie Homepage)
+    * [https://medium.com/@rpastor/tutorial-raspberry-pi-retropie-parte-iii-las-roms-4ffbeef8289f#.yid1wlkkt](Tutorial Raspberry Pi + Retropie (Parte III): Las ROMs)
+    * [http://cowering.blogspot.com.es/](Goodthings Administrador de roms)
+    * [http://coolrom.com](Coolrom - rooms)
+    * [http://www.emuparadise.me/](Emuparadise.me - rooms)
+    
