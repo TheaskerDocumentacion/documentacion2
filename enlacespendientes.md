@@ -20,4 +20,6 @@
     * [http://coolrom.com](Coolrom - rooms)
     * [http://www.emuparadise.me/](Emuparadise.me - rooms)
     * [http://www.users.on.net/~swcheetah/sam/UnGoodMerge.html](UnGoodMerge - extractor de RomSets)
+    * [http://insertmorecoins.es/tutorial-clrmamepro-volumen-iii-update-roms/](Tutorial ClrMamePro Volumen (III) – UPDATE ROMS)
+    
     
