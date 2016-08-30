@@ -9,17 +9,17 @@
   * [Udacity - Google Courses](https://www.udacity.com/google)
   * [ECO - Curso de Autocad](https://hub11.ecolearning.eu/course/iniciacion-al-autocad-control-de-escalas-y-formato/classroom/#unit79/kq243)
   * **Cursos de Python**
-    * [https://www.codeavengers.com/profile#python](Codeavengers - Python)
-    * https://www.codecademy.com/es/tracks/python-traduccion-al-espanol-america-latina-clone-1
+    * [Codeavengers - Python](https://www.codeavengers.com/profile#python)
+    * [Codeacademy - Python](https://www.codecademy.com/es/tracks/python-traduccion-al-espanol-america-latina-clone-1)
   * **Cursos programación para niños**
-    * [https://codecombat.com/](codecombat)
+    * [codecombat](https://codecombat.com/)
   * **Retropie**
-    * [https://github.com/retropie/retropie-setup/wiki/Managing-ROMs](Retropie Homepage)
-    * **[https://medium.com/@rpastor/tutorial-raspberry-pi-retropie-parte-iii-las-roms-4ffbeef8289f#.yid1wlkkt](Tutorial Raspberry Pi + Retropie (Parte III): Las ROMs)**
-    * [http://cowering.blogspot.com.es/](Goodthings Administrador de roms)
-    * [http://coolrom.com](Coolrom - rooms)
-    * [http://www.emuparadise.me/](Emuparadise.me - rooms)
-    * [http://www.users.on.net/~swcheetah/sam/UnGoodMerge.html](UnGoodMerge - extractor de RomSets)
-    * [http://insertmorecoins.es/tutorial-clrmamepro-volumen-iii-update-roms/](Tutorial ClrMamePro Volumen (III) – UPDATE ROMS)
+    * [Retropie Homepage](https://github.com/retropie/retropie-setup/wiki/Managing-ROMs)
+    * **[Tutorial Raspberry Pi + Retropie (Parte III): Las ROMs](https://medium.com/@rpastor/tutorial-raspberry-pi-retropie-parte-iii-las-roms-4ffbeef8289f#.yid1wlkkt)**
+    * [Goodthings Administrador de roms](http://cowering.blogspot.com.es/)
+    * [Coolrom - rooms](http://coolrom.com)
+    * [Emuparadise.me - rooms](http://www.emuparadise.me/)
+    * [UnGoodMerge - extractor de RomSets](http://www.users.on.net/~swcheetah/sam/UnGoodMerge.html)
+    * [Tutorial ClrMamePro Volumen (III) – UPDATE ROMS](http://insertmorecoins.es/tutorial-clrmamepro-volumen-iii-update-roms/)
     
     
