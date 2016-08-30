@@ -15,8 +15,9 @@
     * https://codecombat.com/
   * **Retropie**
     * [https://github.com/retropie/retropie-setup/wiki/Managing-ROMs](Retropie Homepage)
-    * [https://medium.com/@rpastor/tutorial-raspberry-pi-retropie-parte-iii-las-roms-4ffbeef8289f#.yid1wlkkt](Tutorial Raspberry Pi + Retropie (Parte III): Las ROMs)
+    * **[https://medium.com/@rpastor/tutorial-raspberry-pi-retropie-parte-iii-las-roms-4ffbeef8289f#.yid1wlkkt](Tutorial Raspberry Pi + Retropie (Parte III): Las ROMs)**
     * [http://cowering.blogspot.com.es/](Goodthings Administrador de roms)
     * [http://coolrom.com](Coolrom - rooms)
     * [http://www.emuparadise.me/](Emuparadise.me - rooms)
+    * [http://www.users.on.net/~swcheetah/sam/UnGoodMerge.html](UnGoodMerge - extractor de RomSets)
     
