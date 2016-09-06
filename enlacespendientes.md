@@ -21,5 +21,6 @@
     * [Emuparadise.me - rooms](http://www.emuparadise.me/)
     * [UnGoodMerge - extractor de RomSets](http://www.users.on.net/~swcheetah/sam/UnGoodMerge.html)
     * [Tutorial ClrMamePro Volumen (III) – UPDATE ROMS](http://insertmorecoins.es/tutorial-clrmamepro-volumen-iii-update-roms/)
-    
+  * **Minecraft**
+    * http://es.wikihow.com/conseguir-el-mejor-encantamiento-en-Minecraft
     
