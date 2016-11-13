@@ -23,4 +23,10 @@
     * [Tutorial ClrMamePro Volumen (III) – UPDATE ROMS](http://insertmorecoins.es/tutorial-clrmamepro-volumen-iii-update-roms/)
   * **Minecraft**
     * http://es.wikihow.com/conseguir-el-mejor-encantamiento-en-Minecraft
-    
+  * **Video vigilancia con Raspberry Pi + módulo cámara**
+  	* http://www.instructables.com/id/Raspberry-Pi-as-low-cost-HD-surveillance-camera/
+  	* http://fpaez.com/camara-de-seguridad-con-raspberry-pi-securos/
+  	* http://www.tuelectronica.es/tutoriales/raspberry-pi/instalacion-del-modulo-camara-de-raspberry-pi.html
+  	* http://bjurr.com/raspberry-pi-with-camera-module-and-archlinux/
+  	* https://www.raspberrypi.org/forums/viewtopic.php?f=43&t=136381
+  	* http://elinux.org/RPi-Cam-Web-Interface
