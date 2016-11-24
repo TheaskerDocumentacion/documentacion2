@@ -21,9 +21,12 @@ Información de un container:
 Creación de una nueva imagen basada en un container:
 
 	docker commit test ubuntu_apache
+	docker commit -m "Contenedor con node" -a "Theasker" node theasker/node:0.1
 
  * **test**: Nombre del contenedor en el que nos basamos.
  * **ubuntu_apache**: Nombre que le damos al conetenedor.
+ * **-a**: Autor
+ * **`theasker/node:0.1`**: <autor>/<contenedor de la imagen>:<version>
 
 Ejecutar un container en segundo plano basado en una imagen con un servidor web activo en FOREGROUND:
 
@@ -314,4 +317,6 @@ Para probarlo podemos usar el comando create de docker para crear un contenedor 
 
  * [Curso de Docker de Miguel Arranz](https://www.youtube.com/playlist?list=PLfW3im2fiA7W9F4DbjmRDIZgAHsea20ON)
  * Home page: https://www.docker.com/
- * Compilar y documentar tu servidor usando Dockerfile: https://platzi.com/blog/imagenes-con-dockerfile/ 
+ * Compilar y documentar tu servidor usando Dockerfile: https://platzi.com/blog/imagenes-con-dockerfile/
+ * [Redirección de puertos en Virtualbox](http://miperrosecomiolosrespaldos.blogspot.com.es/2013/08/redireccion-de-puertos-en-virtualbox.html)
+ * [Curso de docker en Capside](http://capside-academy.usefedora.com/courses/docker-devops)

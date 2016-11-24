@@ -30,3 +30,5 @@
   	* http://bjurr.com/raspberry-pi-with-camera-module-and-archlinux/
   	* https://www.raspberrypi.org/forums/viewtopic.php?f=43&t=136381
   	* http://elinux.org/RPi-Cam-Web-Interface
+ 	* **AWS**
+  	* [Curso AWS de la Universidad Politécnica de Valencia](http://www.grycap.upv.es/cursocloudaws/index.php)
