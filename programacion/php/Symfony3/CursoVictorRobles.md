@@ -196,3 +196,19 @@ Si queremos que Symfony no cargue un bundle que tenemos pero sin eliminarlo, ten
 
 Para crear plantillas de forma global, las podemos definir en el directorio `/app/Resources/views`. Allí tenemos ya una plantilla creada por defecto llamada `base.html.twig`.
 
+El sistema de plantillas de twig funciona con bloques del estilo a:
+
+```twig
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>
