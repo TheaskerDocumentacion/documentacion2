@@ -49,5 +49,17 @@ Para crear la vista en nuestro **bundle**, creamos los directorios donde estará
 Las **rutas básicas** se pueden hacer en los comentarios del **phpdoc**, pero es mejor hacerlas en un fichero config que lo crearemos en la ruta `/src/AppBundle/Resources/config` y se llamará `routing.yml`:
 
 ```yaml
+pruebas_index:
+  path: /pruebas/index
+  defaults: {_controller: AppBundle:pruebas:index}
+```
 
+Además tendremos que añadir un enlace a este fichero de rutas en el fichero general de enrutado que está en `/app/config/routing.yml`, enlazando nuestro fichero de rutas:
+
+```yml
+rutas_bundle:
+  resource: "@AppBundle/Resources/config/routing.yml"
+  prefix: /
+
+...
 ```
