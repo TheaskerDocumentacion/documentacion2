@@ -192,7 +192,9 @@ Con el comando de la consola de Symfony:
 
 Si queremos que Symfony no cargue un bundle que tenemos pero sin eliminarlo, tenemos que comentar la línea que hay en el fichero `/app/AppKernel.php` en el array de bundles
 
-## Plantillas y bloques
+## Plantillas y bloques con Twig
+
+[Documentación en español de **Twig**](http://gitnacho.github.io/Twig/)
 
 Para crear plantillas de forma global, las podemos definir en el directorio `/app/Resources/views`. Allí tenemos ya una plantilla creada por defecto llamada `base.html.twig`.
 
@@ -212,3 +214,118 @@ El sistema de plantillas de twig funciona con bloques del estilo a:
         {% block javascripts %}{% endblock %}
     </body>
 </html>
+```
+
+En la ruta `/app/Resources/views` podemos definir plantillas para luego heredarlas. Podemos crear la plantilla `/app/Resources/views/layaut.html.twig` con este contenido:
+```twig
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <style>
+          .container{
+            border: 1px solid black;
+            width: 85%;
+            height: 300px;
+            background: #eee;
+          }
+        </style>
+    </head>
+    <body>
+      <div class="container">
+        {% block container %}
+        {% endblock %}
+      </div>
+        {% block body %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>
+```
+
+Y luego en nuestra vista heredamos de esta plantilla:
+`/src/AppBundle/Resources/views/pruebas/index.html.twig`
+```twig
+{% extends "layaut.html.twig" %}
+{% block container %}
+  {{parent()}}
+  {{texto}}
+{%endblock%}
+```
+### Variables, y estructuras de control
+
+`/src/AppBundle/Controller/PruebasController.php`
+```php
+...
+
+class PruebasController extends Controller{
+  
+  public function indexAction(Request $request,$name,$page,$lang){
+    $productos = array(
+                array("producto"=>'Consola','precio'=>2),
+                array("producto"=>'Consola 2','precio'=>3),
+                array("producto"=>'Consola 3','precio'=>4),
+                array("producto"=>'Consola 4','precio'=>5),
+                array("producto"=>'Consola 5','precio'=>6));
+    
+    $fruta = array('manzana'=>'golden','pera'=>'rica');
+    
+    // replace this example code with whatever you need
+    return $this->render('AppBundle:pruebas:index.html.twig', array(
+        'texto' => $name." - ".$page." // Idioma elegido: ".$lang,
+        'productos' => $productos,
+        'fruta' => $fruta
+    ));
+  }    
+}
+```
+`/src/AppBundle/Resources/views/pruebas/index.html.twig`
+```twig
+{% extends "layaut.html.twig" %}
+{% block container %}
+
+  {{parent()}}
+  {{texto}}
+     
+  <hr>
+  {# Condiciones #}
+  {% if fruta.pera == "rica" %}
+    {{fruta.manzana}}
+  {% endif %}
+  <hr>
+  {# Expresiones regulares con twig #}
+  {% if fruta.pera starts with "r" %}
+    {{fruta.manzana}}
+  {% endif %}
+  
+  <hr>
+  {% set variable = "Hola Twig" %}
+  {{variable}}
+  <hr>
+  {% if productos|length > 0 %}
+    <ul>
+    {% for producto in productos %}
+      <li>{{producto.producto}} - {{producto.precio}}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+    
+{%endblock%}
+```
+### Funciones predefinidas de Twig 
+
+  * `{% set fecha = date() %}`: Guarda en la variable fecha el objeto que devuelve la función.
+  * `{% set fecha = date("-2 days", 'Europe/Madrid') %}`: Guarda en fecha el objeto que devuelve la funcion `date` menos 2 días y pasándole el **timezone**.
+  * Con `{{ dump(fecha) }}` podremos ver el contenido de la variable fecha como si fuera la función `var_dump()` de php.
+  * Podemos "incluir" otras vistas dentro de nuestra vista principal: `{{ include('AppBundle:pruebas:partial.html.twig') }}` Tendremos que indicarle el **Bundle** en el que está esa vista y el resto de la ruta.
+  * Las funciones `max()` y `min()` sacan el mayor o menor respectivamente de un array de valores.
+  * La función `random()` visualiza un valor aleatorio del parámetro dado, que puede ser un array `{{ random(1000) }}` o `{{ random([52,5,73]) }}`.
+  * La función `range()' nos devuelve un rango de números dado como parámetros `(1-10)` y si le damos el tercer parámetro lo usará como valor de salto entre el rango, es decir, si ponemos 2 saltará de 2 en 2 y si es 3 saltará de 3 en 3. Este es un bucle for que hace una secuencia de 0 a 10 saltando de 2 en 2:
+```twig
+{% for i in range(0,10,2) %}
+  {{i}}
+{% endfor %}
+```
+  
