@@ -328,4 +328,97 @@ class PruebasController extends Controller{
   {{i}}
 {% endfor %}
 ```
+
+### Funciones predefinidas por el usuario para Twig
+
+creamos un archivo php para definir nuestra nueva función para archivos Twig en una nueva carpeta '/src/AppBundle/Twig` (por ejemplo):
+
+`/src/AppBundle/Twig`
+
+```php
+<?php
+namespace AppBundle\Twig;
+ 
+class HelperVistas extends \Twig_Extension{
   
+  public function getFunctions() {
+    return array(
+        'generateTable' => new \Twig_Function_Method($this,"generateTable")
+    );
+  }
+
+  public function generateTable($resultSet){
+    $table = "<table class='table' border=1>";
+    for($i=0;$i<count($resultSet);$i++){
+      $table .= "<tr>";
+      for($x=0;$x<count($resultSet[$i]);$x++){
+        $resultSet_values= array_values($resultSet[$i]);
+        $table .= "<td>.$resultSet_values[$x].</td>";
+      }
+      $table .= "</tr>";
+    }
+    $table .= "</table>";
+    return $table;
+  }
+
+  public function getName() {
+    return "app_bundle";
+  }
+}
+```
+
+Esta nueva funcionalidad habrá que decir a Symfony que existe en el fichero `/app/config/services.yml`
+
+```yaml
+services:
+  app.twig_extension:
+    class: AppBundle\Twig\HelperVistas
+    public: true
+    tags:
+      - { name: twig.extension }
+
+```
+Lo usaremos con el nombre que le hemos dado a la función, en este caso `generateTable()` con el filtro `raw` para que en vez de imprimir el código html nos la dibuje correctamente:
+
+```twig
+...
+{{ generateTable(productos)|raw }}
+...
+```
+
+## Trabajar con Bases de Datos
+
+Tenemos que pasar la estructura de la base de datos a Symfony. Primero la exportamos a metadatos en formato xml con el comando:
+
+```bash
+php bin/console doctrine:mapping:convert xml ./src/AppBundle/Resources/doctrine/metadata/orm --from-database --force
+Processing entity "Productos"
+Processing entity "Usuarios"
+
+Exporting "xml" mapping information to "/home/theasker/code/CursoSymfony3/src/AppBundle/Resources/doctrine/metadata/orm"
+
+```
+
+Si la tabla se llama **Usuarios** la entidad la llamará también **Usuarios** y habrá que cambiarlo a singular, es decir, usuario.
+
+Luego lo que hay que hacer es importar los metadatos a yaml, con el comando
+
+```bash
+php bin/console doctrine:mapping:import AppBundle yml
+Importing mapping information from "default" entity manager
+  > writing /home/theasker/code/CursoSymfony3/src/AppBundle/Resources/config/doctrine/Productos.orm.yml
+  > writing /home/theasker/code/CursoSymfony3/src/AppBundle/Resources/config/doctrine/Usuarios.orm.yml
+
+```
+
+Esto creará el esquema de la base de datos en el directorio `/src/AppBundle/config/doctrine`. Y con esto generaremos las entidades con las que podremos interactuar:
+
+```bash
+php bin/console doctrine:generate:entities AppBundle
+Generating entities for bundle "AppBundle"
+  > backing up Usuario.php to Usuario.php~
+  > generating AppBundle\Entity\Usuario
+  > backing up Producto.php to Producto.php~
+  > generating AppBundle\Entity\Producto
+
+```

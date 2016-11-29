@@ -32,3 +32,13 @@
   	* http://elinux.org/RPi-Cam-Web-Interface
  	* **AWS**
   	* [Curso AWS de la Universidad Politécnica de Valencia](http://www.grycap.upv.es/cursocloudaws/index.php)
+  * **Lovehacks**
+    * https://www.youtube.com/playlist?list=PLPOv7bTzpLUvK_d58ImfHHrrpzEqG1V4f
+    * https://www.youtube.com/watch?v=KuUZnxCvPxk&list=PLdGlusD_3WpF9TUyLRcMOnU9jdZIi3y9a
+    * https://www.youtube.com/playlist?list=PLDzT-9v5bwuP9R8TmVBTGqJMUbU3OkUHe
+    * https://www.youtube.com/playlist?list=PLL8maWkGwy-s2moESTPD38yX8s5mnBup5
+    * https://www.youtube.com/playlist?list=PLutg1SO1GiL1SisBPaMCSOF7j71RI2luQ
+    * https://html5videogames.wordpress.com/tutoriales/curso-phaser-gratis/
+    * http://joelwalls.com/2015/07/tutorial-programacion-de-juegos-con-phaser-parte-1/?i=1
+    * https://www.udemy.com/juegos-en-javascript/
+    * http://www.lessmilk.com/phaser-tutorial/
