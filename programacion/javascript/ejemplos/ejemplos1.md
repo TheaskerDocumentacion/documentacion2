@@ -134,7 +134,7 @@
   </body>
   </html>
  ```
- ## Caso 2: seleccionar el texto de un cuadro de texto y darle el foco.
+## Caso 2: seleccionar el texto de un cuadro de texto y darle el foco.
  
 ```javascript
      <html>
@@ -193,7 +193,7 @@
  
  En este ejemplo podemos ver otra forma de utilizar los formularios en el código JavaScript.
  
- ## Caso 4: como actualizar dos iframes al mismo tiempo.
+## Caso 4: como actualizar dos iframes al mismo tiempo.
  
 ```javascript
      <html>
@@ -247,7 +247,7 @@
      </html>
 ```
  
- ## Caso 6: conocer los datos relacionados con la pantalla.
+## Caso 6: conocer los datos relacionados con la pantalla.
  
 ```javascript
      <html>
