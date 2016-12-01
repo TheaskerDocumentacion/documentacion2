@@ -15,9 +15,22 @@ Repositorio: dev.lovehacks.tools:7990
   10. `php bin/console doctrine:cache:clear` -> limpia la cache de Symfony
   11. `/var/log/dev.log` -> logs de Symfony
    
-  * **`php bin/console generate:bundle --namespace=ShopBundle`**: Creación automática de un **bundle**. Ayuda -> `php bin/console generate:bundle --help` 
+  * **`php bin/console generate:bundle --namespace=ShopBundle`**: Creación automática de un **bundle**. Ayuda -> `php bin/console generate:bundle --help`
+  
+
+
+## [Databases and the Doctrine ORM](https://symfony.com/doc/current/doctrine.html)
+
   * **`php bin/console doctrine:database:create`**: Creación de la base de datos.
   * **`php app/console cache:clear`**: Limpiar consola.
   * [Comandos básicos de Symfony](http://ignaciofarre.com/blog/comandos-basicos-para-empezar-con-symfony3/)
 
-  * **'php bin/console doctrine:mapping:convert xml ./src/AppBundle/Resources/doctrine/metadata/orm --from-database --force`** -> Pasa el esquema de una base de datos ya creada a Symfony.
+  * **[How to Generate Entities from an Existing Database](http://symfony.com/doc/current/doctrine/reverse_engineering.html)**
+	  * **'php bin/console doctrine:mapping:convert xml ./src/AppBundle/Resources/doctrine/metadata/orm --from-database --force`** -> Pasa el esquema de una base de datos ya creada a Symfony en formato xml.
+	  * **`php bin/console doctrine:mapping:convert annotation ./src`** -> Genera la/s entidades desde el esquema xml que se ha creado.
+	  * **`php bin/console doctrine:generate:entities AcmeBlogBundle`** -> Con este comando generamos los **getters** y **setters**.
+
+
+## Enlaces
+
+ * [https://diego.com.es/certificacion-symfony](https://diego.com.es/certificacion-symfony)

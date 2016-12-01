@@ -388,6 +388,8 @@ Lo usaremos con el nombre que le hemos dado a la función, en este caso `generat
 
 ## Trabajar con Bases de Datos
 
+### Ingeniería inversa. Cómo pasar de la BBDD a la Entity
+
 Tenemos que pasar la estructura de la base de datos a Symfony. Primero la exportamos a metadatos en formato xml con el comando:
 
 ```bash
@@ -420,5 +422,18 @@ Generating entities for bundle "AppBundle"
   > generating AppBundle\Entity\Usuario
   > backing up Producto.php to Producto.php~
   > generating AppBundle\Entity\Producto
-
 ```
+
+### Cómo generar una Entidad para crear la base de datos
+
+  * [Basic mapping](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/basic-mapping.html)
+
+Con este comando nos generará la Entity preguntando el **Bundle** de la Entity, el nombre de la Entity, así como los campos con sus tipos y opciones de cada campo.
+
+	php bin/console doctrine:generate:entity
+
+
+Luego le diremos que con las especificaciones que hemos introducido, actualice o cree la tabla que le hemos indicado anteriormente
+
+	php bin/console doctrine:schema:update --force
+
