@@ -430,10 +430,116 @@ Generating entities for bundle "AppBundle"
 
 Con este comando nos generará la Entity preguntando el **Bundle** de la Entity, el nombre de la Entity, así como los campos con sus tipos y opciones de cada campo.
 
-	php bin/console doctrine:generate:entity
-
+```bash
+php bin/console doctrine:generate:entity
+```
 
 Luego le diremos que con las especificaciones que hemos introducido, actualice o cree la tabla que le hemos indicado anteriormente
 
-	php bin/console doctrine:schema:update --force
+```bash
+php bin/console doctrine:schema:update --force
+```
 
+También tendremos que ejecutar este comando cada vez que modifiquemos nuestras Entidades.
+
+Para eliminar todo el esquema de la base de datos y generar uno nuevo:
+
+```bash
+php bin/console doctrine:schema:drop --force
+```
+Ahora generamos el nuevo
+```bash
+php bin/console doctrine:schema:create --force
+```
+
+### Insert, update, modify, delete datos en la base de datos
+
+En `/src/AppBundle/Controller/PruebasController.php`:
+
+```php
+...
+public function createAction(){
+  $curso = new Curso();
+
+  $curso->setTitulo("Curso de Symfony");
+  $curso->setDescripcion("Curso completo de Symfony3");
+  $curso->setPrecio(80.3);
+
+  $em = $this->getDoctrine()->getEntityManager();
+  $em->persist($curso);
+  $flus = $em->flush();
+  if($flus != null){
+      echo "El curso no se ha creado bien";
+  }else{
+      echo "El curso se ha creado correctamente";
+  }
+  die();
+}
+
+public function readAction(){
+    $em = $this->getDoctrine()->getEntityManager();
+    $cursos_repo = $em->getRepository("AppBundle:Curso");
+    $cursos = $cursos_repo->findAll();
+
+    foreach($cursos as $curso){
+        echo $curso->getTitulo()."<br/>";
+        echo $curso->getDescripcion()."<br/>";
+        echo $curso->getPrecio()."<br/><hr/>";
+    }
+    die();
+}
+
+public function updateAction($id,$titulo,$descripcion,$precio){
+    $em = $this->getDoctrine()->getEntityManager();
+    $cursos_repo = $em->getRepository("AppBundle:Curso");
+
+    $curso = $cursos_repo->find($id);
+    $curso->setTitulo($titulo);
+    $curso->setDescripcion($descripcion);
+    $curso->setPrecio($precio);
+
+    $em->persist($curso);
+    $flus = $em->flush();
+    if($flus != null){
+        echo "El curso no se ha actualizado bien";
+    }else{
+        echo "El curso se ha actualizado correctamente";
+    }
+    die();
+}
+
+public function deleteAction($id){
+    $em = $this->getDoctrine()->getEntityManager();
+    $cursos_repo = $em->getRepository("AppBundle:Curso");
+
+    $curso = $cursos_repo->find($id);
+    $em->remove($curso);
+    $flus = $em->flush();
+    if($flus != null){
+        echo "El curso no se ha borrado bien";
+    }else{
+        echo "El curso se ha borrado correctamente";
+    }
+    die();
+}
+...
+
+Para hacerlo correctamente, usamos otra ruta para cada acción, modificando el fichero `/src/Appbundle/Resources/config/routing.yml`:
+
+```yaml
+pruebas_create:
+  path: /pruebas/create
+  defaults: {_controller: AppBundle:Pruebas:create}
+
+pruebas_read:
+  path: /pruebas/read
+  defaults: {_controller: AppBundle:Pruebas:read}
+
+pruebas_update:
+  path: /pruebas/update/{id}/{titulo}/{descripcion}/{precio}
+  defaults: {_controller: AppBundle:Pruebas:update}
+
+pruebas_delete:
+  path: /pruebas/delete/{id}
+  defaults: {_controller: AppBundle:Pruebas:delete}
+```
