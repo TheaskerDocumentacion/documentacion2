@@ -42,3 +42,8 @@
     * http://joelwalls.com/2015/07/tutorial-programacion-de-juegos-con-phaser-parte-1/?i=1
     * https://www.udemy.com/juegos-en-javascript/
     * http://www.lessmilk.com/phaser-tutorial/
+  * **Raspberry Pi**
+    * [Conectar la raspberry por iscsi y almacenar ahí los sistemas operativos](https://www.youtube.com/watch?v=RhV8kg_g4hc)
+  * **Varios**
+    * [Tutoriales en castellano muy variados](http://www.es.w3eacademy.com/)
+  
