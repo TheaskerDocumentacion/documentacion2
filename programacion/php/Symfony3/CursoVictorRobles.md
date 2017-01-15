@@ -523,6 +523,7 @@ public function deleteAction($id){
     die();
 }
 ...
+```
 
 Para hacerlo correctamente, usamos otra ruta para cada acción, modificando el fichero `/src/Appbundle/Resources/config/routing.yml`:
 
@@ -543,3 +544,65 @@ pruebas_delete:
   path: /pruebas/delete/{id}
   defaults: {_controller: AppBundle:Pruebas:delete}
 ```
+
+#### Tipos de find para hacer consultas
+
+Podemos usar el método **`findBy()`** que es como una cláusula WHERE en SQL. Vamos a buscar todos los cursos que tengan como precio 80:
+
+```php
+...
+$curso_ochenta = $cursos_repo->findBy(array("precio"=>80));
+
+foreach($curso_ochenta as $curso){
+    echo $curso->getTitulo()."<br/>";
+    echo $curso->getDescripcion()."<br/>";
+    echo $curso->getPrecio()."<br/><hr/>";
+}
+...
+```
+
+Si en vez de varios cursos sabemos que sólo hay un registro que vaya a cumplir con el parámetro podemos usar **`findOneBy`**:
+
+```php
+...
+$curso_ochenta = $cursos_repo->findOneByPrecio(80);
+
+echo $curso_ochenta->getTitulo();
+...
+```
+como se ve usamos como método `findOneBy` y seguido el nombre del campo por el que queremos buscar.
+
+#### Consultas SQL
+
+Tenemos la opción de hacer consultas con SQL nativo.
+
+```php
+public function nativeSqlAction(){
+  $em = $this->getDoctrine()->getEntityManager();
+  $db = $em->getConnection();
+
+  $sql = "SELECT * FROM cursos";
+  $stmn = $db->prepare($sql);
+  $params = array();
+  $stmn->execute($params);
+
+  $cursos = $stmn->fetchAll();
+
+  foreach ($cursos as $curso){
+      echo $curso["titulo"]."<br>";
+  }
+  die();
+}
+```
+
+y añadir la ruta para poder acceder a la página
+
+```yaml
+...
+pruebas_native:
+	path: /pruebas/native
+	defaults: { _controller: AppBundle:Pruebas:nativeSql }
+...
+```
+
+#### Consultas DQL

@@ -46,4 +46,6 @@
     * [Conectar la raspberry por iscsi y almacenar ahí los sistemas operativos](https://www.youtube.com/watch?v=RhV8kg_g4hc)
   * **Varios**
     * [Tutoriales en castellano muy variados](http://www.es.w3eacademy.com/)
+  * **Virtualización**
+	  * [Listado de cursos online y gratuitos de VMware en Español](http://www.dbigcloud.com/virtualizacion/224-listado-de-cursos-online-y-gratuitos-de-vmware-en-espanol.html)
   

@@ -313,6 +313,73 @@ Para probarlo podemos usar el comando create de docker para crear un contenedor 
 	docker create -P --name test -h test wordpress
 	docker start test
 
+### Comando de Dockerfile
+
+	* **`RUN`:** Especifica la imagen base sobe la que vamos a partir.
+	* **`MAINTAINER`:** Información sobre el creador de la imagen
+	* **`ENV`:** Permite crear variables de entor que serán interpretadas por Dockerfile:
+```docker
+# Dockerfile
+FROM ubuntu:14.04
+ENV root /carpeta_prueba
+ADD $root
+```
+y esto lo que hará es declarar una variable de entorno `root` cuyo valor será `carpeta_prueba` y la añadirá al sistema de ficheros del contenedor.
+
+Las variables se pueden escribir como `$nombre_var` o como `${nombre_var}`.
+
+  * **`RUN`:** Se utiliza para ejecutar instrucciones en nuestro contenedor. **Importante:** Hay que intentar no introducir muchas líneas con `RUN`, y sustituir por la concatenación de instrucciones con `&&`, ya que cada vez que usemos el mocando `RUN` se creará un nuevo layer en nuestra imagen.
+  * **`CMD`:** Esta instrucción indica un comando o programa que se ejecutará dentro del contenedor una vez que esté completamente construido. La sintaxis correcta es:
+
+```bash
+CMD ["echo","hello world"]
+```
+
+  * **`COPY`:** Copia ficheros del host al container. Se suele usar para copiar archivos de configuración ya modificados como por ejemplo los de wordpress, apache ya modificados a nuestro gusto.
+  * **`ADD`:** `ADD <origen>... <destino>` Esta instrucción copia ficheros, directorios o ficheros remotos desde y los añade al sistema de ficheros del contenedor en el path. El parámetro <origen> acepta caracteres comodín (tipo ?, *…) que se cumplirán (o no) en base a las reglas impuestas por filepath.Match. En caso de que el origen sea un fichero comprimido, lo descomprime en el destino de la misma forma que lo haríamos con tar -x. Hay unas cuantas reglas a tener en cuenta. Es muy recomendable echarles un ojo ya que explican las diferentes casuísticas que se pueden dar. Un tema básico es que <origen> debe estar dentro del contexto de contrucción de la imagen, es decir, donde está el Dockerfile.
+  * **`WORKDIR`:** Permite especificarle a Docker en que directorio va a ejecutar una instrucción CMD, RUM o ENTRYPOINT, como por ejemplo:
+
+```
+WORKDIR /var/www
+RUN pwd
+```
+
+dónde esto devolvería /var/www.
+
+  * **`EXPOSE`:** Esta instrucción permite exponer puertos, permitiéndonos exponer un contenedor con el mundo exterior (internet, nuestro host, etc…). Por ejemplo, podemos exponer los puertos 22 (para SSH), 80 (para HTTP), 3306 (MySQL), etc…
+  * **`VOLUME`:** Esta instrucción permite establecer puntos de montaje para que cuando usemos el contenedor podamos tener acceso externo (desde nuestro host) a un determinado directorio del contenedor. Por ejemplo, al indicar la instrucción VOLUME ["/var/www"] estaremos creando un punto de montaje en el directorio especificado permitiendo compartir dicho directorio con otros contenedores o con la máquina anfitrión.
+  * **`USER`:** La instrucción USER especifica un usuario en el que la imagen se ejecutará, por ejemplo: `USER nginx` Esto hará que los contenedores creados a partir de la imagen se ejecuten por el usuario nginx. Podemos especificar un nombre de usuario o un UID y grupo o GID. O incluso una combinación de los mismos, por ejemplo:
+
+```
+USER user
+USER user:group
+USER uid
+USER uid:gid
+USER user:gid
+USER uid:group
+```
+
+También podemos sobrescribir ésto en tiempo de ejecución especificando el parámetro –u con el comando “docker run”.
+
+  * **`VOLUME`:** La instrucción VOLUME añade volúmenes a cualquier contenedor creado a partir de una imagen. Un volumen es un directorio especialmente designado dentro de uno o más contenedores que no utiliza el sistema de archivos del contenedor, aunque se integra en el mismo para proporcionar varias funciones útiles para que los datos sean persistentes y se puedan compartir con facilidad:
+  	* Los volúmenes pueden ser compartidos y reutilizados entre los contenedores.
+  	* Un contenedor no tiene que estar en ejecución para compartir sus volúmenes.
+  	* Los cambios en un volumen se hacen directamente.
+  	* Los cambios en un volumen no se incluirán al actualizar una imagen.
+  	* Los volúmenes persisten incluso cuando dejan de usarlo los contenedores.
+Esto nos permite añadir datos (como el código fuente), una base de datos, o cualquier otro contenido en una imagen sin comprometer la imagen y nos permite compartir los datos entre los contenedores. Esto se puede utilizar para hacer pruebas con los contenedores y el código de una aplicación, administrar registros, o manejar bases de datos dentro de un contenedor.
+La instrucción VOLUME se puede utilizar de la siguiente forma:
+
+```
+VOLUME [“/opt/app”]
+```
+
+Esta instrucción crea un punto de montaje en “/opt/app” a cualquier contenedor creado desde esta imagen.
+También podemos especificar múltiples volúmenes especificando un array:
+
+	VOLUME [“/opt/app”,”/datos”]
+
+
 ## Enlaces
 
  * [Curso de Docker de Miguel Arranz](https://www.youtube.com/playlist?list=PLfW3im2fiA7W9F4DbjmRDIZgAHsea20ON)
@@ -320,3 +387,5 @@ Para probarlo podemos usar el comando create de docker para crear un contenedor 
  * Compilar y documentar tu servidor usando Dockerfile: https://platzi.com/blog/imagenes-con-dockerfile/
  * [Redirección de puertos en Virtualbox](http://miperrosecomiolosrespaldos.blogspot.com.es/2013/08/redireccion-de-puertos-en-virtualbox.html)
  * [Curso de docker en Capside](http://capside-academy.usefedora.com/courses/docker-devops)
+ * [The Complete Docker Course for DevOps and Developers](https://www.udemy.com/docker-tutorial-for-devops-run-docker-containers/learn/v4/)
+ * [Instrucciones en el fichero Dockerfile](http://www.nacionrosique.es/2016/06/instrucciones-en-el-fichero-dockerfile.html)
