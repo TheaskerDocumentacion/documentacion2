@@ -13,14 +13,16 @@
     * [Codeacademy - Python](https://www.codecademy.com/es/tracks/python-traduccion-al-espanol-america-latina-clone-1)
   * **Cursos programación para niños**
     * [codecombat](https://codecombat.com/)
-  * **Retropie**
-    * [Retropie Homepage](https://github.com/retropie/retropie-setup/wiki/Managing-ROMs)
-    * **[Tutorial Raspberry Pi + Retropie (Parte III): Las ROMs](https://medium.com/@rpastor/tutorial-raspberry-pi-retropie-parte-iii-las-roms-4ffbeef8289f#.yid1wlkkt)**
-    * [Goodthings Administrador de roms](http://cowering.blogspot.com.es/)
-    * [Coolrom - rooms](http://coolrom.com)
-    * [Emuparadise.me - rooms](http://www.emuparadise.me/)
-    * [UnGoodMerge - extractor de RomSets](http://www.users.on.net/~swcheetah/sam/UnGoodMerge.html)
-    * [Tutorial ClrMamePro Volumen (III) – UPDATE ROMS](http://insertmorecoins.es/tutorial-clrmamepro-volumen-iii-update-roms/)
+  * **Raspberry Pi**
+	  * [Cosas que se puede hacer con el módulo de cámara](https://www.xataka.com/especiales/once-proyectos-con-la-raspberri-pi-y-una-camara-para-aprender-y-divertirte?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+xataka2+%28Xataka%29)
+	  * **Retropie**
+	    * [Retropie Homepage](https://github.com/retropie/retropie-setup/wiki/Managing-ROMs)
+	    * **[Tutorial Raspberry Pi + Retropie (Parte III): Las ROMs](https://medium.com/@rpastor/tutorial-raspberry-pi-retropie-parte-iii-las-roms-4ffbeef8289f#.yid1wlkkt)**
+	    * [Goodthings Administrador de roms](http://cowering.blogspot.com.es/)
+	    * [Coolrom - rooms](http://coolrom.com)
+	    * [Emuparadise.me - rooms](http://www.emuparadise.me/)
+	    * [UnGoodMerge - extractor de RomSets](http://www.users.on.net/~swcheetah/sam/UnGoodMerge.html)
+	    * [Tutorial ClrMamePro Volumen (III) – UPDATE ROMS](http://insertmorecoins.es/tutorial-clrmamepro-volumen-iii-update-roms/)
   * **Minecraft**
     * http://es.wikihow.com/conseguir-el-mejor-encantamiento-en-Minecraft
   * **Video vigilancia con Raspberry Pi + módulo cámara**
