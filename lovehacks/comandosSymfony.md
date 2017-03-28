@@ -10,9 +10,9 @@ Repositorio: dev.lovehacks.tools:7990
   5. `composer install` -> instalar todas las dependencias que necesita y que están configuradas en el `composer.json`.
   6. `php bin/console doctrine:schema:install`
   7. `php bin/console doctrine:schema:update --force`
-  8. `php bin/console doctrine:fixture:load` -> carga los datos de ejemplo en la base de datos (machaca los datos que haya)
-  9. `php bin/console doctrine:fixture:append` -> añade los datos que nosotros queramos añadir, pero puede duplicar alguno y dar errores.
-  10. `php bin/console doctrine:cache:clear` -> limpia la cache de Symfony
+  8. `php bin/console doctrine:fixtures:load` -> carga los datos de ejemplo en la base de datos (machaca los datos que haya)
+  9. `php bin/console doctrine:fixtures:append` -> añade los datos que nosotros queramos añadir, pero puede duplicar alguno y dar errores.
+  10. `php bin/console cache:clear` -> limpia la cache de Symfony
   11. `/var/log/dev.log` -> logs de Symfony
    
   * **`php bin/console generate:bundle --namespace=ShopBundle`**: Creación automática de un **bundle**. Ayuda -> `php bin/console generate:bundle --help`

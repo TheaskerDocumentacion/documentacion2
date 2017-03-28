@@ -16,6 +16,9 @@
   * **Raspberry Pi**
 	  * [Cosas que se puede hacer con el módulo de cámara](https://www.xataka.com/especiales/once-proyectos-con-la-raspberri-pi-y-una-camara-para-aprender-y-divertirte?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+xataka2+%28Xataka%29)
 	  * **Retropie**
+	  	* http://lifehacker.com/how-to-turn-your-raspberry-pi-into-a-retro-game-console-498561192
+	  	* http://lifehacker.com/the-advanced-guide-to-setting-up-a-diy-game-console-wit-1790381861
+	  	* http://lifehacker.com/diy-retro-game-system-showdown-retropie-vs-recalbox-1787542021
 	    * [Retropie Homepage](https://github.com/retropie/retropie-setup/wiki/Managing-ROMs)
 	    * **[Tutorial Raspberry Pi + Retropie (Parte III): Las ROMs](https://medium.com/@rpastor/tutorial-raspberry-pi-retropie-parte-iii-las-roms-4ffbeef8289f#.yid1wlkkt)**
 	    * [Goodthings Administrador de roms](http://cowering.blogspot.com.es/)
