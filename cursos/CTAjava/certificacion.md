@@ -1,12 +1,12 @@
 # Certificación Java
 
-## Construyendo bloques de Java
+### Construyendo bloques de Java
 
-### Paquetes
+#### Paquetes
 
   * En el exámen no pondrán nombres de paquetes no válidos.
 
-## Tipos primitivos en Java
+### Tipos primitivos en Java
 
 Keyword 	Type 							Example 
 ----------	---------						---------
@@ -21,7 +21,7 @@ char 		16-bit Unicode value 			'a'
 
 Un float requiere la letra `f` siguiendo al número para que Java sepa que es un float. 
 
-## Referencia de tipos
+### Referencia de tipos
 
 Podemos asignar la referencia de 2 modos:
 
@@ -253,3 +253,69 @@ for 		Yes 					Yes 					Yes
 switch 		Yes 					Yes 					No 
 * Labels are allowed for any block statement, including those that are preceded with an if-then statement.
 ```
+
+## Core Java API
+
+### Creando y manipulando Strings
+
+#### Concatenación
+
+Reglas para la concatenación:
+
+1. Si los 2 operandos son numéricos, + significa suma numérica.
+2. Si cualquiera de los operandos es una cadena, + significa concatenación.
+3. La expresión es evaluada de izquierda a derecha.
+```java
+System.out.println("a" + "b" + 3); // ab3
+System.out.println(1 + 2 + "c");   // 3c
+```
+#### Inmutabilidad
+
+Una vez que se crea un objeto String, no se permite cambiarlo. No se puede hacer más grande o
+Más pequeño, y no se puede cambiar uno de los caracteres dentro de él.
+
+#### The String Pool
+
+El String pool es una parte de la JVM que colecciona todos los strings y contiene los **valores literales** que aparecen en tu programa.
+
+#### Métodos de String importantes
+
+Un String es una secuencia de carácteres y Java cuenta desde 0 cuando los indexa.
+
+* `length()` -> Número de carácters de un String.
+* `charAt()` -> Carácter de una localización específica en un String.
+* `indexOf()` -> Mira los carácteres del String y encuentra el primer índice que coincide con el varlor deseado. Puede trabajar con un caracter o varios. También se le puede decir por qué posición comenzar a buscar.
+* `substring()` -> Busca carácteres en un String. Devuelve parte del String. El primer parámetro es el índice para comenzar a devolver el string. El segundo parámetro opcional, es el lugar del string que quieres que pare. Si el segundo parámetro es mejor que el primero, arroja una excepción y también si sobrepasa la longitud del String. En los strings hay una posición de "final de String" que es invisible.
+* `toLowerCase()` and `toUpperCase()` -> Devuelven el string en mayúsculas o minúsculas.
+* `equals()` and `equalsIgnoreCase() -> Comprueba cuando dos objetos String contienen exactamente los mismos carácteres y en el mismo orden. `equalsIgnoreCase()` comprueba si dos String contienen los mismos carácteres con excepcion que lo convertirá en caso de ser necesario.
+* `startsWith()` and `endsWith()` -> Mira si el valor que le pasamos coincide con el principio o el final del String.
+* `contains()` -> Mira si está la cadena pasada en el String.
+* `replace()` -> Hace una búsqueda y la reemplaza con el String o caracter dado.
+* `trim()` -> Elimina los espacios en blanco al principio y al final de un String.
+
+#### Encadenando métodos
+
+Como la clase String es inmutable, todos los métodos de String devuelven otro String, por lo que podemos encadenar métodos:
+
+```java
+String a = "abc"; 
+String b = a.toUpperCase(); 
+b = b.replace("B", "2").replace('C', '3'); 
+System.out.println("a=" + a); 
+System.out.println("b=" + b);
+```
+
+#### Usando la clase `StringBuilder`
+
+Nos ahorra la creación de objetos String, y en consecuencia el uso excesivo de memoria para el uso de Strings y su uso más eficiente.
+
+```java
+15: StringBuilder alpha = new StringBuilder(); 
+16: for(char current = 'a'; current <= 'z'; current++) 
+17: alpha.append(current); 
+18: System.out.println(alpha);
+```
+
+#### Mutabilidad y encadenamiento
+
+Cuando encadenamos Strings, el resultado es otro String. Encadenando objetos `StringBuilder`, trabaja de otra manera. StringBuilder cambia esto por su propio estado y devuelve una referencia a si mismo.
