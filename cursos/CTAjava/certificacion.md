@@ -53,8 +53,6 @@ Todos los operadores aritméticos pueden aplicarse a cualquier primitiva Java, e
 
 ### Promoción numérica
 
-
-
 Reglas Numéricas de Promoción
 
   1. Si dos valores tienen diferentes tipos de datos, Java automáticamente promoverá uno de los valores al mayor de los dos tipos de datos.
@@ -305,7 +303,7 @@ System.out.println("a=" + a);
 System.out.println("b=" + b);
 ```
 
-#### Usando la clase `StringBuilder`
+### Usando la clase `StringBuilder`
 
 Nos ahorra la creación de objetos String, y en consecuencia el uso excesivo de memoria para el uso de Strings y su uso más eficiente.
 
@@ -319,3 +317,86 @@ Nos ahorra la creación de objetos String, y en consecuencia el uso excesivo de 
 #### Mutabilidad y encadenamiento
 
 Cuando encadenamos Strings, el resultado es otro String. Encadenando objetos `StringBuilder`, trabaja de otra manera. StringBuilder cambia esto por su propio estado y devuelve una referencia a si mismo.
+
+```java
+StringBuilder a = new StringBuilder("abc"); 
+StringBuilder b = a.append("de");
+b = b.append("f").append("g");
+System.out.println("a=" + a); // abcdefg
+System.out.println("b=" + b); // abcdefg 
+```
+
+#### Métodos de `StringBuider`
+
+  * `charAt(), indexOf(), length(), and substring()` -> Igual que los métodos de String.
+  * `append()' -> Es el que más se usa. Quiere decir: Añado el parámetro pasado y devuelvo la referencia a el `StringBuider` actual. No hace falta que le pases un tipo String, `StringBuider` lo convertirá:
+
+```java
+StringBuilder sb = new StringBuilder().append(1).append('c'); 
+sb.append("-").append(true); 
+System.out.println(sb); // 1c-true
+```
+  * `insert()` -> Añade carácteres en la posición del índice que le decimos y devuelve la referencia al `StringBuider`actual.
+  * `delete() and deleteCharAt()` -> El método `delete`es el opuesto a `insert()`. Elimina carácteres de la secuencia y devuelve la referencia al `StringBuider`actual. El método `deleteCharAt()` es para borrar un sólo caracter de una posición determinada.
+  * `reverse()` -> Invierte los caracteres en las secuencias y devuelve una referencia a la actual `StringBuilder`.
+  * `toString()` -> Convierte un StringBuilder a String.
+
+### Entendiendo la igualdad
+
+Recuerda que los Strings son inmutables y los literales son encolados.
+
+**La lección es nunca usar == para comparar objetos String**. La única vez que deberías tener que lidiar con == para Strings está en el examen.
+
+```java
+String x = "Hello World";
+String z = " Hello World".trim();
+System.out.println(x.equals(z)); // true
+System.out.println(x == z); // false
+```
+
+Si una clase no tiene un método `equals`, Java determina si las referencias apuntan al mismo objeto, lo que es exactamente lo que == hace.
+
+Si llama a `equals()` en dos instancias de `StringBuilder`, comprobará la igualdad de referencia.
+
+### Entendiendo los Arrays de Java
+
+Un Array es un área de memoria con espacio para determinado número de elementos. Un String es implementado como un array con algunos métodos para tratar específicamente con carácteres. Un `StringBuilder`es implementado como un array donde el objeto array es reemplazado con un nuevo gran objeto array cuando se queda sin espacio para almacenar todos los caracteres.
+
+Un array es una lista ordenada. Puede contener duplicados.
+
+#### Creando un array de primitivos
+
+	int[] numbers1 = new int[3]
+
+Cuando usamos esta forma de instanciar un array, asignamos el valor por defecto para ese tipo de elementos. En este caso el valor por defecto de int es 0.
+
+	int[] numbers2 = new int[] {42, 55, 99};
+
+Se podría escribir de otra manera ya que es redundante el tipo de dato.
+
+	int[] numbers2 = {42, 55, 99};
+
+Este enfoque es llamado **array anónimo**, ya que no especificamos el tipo ni el tamaño.
+
+Se puede poner [] antes o después del nombre, y sumar un espacio opcional.
+	
+	int[] numAnimals; // Este es el más usado
+	int [] numAnimals2; 
+	int numAnimals3[]; 
+	int numAnimals4 [];
+
+int[] ids. types; // Crea 2 variables de tipo int[].
+int ids[], types; // Crea una variable de tipo int[] y una variable de tipo `int`.
+
+#### Creando un array con referencia a variables
+
+```java
+String [] bugs = { "cricket", "beetle", "ladybug" }; 
+String [] alias = bugs; 
+System.out.println(bugs.equals(alias)); // true 
+System.out.println(bugs.toString()); // [Ljava.lang.String;@160bc7c0
+```
+
+Podemos llamar a `equals()` porque un array es un objeto. Devuelve true porque es una igualdad de referencias. El método equals() no busca elementos del array. **Recuerda que esto debería funcionar con `int[]` también, ya que `int` es un primitivo e `int[]`es un objeto. El segundo print `[L` significa que es un array.
+
+#### Usando un array

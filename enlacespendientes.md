@@ -1,5 +1,6 @@
   * [Gulp](http://www.cristalab.com/tutoriales/automatizacion-de-tareas-de-frontend-usando-gulp.js-c114514l/)
   * [Angular 2 con Sebastian Gómez](http://www.sebastian-gomez.com/desarrollo-web/que-es-angularjs-parte-1/)
+  * [Curso de Angular 2 en Youtube](https://www.youtube.com/playlist?list=PLORQfrS2-ZMeRUeZMcc-rTp6ToiDbicIt)
   * [Curso Sass de codeacademy](https://www.codecademy.com/learn/learn-sass?utm_source=customerio&utm_campaign=sass_announcement_html_css&utm_medium=email_newsletter&utm_content=cta)
   * http://electron.atom.io/docs/tutorial/quick-start/
   * [Trabajando con Sass](http://html5facil.com/tutoriales/maquetando-sass-html5-parte-1/)
@@ -14,6 +15,7 @@
   * **Cursos programación para niños**
     * [codecombat](https://codecombat.com/)
   * **Raspberry Pi**
+     * [Conectar la raspberry por iscsi y almacenar ahí los sistemas operativos](https://www.youtube.com/watch?v=RhV8kg_g4hc)
 	  * [Cosas que se puede hacer con el módulo de cámara](https://www.xataka.com/especiales/once-proyectos-con-la-raspberri-pi-y-una-camara-para-aprender-y-divertirte?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+xataka2+%28Xataka%29)
 	  * **Retropie**
 	  	* http://lifehacker.com/how-to-turn-your-raspberry-pi-into-a-retro-game-console-498561192
@@ -47,10 +49,9 @@
     * http://joelwalls.com/2015/07/tutorial-programacion-de-juegos-con-phaser-parte-1/?i=1
     * https://www.udemy.com/juegos-en-javascript/
     * http://www.lessmilk.com/phaser-tutorial/
-  * **Raspberry Pi**
-    * [Conectar la raspberry por iscsi y almacenar ahí los sistemas operativos](https://www.youtube.com/watch?v=RhV8kg_g4hc)
-  * **Varios**
+   * **Varios**
     * [Tutoriales en castellano muy variados](http://www.es.w3eacademy.com/)
+    * Jenkins
   * **Virtualización**
 	  * [Listado de cursos online y gratuitos de VMware en Español](http://www.dbigcloud.com/virtualizacion/224-listado-de-cursos-online-y-gratuitos-de-vmware-en-espanol.html)
   
