@@ -399,4 +399,724 @@ System.out.println(bugs.toString()); // [Ljava.lang.String;@160bc7c0
 
 Podemos llamar a `equals()` porque un array es un objeto. Devuelve true porque es una igualdad de referencias. El método equals() no busca elementos del array. **Recuerda que esto debería funcionar con `int[]` también, ya que `int` es un primitivo e `int[]`es un objeto. El segundo print `[L` significa que es un array.
 
-#### Usando un array
+#### Ordenando
+
+Java suministra un método para ordenar arrays: `Array.sort()`.
+
+#### Buscando
+
+Java suministra un camino para buscar pero **sólo  si el array está ordenado**. Casos posibles:
+
+Escenario												Resultado
+------------------------------------------------------------------
+Elemento a buscar encontrado en un array ordenado.		Índice del elemento encontrado
+Elemento a buscar no encontrado en un array ordenado.	Valor negativo o más pequeño que el índice negativo, 
+														donde necesitaría estar insertado para preservar el orden.
+Array no ordenado.										El resultado no es predecible.
+
+#### Varargs
+Cuando hay un **varargs** en la definición de un método debe de ir siempre el último.
+```java
+public static void main(String[] args) 
+public static void main(String args[]) 
+public static void main(String... args) // varargs
+```
+
+### Arrays multidimensionales
+
+#### Creando arrays multidimensionales
+
+
+```java
+int[][] vars1; // 2D array 
+int vars2 [][]; // 2D array 
+int[] vars3[]; // 2D array 
+int[] vars4 [], space [][]; // a 2D AND a 3D array
+```
+
+### Entendiendo `ArrayList`
+
+Necesita importación del API:
+
+```java
+import java.util.* // import whole package including ArrayList 
+import java.util.ArrayList; // import just ArrayList
+```
+#### Creando ArrayList
+
+```java
+ArrayList list1 = new ArrayList(); 
+ArrayList list2 = new ArrayList(10); 
+ArrayList list3 = new ArrayList(list2);
+```
+
+Se pueden crear con genéricos para especificar el tipo de dato que contiene el ArrayList.
+
+```java
+ArrayList<String> list4 = new ArrayList<String>(); 
+ArrayList<String> list5 = new ArrayList<>();
+```
+
+ArrayList implementa la interfaz List, en otras palabras, ArrayList es una List. Tu puedes guardar un `ArrayList` en un referencia `List`, pero no al revés. La razón es que `List` es una interface y las interfaces no pueden ser instanciadas.
+
+#### Usando `ArrayList`
+
+No podemos poner como tipo de dato un primitivo.
+
+```java
+ArrayList<String> safer = new ArrayList<>(); 
+safer.add("sparrow"); 
+safer.add(Boolean.TRUE); // DOES NOT COMPILE
+```
+
+##### add()
+
+```java
+boolean add(E element) 
+void add(int index, E element)
+```
+
+```java
+4: List<String> birds = new ArrayList<>(); 
+5: birds.add("hawk"); // [hawk] 
+6: birds.add(1, "robin"); // [hawk, robin] 
+7: birds.add(0, "blue jay"); // [blue jay, hawk, robin] 
+8: birds.add(1, "cardinal"); // [blue jay, cardinal, hawk, robin] 
+9: System.out.println(birds); // [blue jay, cardinal, hawk, robin]
+```
+
+##### remove()
+
+```java
+boolean remove(Object object) 
+E remove(int index)
+```
+
+#### set()
+
+```java
+E set(int index, E newElement)
+```
+
+#### Wrapper Classes
+
+Primitive type 		Wrapper class 		Example of constructing
+------------------------------------------------------------------
+boolean 			Boolean 			new Boolean(true) 
+byte 				Byte 				new Byte((byte) 1) 
+short 				Short 				new Short((short) 1) 
+int 				Integer 			new Integer(1) 
+long 				Long 				new Long(1) 
+float 				Float 				new Float(1.0) 
+double 				Double 				new Double(1.0) 
+char 				Character 			new Character('c')
+
+```java
+int primitive = Integer.parseInt("123");
+Integer wrapper = Integer.valueOf("123");
+```
+
+Wrapper class	Converting String to primitive		Converting String to wrapper class
+---------------------------------------------------------------------------------------
+Boolean 		Boolean.parseBoolean("true"); 		Boolean.valueOf("TRUE"); 
+Byte 			Byte.parseByte("1"); 				Byte.valueOf("2"); 
+Short 			Short.parseShort("1"); 				Short.valueOf("2"); 
+Integer 		Integer.parseInt("1"); 				Integer.valueOf("2"); 
+Long 			Long.parseLong("1"); 				Long.valueOf("2"); 
+Float 			Float.parseFloat("1"); 				Float.valueOf("2.2"); 
+Double 			Double.parseDouble("1"); 			Double.valueOf("2.2"); 
+Character 		None 								None
+
+#### Autoboxing
+
+Convierte un primitivo a un Objeto de primitivo
+
+```java
+4: List<Double> weights = new ArrayList<>(); 
+5: weights.add(50.5); // [50.5] 
+6: weights.add(new Double(60)); // [50.5, 60.0] 
+7: weights.remove(50.5); // [60.0] 
+8: double first = weights.get(0); // 60.0
+```
+
+```java
+3: List<Integer> heights = new ArrayList<>(); 
+4: heights.add(null); 
+5: int h = heights.get(0); // NullPointerException
+```
+
+#### Convirtiendo entre Array y List
+
+**Convertir un `ArrayList` en un `Array`**
+
+```java
+3: List<String> list = new ArrayList<>(); 
+4: list.add("hawk");
+5: list.add("robin"); 
+6: Object[] objectArray = list.toArray(); 
+7: System.out.println(objectArray.length); // 2 
+8: String[] stringArray = list.toArray(new String[0]); 
+9: System.out.println(stringArray.length); // 2
+```
+
+**Convertir un `Array` en un `ArrayList`
+
+```java
+20: String[] array = { "hawk", "robin" }; // [hawk, robin] 
+21: List<String> list = Arrays.asList(array); // returns fixed size list 
+22: System.out.println(list.size()); // 2 
+23: list.set(1, "test"); // [hawk, test] 
+24: array[0] = "new"; // [new, test] 
+25: for (String b : array) System.out.print(b + " "); // new test 
+26: list.remove(1); // throws UnsupportedOperation Exception
+```
+En la línea 21 convierte el array a `List`. No se necesita `java.util.ArrayList`. Esta lista es de tamaño fijo y no se puede añadir ni quitar elementos. En la línea 23 reemplazamos un elemento y actualiza ambos `array` y `list` porque apuntan a la misma dirección de memoria. En la línea 24 cambian ambos también. En la línea 25 muestra los datos del `array`. En la línea 26 arroja una excepción porque no se permite cambiar el tamaño de `list`, puesto que es de tamaño fijo.
+
+**Truco para crear y poblar un `ArrayList`**
+
+	List<String> list = Arrays.asList("one", "two");
+
+`asList()` toma como parámetro **varargs**, por lo que nos permite pasar un array de Strings y así podemos crear y poblar un `List` en una sola línea.
+
+#### Ordenar
+
+```java
+List<Integer> numbers = new ArrayList<>(); 
+numbers.add(99); 
+numbers.add(5); 
+numbers.add(81); 
+Collections.sort(numbers); 
+System.out.println(numbers); [5, 81, 99]
+```
+
+### Trabajar con Fechas y Horas
+
+Tenemos que importar:
+
+	import java.time.*;
+
+#### Creando fechas y horas
+
+Cuando trabajamos con fechas y horas, lo primero es decidir cuanta información necestas. Para el examen tenemos 3 elecciones:
+
+* **`Localdata`** Contiene una fecha, ni hora, ni zona horaria.
+* **`Localtime`** Contiene una hora, ni fecha, ni zona horaria.
+* **`LocaldataTime`** Contiene fecha y hora, pero no la zona horaria.
+
+```java
+System.out.println(LocalDate.now()); 
+System.out.println(LocalTime.now()); 
+System.out.println(LocalDateTime.now());
+```
+
+Para crear una fecha
+
+```java
+public static LocalDate of(int year, int month, int dayOfMonth) 
+public static LocalDate of(int year, Month month, int dayOfMonth)
+```
+
+```java
+LocalDate date1 = LocalDate.of(2015, Month.JANUARY, 20); 
+LocalDate date2 = LocalDate.of(2015, 1, 20);
+```
+
+Cuando creas una hora tu eliges lo detallada que va a ser. Puedes especificar la hora y minuto, o añadir el número de segundos. Se puede especificar hasta nanosegundos.
+```java
+LocalTime time1 = LocalTime.of(6, 15); // hour and minute 
+LocalTime time2 = LocalTime.of(6, 15, 30); // + seconds 
+LocalTime time3 = LocalTime.of(6, 15, 30, 200); // + nanoseconds
+```
+```java
+public static LocalTime of(int hour, int minute) 
+public static LocalTime of(int hour, int minute, int second) 
+public static LocalTime of(int hour, int minute, int second, int nanos)
+```
+
+Podemos combinar fechas y horas.
+```java
+LocalDateTime dateTime1 = LocalDateTime.of(2015, Month.JANUARY, 20, 6, 15, 30); 
+LocalDateTime dateTime2 = LocalDateTime.of(date1, time1);
+```
+
+```java
+public static LocalDateTime of(int year, int month, int dayOfMonth, int hour, int minute) 
+public static LocalDateTime of(int year, int month, int dayOfMonth, int hour, int minute, int second) 
+public static LocalDateTime of(int year, int month, int dayOfMonth, int hour, int minute, int second, int nanos) 
+public static LocalDateTime of(int year, Month month, int dayOfMonth, int hour, int minute) 
+public static LocalDateTime of(int year, Month month, int dayOfMonth, int hour, int minute, int second) 
+public static LocalDateTime of(int year, Month month, int dayOfMonth, int hour, int minute, int second, int nanos) 
+public static LocalDateTime of(LocalDate date, LocalTime)
+```
+
+**No se usa constructor** ya que las clases date y time tienen constructores privados para forzar a usar los métodos estáticos. NO está permitido 
+
+	LocalDate d = new LocalDate(); // DOES NOT COMPILE
+
+Si das valores erróneos en la creación de una fecha o una hora, arrojará una excepción. `java.time.DateTimeException`
+
+								Old way									New way (Java 8 and later)
+---------------------------------------------------------------------------------------
+Importing 						import java.util.*; 					import java .time.*;
+
+Creating an object 				Date d = new Date();					LocalDate d = LocalDate .now();
+with the current date
+
+Creating an object with 		Date d = new Date();					LocalDateTime dt = LocalDateTime. now();
+the current date and time
+
+Creating an object 				Calendar c = Calendar.getInstance(); 	LocalDate jan = LocalDate.of(2015, Month.JANUARY, 1);
+representing January 1, 2015	c.set(2015, Calendar.JANUARY, 1); 
+								Date jan = c.getTime();
+								
+								or
+								
+								Calendar c = new GregorianCalendar(
+									2015, Calendar.JANUARY, 1); 
+								Date jan = c.getTime();
+
+
+Creating January 1, 2015 		Calendar c = Calendar.getInstance(); 	LocalDate jan = LocalDate.of(2015, 1, 1)
+without the constant			c.set(2015, 0, 1); 
+								Date jan = c.getTime();
+
+
+#### Manipulando Fechas y horas
+
+La case date y time son inmutables como la de String. Eso significa que ncesitamos recordar asignar los resultados de esos métodos a la referencia de una variable para no perderlos.
+
+```java
+12: LocalDate date = LocalDate.of(2014, Month.JANUARY, 20); 
+13: System.out.println(date); // 2014-01-20 
+14: date = date.plusDays(2); 
+15: System.out.println(date); // 2014-01-22 
+16: date = date.plusWeeks(1);
+17: System.out.println(date); // 2014-01-29 
+18: date = date.plusMonths(1); 
+19: System.out.println(date); // 2014-02-28 
+20: date = date.plusYears(5); 
+21: System.out.println(date); // 2019-02-28
+```
+
+
+```java
+22: LocalDate date = LocalDate.of(2020, Month.JANUARY, 20); 
+23: LocalTime time = LocalTime.of(5, 15); 
+24: LocalDateTime dateTime = LocalDateTime.of(date, time); 
+25: System.out.println(dateTime); // 2020-01-20T05:15 
+26: dateTime = dateTime.minusDays(1); 
+27: System.out.println(dateTime); // 2020-01-19T05:15 
+28: dateTime = dateTime.minusHours(10); 
+29: System.out.println(dateTime); // 2020-01-18T19:15 
+30: dateTime = dateTime.minusSeconds(30); 
+31: System.out.println(dateTime); // 2020-01-18T19:14:30
+```
+
+Lo métodos date y time pueden estar encadenados
+```java
+LocalDate date = LocalDate.of(2020, Month.JANUARY, 20); 
+LocalTime time = LocalTime.of(5, 15); 
+LocalDateTime dateTime = LocalDateTime.of(date2, time) .minusDays(1).minusHours(10).minusSeconds(30);
+```
+
+```java
+LocalDate date = LocalDate.of(2020, Month.JANUARY, 20); 
+date.plusDays(10); 
+System.out.println(date);
+```
+Esto devuelve January 20, 2020. Ya que no guardamos en ninguna variable el resultado de sumar 10 días, ya que `LocalDate` es inmutable.
+
+```java
+LocalDate date = LocalDate.of(2020, Month.JANUARY, 20); 
+date = date.plusMinutes(1); // DOES NOT COMPILE
+```
+
+`LocalDate` no contiene minutos.
+
+**Methods in LocalDate, LocalTime, and LocalDateTime**
+
+							Can call on LocalDate?	Can call on LocalTime?	Can call on LocalDateTime?
+------------------------------------------------------------------------------------------------
+plusYears/minusYears 		Yes 					No 						Yes
+plusMonths/minusMonths 		Yes 					No 						Yes 
+plusWeeks/minusWeeks 		Yes 					No 						Yes 
+plusDays/minusDays 			Yes 					No 						Yes 
+plusHours/minusHours 		No 						Yes 					Yes 
+plusMinutes/minusMinutes 	No 						Yes 					Yes 
+plusSeconds/minusSeconds 	No 						Yes 					Yes 
+plusNanos/minusNanos 		No 						Yes 					Yes
+
+#### Trabajando con periodos
+
+##### Convirtiendo a `Long`
+
+`LocalDate` y `LocalDateTime` tienen métodos para pasar a `Long, LocalTime` NO TIENE.
+
+* LocalDate has toEpochDay(), which is the number of days since January 1, 1970. 
+* LocalDateTime has toEpochTime(), which is the number of seconds since January 1, 1970.
+
+```java
+3: LocalDate date = LocalDate.of(2015, 1, 20); 
+4: LocalTime time = LocalTime.of(6, 15); 
+5: LocalDateTime dateTime = LocalDateTime.of(date, time); 
+6: Period period = Period.ofMonths(1); 
+7: System.out.println(date.plus(period)); // 2015-02-20 
+8: System.out.println(dateTime.plus(period)); // 2015-02-20T06:15 
+9: System.out.println(time.plus(period)); // UnsupportedTemporalTypeException
+```
+
+#### Formateando fechas y horas
+
+```java
+LocalDate date = LocalDate.of(2020, Month.JANUARY, 20); 
+System.out.println(date.getDayOfWeek()); // MONDAY 
+System.out.println(date.getMonth()); // JANUARY 
+System.out.println(date.getYear()); // 2020 
+System.out.println(date.getDayOfYear()); // 20
+```
+
+```java
+LocalDate date = LocalDate.of(2020, Month.JANUARY, 20); 
+LocalTime time = LocalTime.of(11, 12, 34); 
+LocalDateTime dateTime = LocalDateTime.of(date, time);
+System.out.println(date .format(DateTimeFormatter.ISO_LOCAL_DATE)); System.out.println(time.format(DateTimeFormatter.ISO_LOCAL_TIME));
+System.out.println(dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+```
+Salida.
+```
+2020-01-20 
+11:12:34 
+2020-01-20T11:12:34
+```
+
+Formateando con salidas predefinidas
+```java
+DateTimeFormatter shortDateTime = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT);
+System.out.println(shortDateTime.format(dateTime)); // 1/20/20 
+System.out.println(shortDateTime.format(date)); // 1/20/20 
+System.out.println(shortDateTime.format(time)); // UnsupportedTemporalTypeException
+```
+```java
+LocalDate date = LocalDate.of(2020, Month.JANUARY, 20); 
+LocalTime time = LocalTime.of(11, 12, 34); 
+LocalDateTime dateTime = LocalDateTime.of(date, time); 
+
+DateTimeFormatter shortF = DateTimeFormatter .ofLocalizedDateTime(FormatStyle.SHORT); 
+DateTimeFormatter mediumF = DateTimeFormatter .ofLocalizedDateTime(FormatStyle.MEDIUM);
+System.out.println(shortF.format(dateTime)); // 1/20/20 11:12 AM 
+System.out.println(mediumF.format(dateTime)); // Jan 20, 2020 11:12:34 AM
+```
+
+Podemos usar nuestros formatos propios:
+```java
+DateTimeFormatter f = DateTimeFormatter.ofPattern("MMMM dd, yyyy, hh:mm"); 
+System.out.println(dateTime.format(f)); // January 20, 2020, 11:12
+```
+
+* **MMMM** M represents the month. The more Ms you have, the more verbose the Java output. For example, M outputs 1, MM outputs 01, MMM outputs Jan, and MMMM outputs January. dd d represents the date in the month. As with month, the more ds you have, the more verbose the Java output. 
+* **dd** means to include the leading zero for a single-digit month. 
+* **,** Use , if you want to output a comma (this also appears after the year). 
+* **yyyy** y represents the year. yy outputs a two-digit year and yyyy outputs a four-digit year. 
+* **hh** h represents the hour. Use hh to include the leading zero if you’re outputting a single- digit hour. 
+* **:** Use : if you want to output a colon. 
+* **mm** m represents the minute.
+
+```java
+4: DateTimeFormatter f = DateTimeFormatter.ofPattern("hh:mm"); 
+5: f.format(dateTime); 
+6: f.format(date); // throw exception
+7: f.format(time);
+```
+
+#### Parseando fechas y horas
+
+```java
+DateTimeFormatter f = DateTimeFormatter.ofPattern("MM dd yyyy"); 
+LocalDate date = LocalDate.parse("01 02 2015", f); 
+LocalTime time = LocalTime.parse("11:22"); System.out.println(date); // 2015-01-02 
+System.out.println(time); // 11:22
+```
+
+## Métodos y Encapsulación
+
+### Diseñando métodos
+
+#### Modificadores de acceso
+
+* **`public`**	El método puede ser llamado desde cualquier clase.
+* **`private`**	El método sólo puede ser llamado desde dentro de la misma clase.
+* **`protected`**	El método sólo puede ser llamado en el mismo paquete o subclases.
+* **`Default (Paquete privado)` Access**	El método sólo puede ser llamado desde clases en el mismo paquete. No hay palabra para este método, simplemente se omite el modificador de acceso.
+
+Hay que fijarse en el orden:
+
+```java
+public void walk1() {} 
+default void walk2() {} // DOES NOT COMPILE
+void public walk3() {} // DOES NOT COMPILE 
+void walk4() {}
+```
+
+#### Especificadores opcionales
+
+Se puede tener múltiples modificadoers en el mismo método pero no todas las combinaciones son legales. Cuando hay varios puedes especifiarlos en cualquier orden.
+
+* **`static`**	Usado para métodos de clase.
+* **`abstract`**	Se utiliza cuando no se proporciona un cuerpo de método.
+* **`final`**	Usado cuando un método no se permite sobreescribir en una subclase.
+* **`synchronized`**	No entra en el exámen
+* **`native`**	No entra en el exámen. Usado cuando se interactúa con otro lenguaje de programación como C++.
+* **`strictfp`**	No entra en el exámen. Usaco para hacer cálculos portables de coma flotante.
+
+```java 
+public void walk1() {} 
+public final void walk2() {} 
+public static final void walk3() {} 
+public final static void walk4() {} 
+public modifier void walk5() {} // DOES NOT COMPILE 
+public void final walk6() {} // DOES NOT COMPILE 
+final public void walk7() {}
+```
+
+#### Tipo `Return`
+
+Puede ser un tipo de dato de Java y si no hay ningún tipo de dato a devolver se usa la palabra `void`. Los métodos que devuelven un tipo `void`se permite tener una sentencia return sin valor devuelto u omitir la sentencia return completa.
+
+```java
+public void walk1() { } 
+public void walk2() { return; } 
+public String walk3() { return ""; } 
+public String walk4() { } // DOES NOT COMPILE 
+public walk5() { } // DOES NOT COMPILE 
+String walk6(int a) { if (a == 4) return ""; } // DOES NOT COMPILE
+```
+
+En walk6 hay un return pero no siempre se ejecuta, por eso no compila.
+
+#### Nombre del método
+
+El nombre de un método puede contener letras, números, $, o _. El primer carácter no puede ser un número ni palabras reservadas. Por convención los métodos comienzan con minúsculas, pero no es requerido.
+
+#### Lista de parámetros
+
+La lista de parámetros es requerida, pero puede no contener ninguno, lo que significa que los paréntesis pueden estar vacíos. Los parámetros se separan con comas.
+
+#### Lista de excepciones opcional
+
+Podemos indicar que algo que sea erróneo arrojando una excepción. Puedes listar varios tipos de excepciones que quieras separadas por comas.
+
+```java
+public void zeroExceptions() { } 
+public void oneException() throws IllegalArgumentException { } 
+public void twoExceptions() throws IllegalArgumentException, InterruptedException { }
+```
+
+### Trabajando con Varargs
+
+Un método puede usar un parámetro vararg como un array. Es un poco diferente que un array. **Un vararg debe ser siempre el último elemento de la lista de parámetros**, lo que implica que **sólo se permite tener un parámetro vararg por método**.
+
+```java
+public void walk1(int... nums) { } 
+public void walk2(int start, int... nums) { } 
+public void walk3(int... nums, int start) { } // DOES NOT COMPILE 
+public void walk4(int... start, int... nums) { } // DOES NOT COMPILE
+```
+
+```java
+15: public static void walk(int start, int... nums) { 
+16: 	System.out.println(nums.length); 17: } 
+18: public static void main(String[] args) { 
+19: 	walk(1); // 0 
+20: 	walk(1, 2); // 1
+21: 	walk(1, 2, 3); // 2 
+22: 	walk(1, new int[] {4, 5}); // 2 
+23: }
+```
+
+### Aplicando modificadores de acceso
+
+#### Acceso privado
+
+Sólo código en la misma clase puede llamar a métodos privados o campos con cacceso privado.
+
+```java
+1: package pond.duck; 
+2: public class FatherDuck { 
+3: private String noise = "quack"; 
+4: private void quack() { 
+5: System.out.println(noise); // private access is ok 
+6: } 
+7: private void makeNoise() { 
+8: quack(); // private access is ok 
+9: } }
+```
+```java
+1: package pond.duck; 
+2: public class BadDuckling { 
+3: public void makeNoise() { 
+4: FatherDuck duck = new FatherDuck(); 
+5: duck.quack(); // DOES NOT COMPILE 
+6: System.out.println(duck.noise); // DOES NOT COMPILE 
+7: } }
+```
+
+#### Acceso Default (Paquete privado)
+
+Cuando no hay modificador de acceso, Java usa el de por defecto, el cual es acceso privado por paquete. Sólo las clases del mismo paquete pueden acceder a el.
+
+```java
+package pond.duck; 
+public class MotherDuck { 
+	String noise = "quack"; 
+	void quack() { 
+		System.out.println(noise); // default access is ok 
+	} 
+	private void makeNoise() { 
+		quack(); // default access is ok 
+	} 
+}
+```
+```java
+package pond.duck; 
+public class GoodDuckling { 
+	public void makeNoise() { 
+		MotherDuck duck = new MotherDuck(); 
+		duck.quack(); // default access 
+		System.out.println(duck.noise); // default access 
+	} 
+}
+```
+
+```java
+package pond.swan; 
+import pond.duck.MotherDuck; // import another package
+public class BadCygnet { 
+	public void makeNoise() { 
+		MotherDuck duck = new MotherDuck(); 
+		duck.quack(); // DOES NOT COMPILE 
+		System.out.println(duck.noise); // DOES NOT COMPILE 
+	} 
+}
+```
+
+#### Acceso `Protected`
+
+El acceso `Protected` permite el acceso a los miembros de la clase padre y del mismo paquete (como el acceso por defecto).
+
+```java
+package pond.shore; 
+public class Bird { 
+	protected String text = "floating"; // protected access 
+	protected void floatInWater() { // protected access 
+		System.out.println(text); 
+	} 
+}
+```
+
+```java
+package pond.goose; 
+import pond.shore.Bird; // in a different package 
+public class Gosling extends Bird { // extends means create subclass 
+	public void swim() { 
+		floatInWater(); // calling protected member 
+		System.out.println(text); // calling protected member 
+	} 
+}
+```
+
+```java
+package pond.shore; // same package as Bird 
+public class BirdWatcher { 
+	public void watchBird() { 
+		Bird bird = new Bird(); 
+		bird.floatInWater(); // calling protected member 
+		System.out.println(bird.text); // calling protected member 
+	} 
+}
+```
+
+```java
+package pond.inland; 
+import pond.shore.Bird; // different package than Bird 
+public class BirdWatcherFromAfar { 
+	public void watchBird() { 
+		Bird bird = new Bird(); 
+		bird.floatInWater(); // DOES NOT COMPILE
+		System.out.println(bird.text); // DOES NOT COMPILE 
+	} 
+}
+```
+
+Hay una trampa para el acceso protegido.
+```java
+1: package pond.swan; 
+2: import pond.shore.Bird; // in different package than Bird 
+3: public class Swan extends Bird { // but subclass of bird 
+4: 	public void swim() { 
+5: 		floatInWater(); // package access to superclass 
+6: 		System.out.println(text); // package access to superclass 
+7: 	} 
+8: 	public void helpOtherSwanSwim() { 
+9: 		Swan other = new Swan(); 
+10: 	other.floatInWater(); // package access to superclass 
+11: 	System.out.println(other.text);// package access to superclass 
+12: } 
+13: 	public void helpOtherBirdSwim() { 
+14: 		Bird other = new Bird(); 
+15: 		other.floatInWater(); // DOES NOT COMPILE 
+16: 		System.out.println(other.text); // DOES NOT COMPILE 
+17: 	} 
+18: }
+```
+
+Swan no está en el mismo paquete que Bird, pero extiende de el, lo que implica que tiene acceso a los miembros protegidos de Birde desde la subclase. En la línea 15 y 16 no compilan aunque parecen igual que las líneas 10 y 11, pero hay una diferencia. Esta vez es usada la referencia a `Bird`. Es creada esa referencia en la línea 14. `Bird` está en un paquete diferente y este código no hereda de `Bird`, por lo que no llega a utilizar miembros protegidos.
+
+Está bien estar confundido. Este es sin duda uno de los puntos más confusos en el examen. Mirándolo de una manera diferente, las reglas protegidas se aplican bajo dos escenarios: 
+* Un miembro se usa sin referirse a una variable. Este es el caso en las líneas 5 y 6. En este caso, estamos aprovechando la herencia y se permite el acceso protegido. 
+* Un miembro se utiliza a través de una variable. Este es el caso de las líneas 10, 11, 15 y 16. En este caso, las reglas para el tipo de referencia de la variable son lo que importa. Si se trata de una subclase, se permite el acceso protegido. Esto funciona para referencias a la misma clase o una subclase.
+
+ 
+#### Diseñando métodos estáticos
+
+Los métodos estáticos no necesitan una instancia de la clase.
+
+```java
+public class Koala {
+	public static int count = 0;
+	public static void main(String[] args) {
+		System.out.println(count);
+	}
+}
+
+public class KoalaTester {
+	public static void main(String[] args) {
+		Koala.main(new String[0]);
+		// call static method
+	}
+}
+```
+
+#### Llamando a una variable o método estático
+
+Para acceder e los miembros y variables estáticas sólo hay que poner el nombre antes del método o varable.
+
+	System.out.println(Koala.count);
+	Koala.main(new String[0]);
+	
+
+	5: Koala k = new Koala();
+	6: System.out.println(k.count);	// k is a Koala
+	7: k = null;
+	8: System.out.println(k.count);	// k is still a Koala
+
+
+
+	Koala.count = 4;
+	Koala koala1 = new Koala();
+	Koala koala2 = new Koala();
+	koala1.count = 6;
+	koala2.count = 5;
+	System.out.println(Koala.count);
+
+Esperemos que haya respondido 5. Sólo hay una variable `count`, ya que es estática. Está configurado para 4, luego 6, y finalmente termina como 5. Todas las variables Koala son sólo distracciones.
+
