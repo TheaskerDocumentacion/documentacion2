@@ -639,6 +639,7 @@ LocalDateTime dateTime1 = LocalDateTime.of(2015, Month.JANUARY, 20, 6, 15, 30);
 LocalDateTime dateTime2 = LocalDateTime.of(date1, time1);
 ```
 
+
 ```java
 public static LocalDateTime of(int year, int month, int dayOfMonth, int hour, int minute) 
 public static LocalDateTime of(int year, int month, int dayOfMonth, int hour, int minute, int second) 
@@ -1120,3 +1121,390 @@ Para acceder e los miembros y variables estáticas sólo hay que poner el nombre
 
 Esperemos que haya respondido 5. Sólo hay una variable `count`, ya que es estática. Está configurado para 4, luego 6, y finalmente termina como 5. Todas las variables Koala son sólo distracciones.
 
+#### Static vs. Instance
+
+Un miembro estático no puede llamar a un miembro de instancia. Esto no debería ser una sorpresa ya que estática no requiere ninguna instancia de la clase.
+
+	public class Static {
+		private String name = "Static class";
+		public static void first() { }
+		public static void second() { }
+		public void third() { System.out.println(name); }
+		public static void main(String args[]) {
+			first();
+			second();
+			third();	// DOES NOT COMPILE
+		} 
+	}
+
+
+	1: public class Gorilla {
+	2: public static int count;
+	3: public static void addGorilla() { count++; }
+	4: public void babyGorilla() { count++; }
+	5: public void announceBabies() {
+	6: addGorilla();
+	7: babyGorilla();
+	8: }
+	9: public static void announceBabiesToEveryone() {
+	10: addGorilla();
+	11: babyGorilla(); // DOES NOT COMPILE
+	12: }
+	13: public int total;
+	14: public static average = total / count; // DOES NOT COMPILE
+	15: }
+
+Línea 11 no compila porque un método estático no puede llamar a un método de instancia. Del mismo modo, la línea 14
+no se compila porque una variable estática está intentando utilizar una variable de instancia.
+
+#### VAriables estáticas
+
+Algunas variables estáticas cambian con la ejecución del programa. Otras nunca cambian, este tipo se llama constantes, y usan el modificador `final` para asegurarnos de que esa variable nunca cambia. Por convención su nombre está en mayúsculas.
+
+	public class Initializers {
+		private static final int NUM_BUCKETS = 45;
+		public static void main(String[] args) {
+			NUM_BUCKETS = 5; // DOES NOT COMPILE
+		} 
+	}
+
+```java
+private static final ArrayList<String> values = new ArrayList<>();
+public static void main(String[] args) {
+    values.add("changed");
+}
+```
+
+Esto compila. `values` es una variable de referencia. Nosotros podemos llamar a métodos o referencias de variables. Todo lo que el compilador puede hacer es comprobar que no intentamos reasignar el valor de la variable final a un objeto diferente, y entonces no compilaría.
+
+#### Inicialización estática
+
+Los **inicializadores estáticos** añaden la palabra clave `static` para especificar que se debe ejecutar cuando se utiliza la clase por primera vez.
+
+
+	private static final int NUM_SECONDS_PER_HOUR;
+	static {
+	    int numSecondsPerMinute = 60;
+	    int numMinutesPerHour = 60;
+	    NUM_SECONDS_PER_HOUR = numSecondsPerMinute * numMinutesPerHour;
+	}
+	
+	public static void main(String[] args) {
+	    System.out.println(NUM_SECONDS_PER_HOUR); // 3600
+	}
+
+Acabamos de decir que las variables finales no está permitido ser reasignado. La clave aquí es que el inicializador estático es la primera asignación. Y puesto que ocurre por adelantado, es correcto.
+
+	14: private static int one; 
+	15: private static final int two; 
+	16: private static final int three = 3; 
+	17: private static final int four; // DOES NOT COMPILE 
+	18: static { 
+	19: 	one = 1; 
+	20: 	two = 2; 
+	21: 	three = 3; // DOES NOT COMPILE 
+	22: 	two = 4; // DOES NOT COMPILE 
+	23: }
+
+La línea 14 declara una variable estática que no es final. Se puede asignar tantas veces como quisiéramos. La línea 15 declara una variable final sin inicializarla. Esto significa que podemos inicializarlo exactamente una vez en un bloque `static`. La línea 22 no compila porque este es el segundo intento. La línea 16 declara una variable final e inicializa al mismo tiempo. No se nos permite asignarlo de nuevo, por lo que la línea 21 no compila. La línea 17 declara una variable final que nunca se inicializa. El compilador da un error de compilador porque sabe que los bloques estáticos son el único lugar que la variable podría inicializarse. Puesto que el programador se olvidó, esto es claramente un error.
+
+#### Imports estáticos
+
+Las importaciones estáticas se destinan a la importación de clases al igual que las importaciones regulares, puede utilizar un comodín o importar un miembro específico. La Idea es que no debería tener que especificar de dónde proviene cada método o variable estática cada vez que lo use. Un ejemplo son las interfaces estáticas cuando se está refiriendo a un montón de constantes en otra clase.
+
+	import java.util.List;
+	import java.util.Arrays;
+	public class Imports {
+		public static void main(String[] args) {
+			List<String> list = Arrays.asList("one", "two");
+		}
+	}
+	
+Esto se podría reescribir así:
+
+	import java.util.List;
+	import static java.util.Arrays.asList;
+	public class StaticImports {
+		public static void main(String[] args) {
+			List<String> list = asList("one", "two");
+		} 
+	}
+
+Un caso interesante es lo que sucedería si creamos un método asList en nuestra clase `StaticImports`. Java le daría preferencia sobre el importado y el método que se codifican se utilizarían.
+El examen tratará de engañarle con el uso indebido de las importaciones estáticas. Este ejemplo muestra casi
+Todo lo que puede hacer mal. ¿Puedes deducir lo que está mal con cada uno?
+
+	1: import static java.util.Arrays; // DOES NOT COMPILE 
+	2: import static java.util.Arrays.asList; 
+	3: static import java.util.Arrays.*; // DOES NOT COMPILE 
+	4: public class BadStaticImports { 
+	5: 		public static void main(String[] args) { 
+	6: 		Arrays.asList("one"); // DOES NOT COMPILE 
+	7: } }
+
+La línea 1 intenta utilizar una importación estática para importar una clase. Recuerde que las importaciones estáticas son sólo para importar miembros estáticos. Las importaciones regulares son para importar una clase. La línea 3 trata de ver si está prestando atención al orden de las palabras clave. La sintaxis es import static y no viceversa. La línea 6 es para disimular. Hemos importado el método asList en la línea 2. Sin embargo, no importamos la clase Arrays en ninguna parte. Esto hace que sea correcto escribir asList ("one"); Pero no Arrays.asList ("uno");
+
+El compilador se quejará si intenta explícitamente hacer una importación estática de Dos métodos con el mismo nombre o dos variables estáticas con el mismo nombre. Por ejemplo:
+
+	import static statics.A.TYPE;
+	import static statics.B.TYPE; // DOES NOT COMPILE
+
+### Transmisión de datos entre métodos
+
+Java es un lenguaje de "paso por valor", lo que significa que una copia de la variable es recibida por el método.
+
+	2: public static void main(String[] args) {
+	3: 		int num = 4;
+	4: 		newNumber(5);
+	5: 		System.out.println(num); // 4
+	6: }
+	7: public static void newNumber(int num) {
+	8: 		num = 8;
+	9: }
+
+Ahora en vez de con primitivos vamos a ver con tipos de referencia.
+
+	public static void main(String[] args) {
+		String name = "Webby";
+		speak(name);
+		System.out.println(name); // "Webby"
+	}
+	public static void speak(String name) {
+		name = "Sparky";
+	}
+
+Ahora con `StringBuilder`:
+
+	public static void main(String[] args) {
+		StringBuilder name = new StringBuilder();
+		speak(name);
+		System.out.println(name); // Webby
+	}
+	public static void speak(StringBuilder s) {
+		s.append("Webby");
+	}
+
+### Sobrecargando métodos
+
+La sobrecarga de métodos ocurre cuando hay un diferente método con el mismo nombre pero con diferentes tipos de parámetros. Todo lo que no sea la firma del método puede variar para los métodos sobrecargados. Esto significa que puede haber diferentes modificadores de acceso, especificadores (como estáticos), tipos de retorno y listas de excepciones.
+
+	public void fly(int numMiles) { }
+	public void fly(short numFeet) { }
+	public boolean fly() { return false; }
+	void fly(int numMiles, short numFeet) { }
+	public void fly(short numFeet, int numMiles) throws Exception { }
+
+Este es un ejemplo NO válido
+
+	public void fly(int numMiles) { }
+	public int fly(int numMiles) { } // DOES NOT COMPILE
+
+No compila poruqe sólo difiere del original por el tipo devuelto. La lista de parámetros son lo mismo por lo que son métodos duplicados en lo que respecta a Java.
+
+	public void fly(int numMiles) { }
+	public static void fly(int numMiles) { } // DOES NOT COMPILE
+
+Este tampoco compila por lo mismo. la lista de parámetos es la misma. La única diferencia es que uno es un método de instancia y otro es un método estático.
+
+#### Overloading and Varargs
+
+	public void fly(int[] lengths) { }
+	public void fly(int... lengths) { } // DOES NOT COMPILE
+
+Recuerda que Java trata los los `varargs` como arrays lo que significa que la firma del método el la misma en ambos métodos, por lo que la lista de parámetros es la misma y por eso no compila.
+
+#### Autoboxing
+
+¿Qué sucede si tenemos un `int` primitivo e `Integer`?
+
+	public void fly(int numMiles) { }
+	public void fly(Integer numMiles) { }
+
+Java usará la versión numMiles int. Java intenta utilizar el parámetro más específico de la lista de parámetros. Cuando la versión primitiva int no está presente, hace **autobox**. Sin embargo, cuando se proporciona la versión int primitiva, no hay razón para que Java realice el trabajo extra de Autoboxing.
+
+#### Referencia de tipos
+
+Dada la regla sobre Java que selecciona la versión más específica de un método:
+
+	public class ReferenceTypes {
+		public void fly(String s) {
+			System.out.print("string ");
+		}
+		public void fly(Object o) {
+			System.out.print("object ");
+		}
+		public static void main(String[] args) {
+			ReferenceTypes r = new ReferenceTypes();
+			r.fly("test");
+			r.fly(56);
+		} 
+	}
+
+La primera llamada es un `String` y encuentra una coincidencia directa. No hay ninguna razón para usar la versión de `Object` cuando hay una lista de parámetros con un `String`. Esperando ser llamado La segunda llamada busca una lista de parámetros int. Cuando no encuentra uno, autoboxes a `int`. Puesto que todavía no  lo encuentra elige `Object`.
+
+#### Primitivos
+
+	public class Plane {
+		public void fly(int i) {
+			System.out.print("int ");
+		}
+		public void fly(long l) {
+			System.out.print("long ");
+		}
+		public static void main(String[] args) {
+			Plane p = new Plane();
+			p.fly(123);
+			p.fly(123L);
+		} 
+	}
+
+La respuesta es larga. La primera llamada pasa un int y ve una coincidencia exacta. La segunda llamada pasa un `long` y también ve una coincidencia exacta. Si comentamos la sobrecarga con la lista de parámetros int, la salida se vuelve long. Java no tiene ningún problema llamando a un primitivo más grande. Sin embargo, no lo hará a menos que no se encuentre una mejor coincidencia. Tenga en cuenta que Java sólo puede aceptar tipos más amplios. Un int puede ser pasado a un método que toma un long. Java no se convertirá automáticamente a un tipo más estrecho. Si quieres pasar long a un método que toma un parámetro int, usted tiene que "castear" explícitamente.
+
+#### Poniendo todo junto
+
+Orden para que Java elija correctamente los métodos sobrecargados:
+
+**Rule** 				**Example of what will be chosen for glide(1,2)**
+---------------------------------------------------------------------------
+Exact match by type 	`public String glide(int i, int j) {}`
+Larger primitive type 	`public String glide(long i, long j) {}`
+Autoboxed type 			`public String glide(Integer i, Integer j) {}`
+Varargs 				`public String glide(int... nums) {}`
+
+	public class Glider2{
+	    public static String glide(String s) {
+	        return "1";
+	    }
+	
+	    public static String glide(String... s) {
+	        return "2";
+	    }
+	
+	    public static String glide(Object o) {
+	        return "3";
+	    }
+	
+	    public static String glide(String s, String t) {
+	        return "4";
+	    }
+	
+	    public static void main(String[] args) {
+	        System.out.print(glide("a"));
+	        System.out.print(glide("a", "b"));
+	        System.out.print(glide("a", "b", "c"));
+	    }
+	}
+
+It prints out 142 .
+
+	public static void play(Long l) {    }
+	public static void play(Long... l) {    }
+	
+	public static void main(String[] args) {
+	    play(4); // DOES NOT COMPILE
+	    play(4L); // calls the Long version
+	}
+
+Aquí tenemos un problema. Java está feliz de convertir el int 4 a un 4 `long` o un `Integer` 4. No puede manejar la conversión en dos pasos a un `long` y luego a un `Long`. Si tuviéramos `public Static void play (Object o) {}`, sería igual porque sólo una conversión sería necesario: de `int` a `Integer`. Un entero es un objeto, como veremos en el Capítulo 5.
+
+### Creando constructores
+
+Un constructor el un método especial que coincide su nombre on el de la clase y no devuelve nada, 'void'.
+
+	public class Bunny{
+		public bunny() { } // DOES NOT COMPILE
+		public void Bunny() { }
+	}
+
+No coincide con el nombre de la clase ya que Java es "case sensitive". Los constructores se usan cuando se instancia un objeto con la palabra `new`. La palabra `this` referencia a las variables de instancia, y casi todas las veces es opcional.
+
+1:  public class Bunny {
+2:  	private String color;
+3:  	private int height;
+4:  	private int length;
+5:  	public Bunny(int length, int theHeight) {
+6:  		length = this.length; // backwards – no good!
+7:  		height = theHeight; // fine because a different name
+8:  		this.color = "white"; // fine, but redundant
+9:  	}
+10: 	public static void main(String[] args) {
+11: 		Bunny b = new Bunny(1, 2);
+12: 		System.out.println(b.length + " " + b.height + " " + b.color);
+13: 	} }
+
+La línea 6 no es correcta. La variable de instancia `length` comienza con valor 0. Ese 0 es asignado al parámetro `length` del método.
+
+#### Constructor por defecto
+
+Cada clase en Java tiene un constructor si codifica uno o no. Si no incluye ningun constructor en la clase, Java creará uno para usted sin ningún parámetro, llamado **consturctor por defecto**, y lo genera Java en **tiempo de compilación**. Sólo se generará si no hay codificado ningún constructor. Este constructor por defecto tiene una lista de parámetros vacía y el cuerpo del método vacío. 
+
+	public class Rabbit {
+		public static void main(String[] args) {
+			Rabbit rabbit = new Rabbit();
+			// Calls default constructor
+		}
+	}
+
+El constructor por defecto es equivalente a esto:
+
+	public Rabbit() {}
+
+#### Sobrecargando constructores
+
+Ejemplo de una clase con 2 constructores:
+
+	public class Hamster {
+	    private String color;
+	    private int weight;
+	    public Hamster(int weight) {// first constructor
+	        this.weight = weight;
+	        color = "brown";
+	    }
+	    public Hamster(int weight, String color) { // second constructor
+	        this.weight = weight;
+	        this.color = color;
+	    }
+	}
+
+Si queremos que un constructor llame a otro constructor:
+
+	public Hamster(int weight) {
+		Hamster(weight, "brown"); // DOES NOT COMPILE
+	}
+
+Un constructor sólo puede ser llamado escribiendo `new`antes del nombre del constructor.
+
+	public Hamster(int weight) {
+		new Hamster(weight, "brown");
+		System.out.println(this.weight); // 0
+        System.out.println(color); // null
+	}
+	public static void main(String[] args) {
+        Hamster h = new Hamster(3); 
+    }
+
+Esto compila pero no es lo que nostros queremos. Cuando el constructor con un parámetro es llamado, crea un objeto con `weight` y `color` por defecto. Entonces construye un diferente objeto con el deseado `wight`y `color` e ignora el nuevo objeto.
+
+Java tiene una solución para esto: `this`. Cuando `this` es usado como si fuera un método, Java llama a otro constructor en la misma instancia de la clase.
+
+	public Hamster(int weight) {
+        this(weight, "brown");
+        System.out.println(this.weight); // 3
+        System.out.println(color); // brown
+    }
+    
+    public static void main(String[] args) {
+        Hamster h = new Hamster(3);
+    }
+
+Ahora Java llama al constructor que toma 2 parámetros y los setea en la instancia.
+
+`this` como método tiene una regla. Tiene que ser la primera línea no comentada del constructor en el que se usa:
+
+3: public Hamster(int weight) {
+4: 		System.out.println("in constructor");
+5: 		// ready to call this
+6: 		this(weight, "brown"); // DOES NOT COMPILE
+7: }
+
+La línea 4 está antes de la llamada a `this`, y por eso no compila. La línea 5 no importa porque es un comentario.
