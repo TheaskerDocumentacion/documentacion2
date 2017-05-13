@@ -1409,7 +1409,7 @@ Aquí tenemos un problema. Java está feliz de convertir el int 4 a un 4 `long` 
 
 ### Creando constructores
 
-Un constructor el un método especial que coincide su nombre on el de la clase y no devuelve nada, 'void'.
+Un constructor el un método especial que coincide su nombre on el de la clase y no devuelve nada, ni 'void'.
 
 	public class Bunny{
 		public bunny() { } // DOES NOT COMPILE
@@ -1508,3 +1508,259 @@ Ahora Java llama al constructor que toma 2 parámetros y los setea en la instanc
 7: }
 
 La línea 4 está antes de la llamada a `this`, y por eso no compila. La línea 5 no importa porque es un comentario.
+
+#### Orden de inicialización.
+
+Hay que recordar el orden de inicialización:
+
+1. Si hay una superclase, inicialícela primero.
+2. Declaraciones de variables estáticas e inicializadores estáticos en el orden en que aparecen en el archivo.
+3. Declaraciones de variables de instancia e inicializadores de instancia en el orden en que aparecen en el archivo.
+4. El constructor.
+
+	1: public class InitializationOrderSimple {
+	2: 		private String name = "Torchie";
+	3: 		{ System.out.println(name); }
+	4: 		private static int COUNT = 0;
+	5: 		static { System.out.println(COUNT); }
+	6: 		static { COUNT += 10; System.out.println(COUNT); }
+	7: 		public InitializationOrderSimple() {
+	8: 			System.out.println("constructor");
+	9: 		} }
+
+	1: public class CallInitializationOrderSimple {
+	2: 		public static void main(String[] args) {
+	3:		InitializationOrderSimple init = new InitializationOrderSimple();
+	4:		} }
+
+La salida es:
+
+	0
+	10
+	Torchie
+	constructor
+
+**Solución:** **Regla 1**, no aplicar porque no es una superclase. La **regla 2** dice, ejecutar las declaraciones de variables estáticas y los inicializadores estáticos - en este caso, líneas 5 y 6, lo que da la salida 0 y 10. La **regla 3** dice, ejecutar la declaración de variables de instancia e inicializadores de instancia - aquí, líneas 2 y 3, que da como salida `Torchie`. Finalmente la **regla 4** que dice, ejecutar el constructor - aquí líneas 7-9, que da como salida `constructor`.
+
+Hay que pensar en las 4 reglas sólo si un objeto es instanciado. If la clase es referida sin una llamada a `new`, sólo las reglas 1 y 2 se pueden aplicar. Las otras dos reglas se refieren a instancias y constructores. Tienen que esperar hasta que haya para instanciar el objeto.
+
+	1:  public class InitializationOrder {
+	2:  	private String name = "Torchie";
+	3:  	{ System.out.println(name); }
+	4:  	private static int COUNT = 0;
+	5:  	static { System.out.println(COUNT); }
+	6:  	{ COUNT++; System.out.println(COUNT); }
+	7:  	public InitializationOrder() {
+	8:  		System.out.println("constructor");
+	9:  	}
+	10: 	public static void main(String[] args) {
+	11: 		System.out.println("read to construct");
+	12: 		new InitializationOrder();
+	13: 	}
+	14: }
+
+La salida es:
+
+	0
+	read to construct
+	Torchie
+	1
+	constructor
+
+**Solución:** **Regla 1** no se aplica porque no es una superclase. **Regla 2** nos dice que mire las variables estáticas e inicializadores estáticos - líneas 4 ý 5, en ese orden. La línea 5 muestra `0`. Ahora que los estáticos están fuera de nuestro camino, el método `main()`puede ejecutarse. Lo siguiente es la **regla 3** para ejecutar las variables de instancia y los inicializadores de inestancia. Son las líneas 2 y 3, cuya salida es `Torchie` Finalmente la **regla 4** dice que ejecutemos el constructor - en este caso las líneas 7-9 que da como salida `constructor`.
+
+Otro ejemplo:
+
+	1: public class YetMoreInitializationOrder {
+	2: 		static { add(2); }
+	3:		static void add(int num) { System.out.print(num + " "); }
+	4:		YetMoreInitializationOrder() { add(5); }
+	5:		static { add(4); }
+	6:		{ add(6); }
+	7:		static { new YetMoreInitializationOrder(); }
+	8:		{ add(8); }
+	9:		public static void main(String[] args) { } }
+	
+La salida es:
+
+	2 4 6 8 5
+
+No hay superclase, por lo que saltamos a la **regla 2** - **los estáticos**. Hay 3 bloques estáticos: líneas 2, 5 y 7. Se ejecutan en ese orden. El bloque estatico de la línea 2 llama al método `add()`, que imprime 2. El bloque de la línea 5 llama al método `add()`, que imprimer 4. El último bloque estático de la linea 7, llama a `new` para instanciar el objeto. Esto significa que puede ir a la **regla 3** y mirar las **variables de instancia** e **inicializadores de instancia**. Las líneas 6 y 8. Ambos llaman al método `add()` e imprimen 6 y 8, respectivamente. Finalmente, vamos a la **regla 4** y llamamos al constructor, que llama al método `add()` e imprime 5;
+
+### Encapsulación de datos
+
+La encapsulación significa que configuramos la clase para que sólo los métodos en la clase puedan referirse a las variables de instancia.
+
+	1: public class Swan {
+	2: 		private int numberEggs; // private
+	3: 		public int getNumberEggs() { // getter
+	4: 			return numberEggs;
+	5: 		}
+	6: 		public void setNumberEggs(int numberEggs) { // setter
+	7:			if (numberEggs >= 0) // guard condition
+	8:				this.numberEggs = numberEggs;
+	9: 		} }
+
+#### Creando clases inmutables
+
+Una opción para hacer una clase inmutable es omitir los setters y usar el constructor para inicializar los valores.
+
+	public class ImmutableSwan {
+		private int numberEggs;
+		public ImmutableSwan(int numberEggs) {
+			this.numberEggs = numberEggs;
+		}
+		public int getNumberEggs() {
+			return numberEggs;
+		} 
+	}
+
+Parece inmutable, pero si hacemos esto:
+
+	StringBuilder sb = new StringBuilder("initial");
+	NotImmutable problem = new NotImmutable(sb);
+	sb.append(" added");
+	StringBuilder gotBuilder = problem.getBuilder();
+	gotBuilder.append(" more");
+	System.out.println(problem.getBuilder());
+
+La salida de este código es "initial added more" que no es lo uqe intentábamos. El problema es que se pase el mismo `StringBuilder`. La persona que llama tiene una referencia desde que fué pasada al constructor. Cualquier persona que llame al getter obtiene una referencia también. Una solución es hacer una copia del objeto mutable. Esto se llama una **copia defensiva**.
+
+	public Mutable(StringBuilder b) {
+		builder = new StringBuilder(b);
+	}
+	public StringBuilder getBuilder() {
+		return new StringBuilder(builder);
+	}
+
+Otra solución sería devolver un objeto inmutable como es un `String`:
+
+	public String getValue() {
+		return builder.toString();
+	}
+
+### Escribiendo Lambdas Sencillos
+
+En Java 8 se ha permitido escribir código usando *Programación Funcional* que es el caminode escribir código más declaradamente. Se centra más en expresiones que en bucles.
+
+Hay que pensar en una expesión Lambda como un método anónimo. Tiene parámetros y cuerpo igual que los métodos, pero no no tiene nombre. 
+
+Sólo estarán en el exámen las expresiones Lambdas más sencillas.
+
+#### Ejemplo Lambda
+
+Nuestro objetivo es imprimir todos los animales en una lista de acuerdo a algunos criterios
+
+	public class Animal {
+	 private String species;
+	 private boolean canHop;
+	 private boolean canSwim;
+	 public Animal(String speciesName, boolean hopper, boolean swimmer) {
+		 species = speciesName;
+		 canHop = hopper;
+		 canSwim = swimmer;
+	 }
+	 public boolean canHop() { return canHop; }
+	 public boolean canSwim() { return canSwim; }
+	 public String toString() { return species; }
+	}
+
+Planeamos usar muchas comprobaciones, por lo que necesitaremos una Interfaz.
+
+	public interface CheckTrait {
+	 boolean test(Animal a);
+	}
+
+Lo primero que queremos comprobar es si el animal puede saltar:
+
+	public class CheckIfHopper implements CheckTrait {
+	 public boolean test(Animal a) {
+	 	return a.canHop();
+	 }
+	}
+
+Ahora tenemos todo lo que necesitamos para escribir nuestro código para encontrar los Animales que saltan:
+
+	1: 	public class TraditionalSearch {
+	2: 		public static void main(String[] args) {
+	3: 			List<Animal> animals = new ArrayList<Animal>(); // list of animals
+	4: 			animals.add(new Animal("fish", false, true));
+	5: 			animals.add(new Animal("kangaroo", true, false));
+	6: 			animals.add(new Animal("rabbit", true, false));
+	7: 			animals.add(new Animal("turtle", false, true));
+	8:
+	9: 			print(animals, new CheckIfHopper()); // pass class that does check
+	10: 	}
+	11: 	private static void print(List<Animal> animals, CheckTrait checker) {
+	12: 		for (Animal animal : animals) {
+	13: 			if (checker.test(animal)) // the general check
+	14: 				System.out.print(animal + " ");
+	15: 		}
+	16: 	System.out.println();
+	17: 	}
+	18: }
+
+El métido print no debería necesitar saber qué especificamente estamos buscando para imprimir una lista de animales. ¿Ahora qué pasaría si quisiéramos mostrar los animales que nadan?. Necesitamos escribir otra clase `CheckIfSwims`. Entonces necesitamos añadir una nueva línea debajo de la línea 9 que instancie esa clase. Podríamos reemplazar la línea 9 con lo siguiente usando lambdas:
+
+	9: print(animals, a -> a.canHop());
+
+Animales que pueden nadar y que no pueden nadar:
+
+	print(animals, a -> a.canSwim());
+	print(animals, a -> ! a.canSwim());
+
+##### Sintaxis Lambda
+
+	a -> a.canHop();
+
+Esto significa que Java Debería llamar a un método con un parámetro `Animal` que devuelve un valor booleano resultante de `a.canHop()`. Sabemos esto porque hemos escrito el código, pero ¿Java cómo lo sabe?.
+
+Java responde sobre el contexto al determinar qué significan las expresiones lambda. Nosotros pasamos el Lambda como segundo parámetro del método `print()`. Este método espera un `CheckTrait` como segundo parámetro. Ya que estamos pasando un lambda en su lugar, Java intenta asignar nuestro lambda a esa interfaz:
+
+	boolean test(Animal a);
+
+Dado que el método de esa interfaz toma un Animal, significa que el parámetro lambda tiene que ser un Animal. Y como el método de esa interfaz devuelve un booleano, sabemos que lambda devuelve un booleano. Estas dos líneas hacen exactamente lo mismo:
+
+	a -> a.canHop()
+	(Animal a) -> { return a.canHop(); }
+
+El primer ejemplo tiene 3 partes:
+
+* Especifica un sólo parámetro con nombre `a`
+* El operador flecha que separa el parámetro del cuerpo
+* El cuerpo que llama a un sólo método y devuelve el resultado del método
+
+El segundo parámetro también tiene 3 partes:
+
+* Especifica un sólo parámetro con nombre `a` y el tipo del parámetro, en este caso `Animal`
+* El operador flecha que separa el parámetro del cuerpo
+* El cuerpo que tiene una o más líneas de código, incluyendo un punto y coma y una sentencia `return`.
+
+**Los parénteses sólo pueden ser omitidos si hay sólo un parámetro y su tipo no se indica explícitamente**.
+
+**las llaves se pueden omitir sólo si hay una sola sentencia**.
+
+Java no requiere que escriba `return` o utilice un punto y coma cuando no se utilizan llaves. Esto no funciona cuando tenemos 2 ó más sentencias.
+
+Veamos algunos ejemplos de lambdas válidas. Imagine que existen interfaces válidas que pueden consumir un lambda con cero, uno o dos parámetros String.
+
+	3: print(() -> true); // 0 parameters
+	4: print(a -> a.startsWith("test")); // 1 parameter
+	5: print((String a) -> a.startsWith("test")); // 1 parameter
+	6: print((a, b) -> a.startsWith("test")); // 2 parameters
+	7: print((String a, String b) -> a.startsWith("test")); // 2 parameters
+
+Todos los ejemplos tienen paréntesis en la lista de parámetros excepto el que sólo tiene un parámetro y no especifica el tipo. En la línea 3 toma 0 parámetros y siempre devuelve el booleano `true`. En la línea 4 toma un parámetro y llama a un método devolviendo el resulstado. En las líneas 6 y 7 toma 2 parámetros e ignora uno de ellos (no hay una regla que diga que debe usar todos los parámetros).
+
+	print(a, b -> a.startsWith("test")); // DOES NOT COMPILE
+	print(a -> { a.startsWith("test"); }); // DOES NOT COMPILE
+	print(a -> { return a.startsWith("test") }); // DOES NOT COMPILE
+
+La primera línea necesita paréntesis en la lista de parámetros y que sólo son opcionales cuando hay un parámetro y no tieen un tipo declarado. La segunda línea no está la palabra `return` La última línea no tiene el punto y coma.
+
+Nota que todos los lambdas devuelven un `boolean`. Esto se debe a que el alcance del examen OCA limita lo que necesita aprender.
+
+Los lambdas nos permiten acceder a variables aunque eso o entra en el exámen.
+
+	boolean wantWhetherCanHop = true;
+	print(animals, a -> a.canHop() == wantWhetherCanHop);
