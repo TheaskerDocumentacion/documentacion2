@@ -1,4 +1,3 @@
-# Certificación Java
 
 ### Construyendo bloques de Java
 
@@ -1764,3 +1763,92 @@ Los lambdas nos permiten acceder a variables aunque eso o entra en el exámen.
 
 	boolean wantWhetherCanHop = true;
 	print(animals, a -> a.canHop() == wantWhetherCanHop);
+
+Otros problemas con lambdas. Java no nos permite redeclarar variables locales:
+
+	(a, b) -> { int a = 0; return 5;} // DOES NOT COMPILE
+
+Esta línea es correcta ya que usa un nombre diferente de variable:
+
+	(a, b) -> { int c = 0; return 5;}
+
+#### Predicados
+
+Antes habíamos creado una interface con un método:
+
+boolean test(Animal a);
+
+Los Lambdas trabajan con interfaces que tienen un sólo método. Se llaman **interfaces funcionales**.
+
+Se puede imaginar que tendríamos que crear muchas interfaces como esta para usar lambdas. Queremos probar Animales y Cuerdas y Plantas y cualquier otra cosa que nos encontremos.
+
+Por suerte, Java reconoce que este es un problema común y proporciona una interfaz para nosotros. Está en el paquete java.util.function y la esencia de ello es la siguiente:
+
+	public interface Predicate<T> {
+	 boolean test(T t);
+	}
+
+Se parece mucho a nuestro método. Sólo que usa el tipo T en vez de Animal. Es una sintaxis de genéricos.
+
+Esto significa que ya no necesitamos nuestra propia interfaz y podemos poner todo lo relacionado con nuestra búsqueda en una clase
+
+	1: import java.util.*;
+	2: import java.util.function.*;
+	3: public class PredicateSearch {
+	4: 		public static void main(String[] args) {
+	5: 			List<Animal> animals = new ArrayList<Animal>();
+	6: 			animals.add(new Animal("fish", false, true));
+	7:
+	8: 			print(animals, a -> a.canHop());
+	9: 		}
+	10: 	private static void print(List<Animal> animals, Predicate<Animal> checker) {
+	11: 		for (Animal animal : animals) {
+	12: 			if (checker.test(animal))
+	13: 				System.out.print(animal + " ");
+	14: 		}
+	15: 		System.out.println();
+	16: 	}
+	17: }
+
+Esta vez, la línea 10 es la única que cambió. Esperamos tener un Predicado pasado en que use el tipo Animal. Sólo podemos usarlo sin tener que escribir código extra.
+
+Este es el código completo:
+
+```java
+interface Predicate<T> {
+    boolean test(T t);
+}
+
+class Animal {
+    private String species;
+    private boolean canHop;
+    private boolean canSwim;
+    public Animal(String speciesName, boolean hopper, boolean swimmer) {
+        species = speciesName;
+        canHop = hopper;
+        canSwim = swimmer;
+    }
+    public boolean canHop() {return canHop;}
+    public boolean canSwim() {return canSwim;}
+    public String toString() {return species;}
+}
+
+public class PredicateSearch {
+
+    public static void main(String[] args) {
+        List<Animal> animals = new ArrayList<Animal>();
+        animals.add(new Animal("fish", false, true));
+
+        print(animals, a -> a.canHop());
+    }
+
+    private static void print(List<Animal> animals, Predicate<Animal> checker) {
+        for (Animal animal : animals) {
+            if (checker.test(animal)) {
+                System.out.print(animal + " ");
+            }
+        }
+        System.out.println();
+    }
+}
+```
