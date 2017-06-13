@@ -1699,7 +1699,7 @@ Ahora tenemos todo lo que necesitamos para escribir nuestro código para encontr
 	17: 	}
 	18: }
 
-El métido print no debería necesitar saber qué especificamente estamos buscando para imprimir una lista de animales. ¿Ahora qué pasaría si quisiéramos mostrar los animales que nadan?. Necesitamos escribir otra clase `CheckIfSwims`. Entonces necesitamos añadir una nueva línea debajo de la línea 9 que instancie esa clase. Podríamos reemplazar la línea 9 con lo siguiente usando lambdas:
+El método print no debería necesitar saber qué especificamente estamos buscando para imprimir una lista de animales. ¿Ahora qué pasaría si quisiéramos mostrar los animales que nadan?. Necesitamos escribir otra clase `CheckIfSwims`. Entonces necesitamos añadir una nueva línea debajo de la línea 9 que instancie esa clase. Podríamos reemplazar la línea 9 con lo siguiente usando lambdas:
 
 	9: print(animals, a -> a.canHop());
 
