@@ -80,7 +80,8 @@ En las rutas podemos declarar variables:
 Podemos hacer que los parámetros sean **opcionales** con un `?` después del parámetro:
 
 	Route::get('users/{id}/edit/{name*}',function ($id, $name){ return "hola ".$name." ".$id;});
-#Podemos hacer que los parámetros sean opcionales con un `?` antes del parámetro:
+
+Podemos hacer que los parámetros sean opcionales con un `?` antes del parámetro:
 
 	Route::get('users/{id}/edit/{?name}',function ($id, $name){ return "hola ".$name." ".$id;});
 
@@ -166,6 +167,87 @@ O decir las que queremos excluir:
 
 	Route::resource('peoples', 'PeopleController', ['except' => ['index','create']]);
 
+### Controladores y espacios de nombres
+
+También podemos crear sub-carpetas dentro de la carpeta Controllers para organizarnos mejor. En este caso, la estructura de carpetas que creemos no tendrá nada que ver con la ruta asociada a la petición y, de hecho, a la hora de hacer referencia al controlador únicamente tendremos que hacerlo a través de su espacio de nombres.
+
+Por ejemplo, si creamos un controlador en `App\Http\Controllers\Photos\AdminController`, entonces para registrar una ruta hasta dicho controlador tendríamos que hacer: +
+
+    Route::get('foo', 'Photos\AdminController@method')
+
+### Controladores implícitos
+
+Laravel también permite definir fácilmente la creación de controladores como recursos que capturen todas las rutas de un determinado dominio. Por ejemplo, capturar todas las consultas que se realicen a la URL "users" seguido de cualquier cosa (por ejemplo "users/profile"). Para esto en primer lugar tenemos que definir la ruta en el fichero de rutas usando Route::controller de la forma:
+
+    Route::controller('users', 'UserController');
+
+Esto quiere decir que todas las peticiones realizadas a la ruta "users" o subrutas de "users" se redirigirán al controlador UserController. Además se capturarán las peticiones de cualquier tipo, ya sean GET o POST, a dichas rutas. Para gestionar estas rutas en el controlador tenemos que seguir un patrón a la hora de definir el nombre de los métodos: primero tendremos que poner el tipo de petición y después la sub-ruta a la que debe de responder. Por ejemplo, para gestionar las peticiones tipo GET a la URL "users/profile" tendremos que crear el método "getProfile". La única excepción a este caso es "Index" que se referirá a las peticiones a la ruta raíz, por ejemplo "getIndex" gestionará las peticiones GET a "users". A continuación se incluye un ejemplo:+
+
+```php
+class UserController extends BaseController
+{
+    public function getIndex()
+    {
+        //
+    }
+
+    public function postProfile()
+    {
+        //
+    }
+
+    public function anyLogin()
+    {
+        //
+    }
+}
+```
+
+### Caché de rutas
+
+    php artisan route:cache
+
+Para borrar la caché de rutas y no generar una nueva caché tenemos que ejecutar:
+
+    php artisan route:clear
+
+
+## Middleware o filtros
+
+Los componentes llamados Middleware son un mecanismo proporcionado por Laravel para filtrar las peticiones HTTP que se realizan a una aplicació. Un filtro o middleware se define como una clase PHP almacenada en un fichero dentro de la carpeta `app/Http/Middleware`.
+
+Comando para crear un nuevo Middleware:
+
+    php artisan make:middleware MyMiddleware
+
+el cual genera:
+
+```php
+<?php
+
+namespace App\Http\Middleware;
+use Closure;
+class MyMiddleware
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next)
+    {
+        return $next($request);
+    }
+}
+```
+
+
+
+
+
+
 ## vistas
 
 Las vistas se crean en el directorio `app/resources/views`. Si creamos una vista llamada index.blade.php, para referenciarla en una ruta. Si se crea la vista en un subdirectorio, habría que anteponerlo al nombre con un punto:
@@ -243,6 +325,10 @@ Si añadimos **`@parent`** el valor por defecto se pondrá en el lugar de la eti
 #### Incluir una plantilla dentro de otra plantilla
 
 	@include('view_name', array('some'=>'data'))
+
+#### Comentarios
+
+    {{-- Este comentario no se mostrará en HTML --}}
 
 ### Estructuras de control
 
@@ -365,7 +451,7 @@ que como vemos toma los datos del fichero `/.env`.
     }
 ```
 
-## Migraciones
+## Migrations
 
 Las **migrations** en Laravel es  para el control de la base de datos como crear tablas.
 
@@ -396,7 +482,44 @@ public function up()
     }
 ```
 
+Para ejecutar nuestra configuración para que se plasme en nuestra base de datos:
+
+    php artisan migrate
+
+Puede dar algún error por la codificación de la configuración de la base de datos en Laravel. En el archivo `config.database.php` cambiar estas líneas:
+
+    'charset' => 'utf8',
+    'collation' => 'utf8_unicode_ci',
+
+Y si queremos anular el último "migrate":
+
+    php artisan migrate:rollback
+
+Para hacer un reset de toda la aplicación:
+
+    php artisan migrate:reset
+
+Si tuvieramos que modificar algo de la tabla, tendríamos que crear una nueva migración y allí poner las modificaciones de nuestra tabla:
+
+    php artisan make:migration add_peoples_table --table
+
+Y luego allí modificar la tabla:
+
+    public function up()
+    {
+        Schema::table('peoples', function (Blueprint $table) {
+            $table->string('direction',150);
+        });
+    }
+
+Luego hacemos la nueva migración para que se añadan los cambios que queremos de la tabla:
+
+    php artisan migrate
+
+
+
 ## Enlaces
 
+ * [Curso Laravel 5]()https://ajgallego.gitbooks.io/laravel-5/content/index.html)
  * [Cursol en Desarrolloweb y `http://127.0.0.1:8000/admin/peoples`b](https://desarrolloweb.com/articulos/tareas-instalacion-laravel5-problemas.html)
  * [Página de laravel](https://laravel.com)

@@ -1,1 +1,4 @@
 *.pdf
+
+.idea/**/workspace.xml
+programacion/php/laravel/laravel.md
