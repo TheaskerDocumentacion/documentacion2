@@ -9,14 +9,24 @@
         - [ngOninit](#ngoninit)
     - [Modelo de datos](#modelo-de-datos)
     - [Directivas](#directivas)
-        - [ngIf](#ngif)
-        - [ngFor](#ngfor)
-        - [Directivas de atributo `ngSwitch` / `ngStyle`](#directivas-de-atributo-ngswitch--ngstyle)
-        - [Directiva de atributo `ngStyle`](#directiva-de-atributo-ngstyle)
-        - [Directiva de atributo `ngClass`](#directiva-de-atributo-ngclass)
+        - [Directivas esstructurales](#directivas-esstructurales)
+            - [ngIf / ngTemplate](#ngif--ngtemplate)
+            - [ngFor](#ngfor)
+        - [Directivas de atributo](#directivas-de-atributo)
+            - [Directivas de atributo `ngSwitch` / `ngStyle`](#directivas-de-atributo-ngswitch--ngstyle)
+            - [Directiva de atributo `ngStyle`](#directiva-de-atributo-ngstyle)
+            - [Directiva de atributo `ngClass`](#directiva-de-atributo-ngclass)
+            - [Otras directivas de atributo](#otras-directivas-de-atributo)
+                - [`[src]` y `[disabled]`](#src-y-disabled)
         - [Directivas de evento](#directivas-de-evento)
             - [Two way data-binding](#two-way-data-binding)
             - [(click)](#click)
+        - [Creación de directivas](#creación-de-directivas)
+            - [Creación de una directiva de atributo](#creación-de-una-directiva-de-atributo)
+                - [Definimos la clase directiva](#definimos-la-clase-directiva)
+                - [Declarandola en al app module](#declarandola-en-al-app-module)
+                - [Usando la directiva en nuestra plantilla](#usando-la-directiva-en-nuestra-plantilla)
+            - [Creación de directivas escuchando eventos](#creación-de-directivas-escuchando-eventos)
     - [Routing](#routing)
         - [Paso de parámetros por la url en las rutas](#paso-de-parámetros-por-la-url-en-las-rutas)
         - [Redirecciones de rutas](#redirecciones-de-rutas)
@@ -25,6 +35,11 @@
         - [Custom Pipes](#custom-pipes)
     - [Formularios y validaciones](#formularios-y-validaciones)
     - [Servicios con peticiones HTTP](#servicios-con-peticiones-http)
+    - [Chuleta Angular 4](#chuleta-angular-4)
+        - [Instrucciones CLI:](#instrucciones-cli)
+        - [Binding](#binding)
+        - [Rutas y navegación:](#rutas-y-navegación)
+        - [Directivas:](#directivas)
     - [Enlaces](#enlaces)
 
 <!-- /TOC -->
@@ -197,7 +212,9 @@ export class EmpleadoComponent{
 
 Son funcionalidades para las vistas insertadas en el html.
 
-### ngIf
+### Directivas esstructurales
+
+#### ngIf / ngTemplate
 
 ```html
 <ul *ngIf="trabajador-externo === true">
@@ -207,7 +224,31 @@ Son funcionalidades para las vistas insertadas en el html.
 </ul>
 ```
 
-### ngFor
+Con `ngTemplate` creamos un bloque de código en la vista al cual podremos llamar en el else de un `*ngIf`:
+
+```html
+<div *ngIf="administrador; else noAdmin">
+    <strong>Eres el administrador de la WebApp</strong>
+</div>
+
+<ng-template #noAdmin>
+    <strong>NO eres el administrador de la WebApp</strong>
+</ng-template>
+```
+
+Incluso podemos usar el `ng-template` no sólo para el else de un `*ngIf` sino también para el en mismo if, usando la etiqueta del `ng-template` y llamandola con `then` para el `if` y luego `else` si no se cumple la condición:
+
+```html
+<ng-template #admin>
+    <strong>Eres el administrador de la WebApp</strong>
+</ng-template>
+
+<ng-template #noAdmin>
+    <strong>NO eres el administrador de la WebApp</strong>
+</ng-template
+```
+
+#### ngFor
 
 Con esta directiva podemos iterar cualquier array. Con `index` sabremos el número de índice, muy util para poder eliminar elementos.
 
@@ -226,7 +267,20 @@ Con esta directiva podemos iterar cualquier array. Con `index` sabremos el núme
 </ul>
 ```
 
-### Directivas de atributo `ngSwitch` / `ngStyle`
+ngFor también aporta algunos elementos adicionales:
+
+* **index** - position of the current item in the iterable starting at 0
+* **first** - true if the current item is the first item in the iterable
+* **last** - true if the current item is the last item in the iterable
+* **even** - true if the current index is an even number
+* **odd** - true if the current index is an odd number
+
+
+### Directivas de atributo
+
+Una propiedad de elemento entre corchetes entre corchetes identifica la propiedad de **destino**, no para ser cambiada desde la vista como el __binding por interpolación__. 
+
+#### Directivas de atributo `ngSwitch` / `ngStyle`
 
 ```html
 <h3>Colores switch</h3>
@@ -249,7 +303,7 @@ Con esta directiva podemos iterar cualquier array. Con `index` sabremos el núme
 </ul>
 ```
 
-### Directiva de atributo `ngStyle`
+#### Directiva de atributo `ngStyle`
 
 Con la condición ternaria comprobamos que el color seleccionado en el input es 'red' y entonces modificamos el estilo `border`.
 
@@ -260,7 +314,7 @@ Con la condición ternaria comprobamos que el color seleccionado en el input es 
 </pre>
 ```
 
-### Directiva de atributo `ngClass`
+#### Directiva de atributo `ngClass`
 
 ```css
 .fondoAzul { border: 5px solid ligthblue;}
@@ -280,6 +334,15 @@ Con la condición ternaria comprobamos que el color seleccionado en el input es 
 También podemos hacer que se asignen cases por defecto fijas, pasándole un array de clases.
 ```html
 <pre [ngClass] = "[fondoAzul','letra']"> </pre>
+```
+
+#### Otras directivas de atributo
+
+##### `[src]` y `[disabled]`
+
+```html
+<img [src]="heroImageUrl">
+<button [disabled]="isUnchanged">Cancel is disabled</button> <!-- disabling a button when the component says that it isUnchanged -->
 ```
 
 ### Directivas de evento
@@ -315,6 +378,155 @@ import { FormsModule } from '@angular/forms';
 Llamamos a un método cuando el evento click es llamado.
 ```html
 <button (click)="metodo()"></button>
+```
+
+### Creación de directivas
+
+#### Creación de una directiva de atributo
+
+Las directivas de construcción en Angular 2+ no son muy diferentes a los componentes de construcción. Después de todo, los componentes son sólo directivas con una vista adjunta. De hecho, hay tres tipos de directivas en Angular: components, attribute directives and structural directives.
+
+Las directivas estructurales añaden o eliminan elementos del DOM. `NgIf`, `ngFor` y `ngSwitch` son ejemplos de directivas estructurales integradas. Las directivas de atributo se utilizan para cambiar el estilo o el comportamiento de los elementos.
+
+##### Definimos la clase directiva
+
+Importamos `Directive`, `ElementRef`, y `Renderer`. A continuación, utilice el `Renderer` para establecer el estilo del elemento a nuestro valor de sombra de cuadro deseado:
+`shadow.directive.ts`
+```javascript
+import { Directive, ElementRef, Input, Renderer, OnInit } from '@angular/core';
+
+@Directive({ selector: '[appShadow]' })
+export class ShadowDirective implements OnInit {
+
+    @Input() appShadow: string;
+    @Input() appShadowX: string;
+    @Input() appShadowY: string;
+    @Input() appShadowBlur: string;
+
+    constructor(
+        private elem: ElementRef,
+        private renderer: Renderer
+    ) {}
+
+    ngOnInit() {
+        if (!this.appShadow || !this.appShadowX || !this.appShadowY || !this.appShadowBlur){
+            this.renderer.setElementStyle(this.elem.nativeElement, 'box-shadow', '2px 2px 12px #58A362');
+        }
+        let shadowStr = `${ this.appShadowX } ${ this.appShadowY } ${ this.appShadowBlur } ${ this.appShadow }`;
+        this.renderer.setElementStyle(this.elem.nativeElement, 'box-shadow', shadowStr);
+    }
+}
+```
+
+Si cualquiera de los parámetros pasados a nuestra directiva no existe pondrá una sompra por defecto.
+
+Observe cómo nuestro selector está envuelto entre paréntesis: [appShadow], para convertirlo correctamente en una **directiva de atributo**.
+
+Utilizamos los `@input` para pasar datos de nuestra plantilla de componentes a la directiva. Observe también cómo estamos usando `OnInit` ahora en lugar de hacer el trabajo en el constructor. Eso es porque nuestros `input` no tienen ningún valor en el tiempo de construcción.
+
+##### Declarandola en al app module
+`app.module.ts`
+```javascript
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { AppComponent } from './app.component';
+
+import { ShadowDirective } from './shadow.directive';
+
+@NgModule({
+  imports: [ BrowserModule ],
+  declarations: [
+    AppComponent,
+    ShadowDirective
+  ],
+  bootstrap: [ AppComponent ]
+})
+export class AppModule { }
+```
+
+##### Usando la directiva en nuestra plantilla
+
+```html
+<!-- Directiva sin parámetros -->
+<span appShadow>Alligator</span>
+
+<!-- Directiva con parámetros -->
+<span [appShadow]="'hotpink'"
+      [appShadowX]="'12px'"
+      [appShadowY]="'6px'"
+      [appShadowBlur]="'30px'">Alligator</span>
+```
+
+#### Creación de directivas escuchando eventos
+
+Queremos preguntar al usuario si desea confirmación de hacer algo:
+
+```javascript
+@Directive({
+    selector: `[confirm]`
+})
+export class ConfirmDirective {
+    
+    @Input('confirm') onConfirmed: Function = () => {};
+    
+    @HostListener('click', ['$event'])
+    confirmFirst() {
+        const confirmed = window.confirm('Are you sure you want to do this?');
+        if(confirmed) {
+            this.onConfirmed();
+        }
+    }
+}
+```
+
+Tendriamos que utilizar nuestra directiva de la siguiente forma:
+
+```html
+<button type="button" [confirm]="visitRangle">Visit Rangle</button>
+```
+
+Podemos ver de forma general como crear una directiva propia:
+
+Usando el decorador `@Directive`
+Especificando un selector, este debe ser CamelCase y estar dento de corchetes [] para especificar que se trata de un binding de atributos.
+En nuestro caso concreto hemos usado el decorador `@HostListener` para escuchar los eventos de del componente al que hemos adjuntado nuestra directiva. Esta es una de las principales formas de extender el comportamiento de un componente mediante directivas. Este es un mecanismo muy potente que nos permite escuchar eventos de elementos externos como window o document:
+```javascript
+@Directive({
+    selector: `[highlight]`
+})
+export class HighlightDirective {
+    constructor(private el: ElementRef, private renderer: Renderer) {}
+    
+    @HostListener('document:click', ['$event'])
+    handleClick(event: Event) {
+        if (this.el.nativeElement.contains(event.target)) {
+            this.highlight('yellow');
+        } else {
+            this.highlight(null);
+        }
+    }
+
+    highlight(color) {
+        this.renderer.setElementStyle(this.el.nativeElement, 'backgroundColor', color);
+    }
+}
+```
+En este caso estamos interceptando un evento, pero también podemos modificar los atributos del elemento Host. Para ello usaremos el decorador @HostBinding:
+```javascript
+import { Directive, HostBinding, HostListener } from '@angular/core';
+@Directive({
+    selector: '[buttonPress]'
+})
+export class ButtonPressDirective {
+    @HostBinding('attr.role') role = 'button';
+    @HostBinding('class.pressed') isPressed: boolean;
+    @HostListener('mousedown') hasPressed() {
+        this.isPressed = true;
+    }
+    @HostListener('mouseup') hasReleased() {
+        this.isPressed = false;
+    }
+}
 ```
 
 ## Routing
@@ -542,7 +754,7 @@ Ahora ya podemos usar la pipe 'conversor'
 
 ## Formularios y validaciones
 
-Para crear formularios, deberían estar ligados a un modelo de datos:
+Para crear formularios, creamos un modelo de datos para que esté asociado al formulario:
 `coche.ts`
 ```javascript
 export class Coche {
@@ -594,7 +806,6 @@ export class CochesComponent{
         display: block;
         width: 100%;
     }
-    
 </style>
 <div style="float: left">
     <form #formCoche="ngForm" (ngSubmit)="onSubmit()">
@@ -619,7 +830,6 @@ export class CochesComponent{
                 El color no es válido
             </span>
         </p>
-
         <input type="submit" value="guardar" [disabled]="!formCoche.form.valid">
     </form>
 </div>
@@ -632,6 +842,8 @@ export class CochesComponent{
     </ul>
 </div>
 ```
+
+El prefijo hash (#) a "phone" significa que estamos definiendo una variable de teléfono
 
 ## Servicios con peticiones HTTP
 
@@ -694,11 +906,228 @@ export class CochesComponent implements OnInit{
 }
 ```
 
+## Chuleta Angular 4
 
+### Instrucciones CLI:
+
+```bash
+npm install -g @angular/cli    //instalación global
+ 
+//instalar una versión anterior
+npm uninstall -g angular-cli
+npm cache clean
+npm install -g angular-cli@1.0.0-beta.14
+ 
+ng new my-app                       //crear un proyecto nuevo
+ 
+cd my-app                           //desplegar aplicación 
+ng serve --open                     //por defecto http://localhost:4200/
+ 
+ 
+ng g component my-new-component     //crear un componente
+ng g directive my-new-directive     //crear una directiva 
+ng g pipe my-new-pipe               //crear un filtro
+ng g service my-new-service         //crear un servicio 
+ng g class my-new-class             //crear una clase
+ng g interface my-new-interface     //crear una interfaz
+ng g module my-module               //crear un módulo
+ 
+//compilar en distintos entornos
+# equivalentes
+ng build --target=production --environment=prod
+ng build --prod --env=prod
+ng build --prod
+# equivalentes
+ng build --target=development --environment=dev
+ng build --dev --e=dev
+ng build --dev
+ng build
+ 
+#entornos definidos en angular-cli.json
+"environments": {
+  "source": "environments/environment.ts",
+  "dev": "environments/environment.ts",
+  "prod": "environments/environment.prod.ts"
+}
+ 
+//crear un proyecto con Material
+npm install --save @angular/material
+npm install --save @angular/animations
+```
+
+### Binding
+
+```html
+//One Way Binding
+<h1>{{pageTitle}}</h1>
+
+//Two Way Binding
+<input [(ngmodel)]="customer.FirstName">      
+
+//Property Binding
+<img>               
+
+//Attribute Binding          
+<button [attr.arialabel]="ok">Ok</button>                         
+
+//Class Binding    
+<div [class.selected]="Selected">Selected</div>
+
+//ngClass
+<div [ngclass]="setClasses()">{{customer.name}}
+</div>
+
+//Style Binding
+<button [style.color]="isSelected ? 'red' : 'white'">
+</button>
+
+//ngStyle
+<div [ngstyle]="setStyles()">               
+{{customer.name}}
+</div>
+
+//Component Binding
+<customerdetail [customer]="currentCustomer">               
+<customerdetail>
+</customerdetail></customerdetail>
+
+//Directive Binding
+<div [ngclass]="{selected: isSelected}">Customer</div>
+
+//Event Binding
+<button (click)="save()">Save</button>                      
+$event
+<input [value]="customer.name" (input)="customer.name=$event.target.value">
+```
+
+### Rutas y navegación:
+
+```javascript
+import {routing} from './app.routing';
+ 
+//configuración rutas para navegación app.routing.ts
+const appRoutes: Routes = [
+  {
+    path: '',
+    redirectTo: '/home',
+    pathMatch: 'full'
+  },
+  {
+    path: 'home',
+    component: HomeComponent
+  },
+  {
+    path: 'register/:parametro',
+    component: Register
+  },
+  {
+    path: 'login',
+    component: Login
+  }
+   
+];
+ 
+export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);
+ 
+//marca donde se carga el componente de la ruta activo
+<router-outlet></router-outlet>
+<router-outlet name="aux"></router-outlet>
+```
+
+```html
+//crear enlaces a las diferentes vistas basandose en las rutas
+<a routerlink="/path">
+</a><a [routerlink]="[ '/path', routeParam ]">
+</a><a [routerlink]="[ '/path', { matrixParam: 'value' } ]">
+</a><a [routerlink]="[ '/path' ]" [queryparams]="{ page: 1 }">
+</a><a [routerlink]="[ '/path' ]" fragment="anchor">
+</a><a [routerlink]="[ '/path' ]" routerlinkactive="active">
+</a>
+```
+
+### Directivas:
+
+```html
+//ngStyle
+//ngStyle nos permite modificar los estilos del elemento sobre 
+//el cual se aplica.
+<p style="padding: 1em" [ngstyle]="{color: 'red'}">Contenido</p>
+```
+
+```html
+//ngClass
+//Con esta directiva (ngClass), modificamos el valor del atributo 
+//clase asociado acualquier elemento de la plantilla de nuestro componente
+<div ngclass="centered-text underlined">Contenido</div>
+```
+
+```html
+// ngIf
+//La directiva ngIf condiciona el código HTML de nuestras plantillas en
+//función de si la expresión evaluada es true o false.
+<div *ngif="mostrar"></div>
+```
+
+```html
+//ngFor
+//Nos permite iterar a partir de una colección (episodios) y en cada vuelta
+//del bucle, podremos trabajar con cada uno de los elementos iterados,
+//dentro de la variable específica (episodio).
+// la directiva ngFor nos ofrece otra serie de
+//variables relacionadas con el contexto del bucle:
+//• index - nos devuelve la posición que nos encontramos del bucle,
+//comenzando desde cero.
+//• first - indica verdadero si es el primer elemento de la lista.
+//• last - devuelve verdadero si nos encontramos en el ultimo elemento
+//de la lista.
+//• even - devuelve true si el elemento que estamos iterando es par.
+//• odd - devuelve true si el elemento es impar.
+<ul *ngfor="let episodio of episodios; let i = index; let first = first">
+    <li>{{i}}- {{episodio.title}} {{first}}</li>
+</ul>
+```
+
+```javascrip
+//ngSwitch
+//• Se define la expresión que vamos a evaluar con la directiva ngSwitch.
+//En este caso, se está evaluando una variable de tipo numérica.
+//• Con la directiva ngSwitchCase analizamos los diferentes casos que
+//vamos a admitir. Dependiendo del valor de la expresión evaluada
+//visualizamos el caso que corresponda.
+//• Si ninguno de los casos se evalúa correctamente se muestra el caso
+//marcado con la directiva ngSwitchDefault.
+//• Con este tipo de directivas hay que tener cuidado porque puede ser
+//muy costosa la creación o destrucción de los elementos con los que
+//estemos trabajando.
+@Component({
+    selector: 'my-app',
+    template: `
+        <div [ngswitch]="opcion">
+            <p [id]="1" *ngswitchcase="1">Opción 1</p>
+            <p [id]="2" *ngswitchcase="2">Opción 2</p>
+            <p [id]="3" *ngswitchcase="3">Opción 3</p>
+            <p [id]="4" *ngswitchcase="4">Opción 4</p>
+            <p *ngswitchdefault="" class="closed"></p>
+        </div>
+        <div class="options">
+            <input type="radio" name="opcion" (click)="setDoor(1)"> Opcion 1
+            <input type="radio" name="opcion" (click)="setDoor(2)"> Opcion 2
+            <input type="radio" name="opcion" (click)="setDoor(3)"> Opcion 3
+            <input type="radio" selected="selected" name="opcion" (click)="setDoor()"> Close all
+        </div>`,
+    styles: []
+})
+export class AppComponent {
+    opcion: number;
+    setDoor(num:number){
+        this.opcion = num;
+    }
+}
+```
 
 ## Enlaces
 
- * [http://www.formacionwebonline.com/introduccion-angular-2-primera-aplicacion/](http://www.formacionwebonline.com/introduccion-angular-2-primera-aplicacion/)
- 
- * [http://angularmexico.com/blog/intro-angular2/](http://angularmexico.com/blog/intro-angular2/)
-
+* [https://alligator.io/angular/building-custom-directives-angular/](Ejemplo de directiva personalizada)
+* [https://github.com/rmorenomf/formacion-isban/tree/master/Angular%202/Jornada%204](https://github.com/rmorenomf/formacion-isban/tree/master/Angular%202/Jornada%204)
+* [http://www.formacionwebonline.com/introduccion-angular-2-primera-aplicacion/](http://www.formacionwebonline.com/introduccion-angular-2-primera-aplicacion/)
+* [http://angularmexico.com/blog/intro-angular2/](http://angularmexico.com/blog/intro-angular2/)
