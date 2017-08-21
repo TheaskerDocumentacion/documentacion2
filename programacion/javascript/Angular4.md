@@ -40,7 +40,9 @@
         - [Binding](#binding)
         - [Rutas y navegación:](#rutas-y-navegación)
         - [Directivas:](#directivas)
-    - [Enlaces](#enlaces)
+    - [Uso de librerías externas](#uso-de-librerías-externas)
+        - [Uso de JQuery en Angular 4](#uso-de-jquery-en-angular-4)
+    - [Paso de producción de un proyecto](#paso-de-producción-de-un-proyecto)
 
 <!-- /TOC -->
 
@@ -1123,6 +1125,71 @@ export class AppComponent {
         this.opcion = num;
     }
 }
+```
+
+## Uso de librerías externas
+
+### Uso de JQuery en Angular 4
+
+Después de incluir el script en el `head` del `index.html` del proyecto, en el componente que queramos usarlo, deberemos de declarar las variables `$` y/o `jQuery`
+
+```javascript
+declare var jQuery: any;
+declare var $: any;
+```
+
+## Paso de producción de un proyecto
+
+1. Creamos el proyecto con Angular CLI: `ng new <proyecto>`
+2. Copiar directorio `app` del proyecto
+3. Cambiar paths de vistas e imágenes para adaptar la estructura de CLI.
+4. Probar la APP con `ng serve` o `npm start`
+5. Generar build: `ng build --prod`
+6. Cambiar base url (si estamos en un subdirectorio)
+7. Copiar al directorio del servidor (host)
+8. Añadir .htaccess (si estamos en un subdirectorio)
+
+```
+<IfModule mod_rewrite.c>
+    Options Indexes FollowSymLinks
+    RewriteEngine On
+    RewriteBase /client/
+    RewriteRule ^index\.html$ - [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . index.html [L]
+</IfModule>
+```
+
+Si al hacer el `ng build --prod` de el siguient error:
+
+```
+ERROR in ./src/main.ts
+Module not found: Error: Can't resolve './$$_gendir/app/app.module.ngfactory' in '/home/theasker/www/curso-angular4-webapp/src'
+ @ ./src/main.ts 4:0-74
+ @ multi ./src/main.ts
+```
+
+Se arregla haciendo el build con la siguiente opción:
+
+```ng build --prod --aot=false```
+
+### Poner el producción en un subdirectorio del servidor
+
+Si queremos colgar el proyecto en producción de un subdirectorio, para poder aprovechar ese hosting para otros "clientes", necesitaremos hacer algunas modificaciones.
+
+Si suponemos que el proyecto lo ponemos en producción en el subdirectorio `cliente`, en el archivo `index.html`, cambiamos la línea `<base href="/">` por `<base href="/cliente/">`. También crearemos el fichero `.htaccess` en esa carpeta raiz de nuestro proyecto con el siguiene contenido:
+
+```
+<IfModule mod_rewrite.c> 
+    Options Indexes FollowSymLinks
+    RewriteEngine On                        # Activamos el módulo mod_rewrite
+    RewriteBase /client/                    # Directorio base del mod_rewrite
+    RewriteRule ^index\.html$ - [L]         
+    RewriteCond %{REQUEST_FILENAME} !-f     # No deja que veamos los ficheros
+    RewriteCond %{REQUEST_FILENAME} !-d     # Dice el fichero que tiene que buscar
+    RewriteRule . index.html [L]
+</IfModule>
 ```
 
 ## Enlaces
