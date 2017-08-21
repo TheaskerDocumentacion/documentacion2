@@ -7,6 +7,14 @@
         - [Actualización de angular-cli](#actualización-de-angular-cli)
     - [Componente](#componente)
         - [ngOninit](#ngoninit)
+        - [Comunicación entre componentes `@input` y `@output`](#comunicación-entre-componentes-input-y-output)
+            - [`@Input`](#input)
+            - [`@Output`](#output)
+        - [Hooks, ciclo de vida de un componente](#hooks-ciclo-de-vida-de-un-componente)
+            - [**`OnChanges()`**](#onchanges)
+            - [**`OnInit()`**](#oninit)
+            - [**`DoCheck()`**](#docheck)
+            - [**`OnDestroy()`**](#ondestroy)
     - [Modelo de datos](#modelo-de-datos)
     - [Directivas](#directivas)
         - [Directivas esstructurales](#directivas-esstructurales)
@@ -35,6 +43,9 @@
         - [Custom Pipes](#custom-pipes)
     - [Formularios y validaciones](#formularios-y-validaciones)
     - [Servicios con peticiones HTTP](#servicios-con-peticiones-http)
+    - [LocalStorage](#localstorage)
+        - [Obtener y almacenar datos en LocalStorage](#obtener-y-almacenar-datos-en-localstorage)
+        - [Borrar una clave o vaciar el LocalStorage](#borrar-una-clave-o-vaciar-el-localstorage)
     - [Chuleta Angular 4](#chuleta-angular-4)
         - [Instrucciones CLI:](#instrucciones-cli)
         - [Binding](#binding)
@@ -166,6 +177,184 @@ export class PersonaComponent implements OnInit{
     actualizarDatos(let nombre: string, let edad: number){
         this.nombre = nombre;
         this.edad = edad;
+    }
+}
+```
+
+### Comunicación entre componentes `@input` y `@output`
+
+#### `@Input`
+
+Con `@Input` le podemos decir a una variable que su valor le puede venir dado desde el componente que le llama, es decir, pasar datos de un componente padre a un componente hijo:
+
+**Html del componente padre:**
+```html
+Componente padre:
+<h1>{{titulo}}</h1>
+
+<hr>
+
+Nombre del parque:
+<input type="text" [(ngModel)]="nombreDelParque" (keyup)="mostrarNombre()">
+<p>Resultado: {{nombreDelParque}}</p>
+
+<br>
+Componente hijo:
+<app-parques [nombre]="nombreDelParque" [metros-cuadrados]="'354'"></app-parques>
+```
+
+En la etiqueta de llamada al componente `app-parques` le decimos que el contenido de la variable `nombre` será el de la variable `nombreDelParque`, que es el contenido del input.
+
+Luego en el "componente hijo" solo tenemos que crear la variable `nombre` anteponiendole el método `@input`:
+
+**Componente hijo:**
+```javascript
+import { Component, Input } from '@angular/core';
+
+@Component({
+    selector: 'app-parques',
+    template: `{{nombre}} - {{metros}}`
+})
+
+export class ParquesComponent {
+    @Input() public nombre: string;
+    @Input('metros-cuadrados') public metros: number
+}
+```
+
+#### `@Output`
+
+Con `@Output` pasamos datos del componente hijo al componente padre.
+
+Generamos un evento que está asociado a la directiva `@Output()` que cuando se lance (cuando realice el `emit`) asociado, por ejemplo, a un botón, lo que va a hacer es lanzar otro método del componente padre y recibir los datos que le enviamos:
+
+**Componente hijo:**
+```javascript
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+
+@Component({
+    selector: 'app-parques',
+    templateUrl: `./parques.component.html`
+})
+
+export class ParquesComponent {
+    @Input() public nombre: string;
+    @Input() public metros: number;
+    public vegetacion: string;
+    public abierto: boolean;
+
+    @Output() pasameLosDatos = new EventEmitter();
+
+    constructor(){
+        this.nombre = 'Esta es la tienda';
+        this.metros = 450;
+        this.vegetacion = 'Alta';
+        this.abierto = true;
+    }
+
+    emitirEvento(event){
+        this.pasameLosDatos.emit({
+            'nombre': this.nombre,
+            'metros': this.metros,
+            'vegetacion': this.vegetacion,
+            'abierto': this.abierto
+        });
+    }
+}
+```
+
+```html
+<button (click)="emitirEvento($event)">Mostrar en el padre</button>
+```
+
+Cuando el evento `pasameLosDatos()` se ejecute al hacer click en el botón, lo capturaremos con el evento de la etiqueta del componente hijo, haciendo que se ejecute un método en el padre, pasandole como parámetro el evento (`$event`), `(pasameLosDatos)="verDatosParque($event)"`.
+
+**Plantilla del padre:**
+```html
+<app-parques 
+    [nombre]="nombreDelParque" 
+    [metros]="'354'" 
+    (pasameLosDatos)="verDatosParque($event)">
+</app-parques>
+```
+
+En el componente del padre tendremos el método que se ejecuta cuando se active el evento `pasameLosDatos`:
+
+**Componente del padre:**
+```javascript
+...
+export class TiendaComponent {
+    ...
+    verDatosParque(event){
+        console.log('event: ', event);        
+    }
+}
+```
+
+### Hooks, ciclo de vida de un componente
+
+Los **`Hooks`** son métodos de eventos que se ejecutan depende de un **estado del componente**.
+
+#### **`OnChanges()`**
+
+Es el primer método que se va a ejecutar siempre en un componente cuando se produzca algún cambio en las propiedades del componente.
+
+```javascript
+import { Component, OnChanges, SimpleChanges } from '@angular/core';
+...
+export class ParquesComponent implements OnChanges {
+    public nombre: string;
+    public metros: number;
+
+    ngOnChanges(changes: SimpleChanges) {
+        console.log('changes: ', changes);
+    }
+}
+```
+
+La variable `changes` se poblará en cuanto haya alguna modificación de una de las propiedades de la clase, con un objeto json con el nombre de la propiedad modificada y su valor anterior y el modificado.
+
+#### **`OnInit()`**
+
+Es el primer método que se ejecuta después del constructor de una clase.
+
+```javascript
+import { Component, OnInit } from '@angular/core';
+...
+export class ParquesComponent implements OnChanges, OnInit {
+   
+    ngOnInit(){
+        console.log('Método OnInit cargado');
+    }
+}
+```
+
+#### **`DoCheck()`**
+
+Se ejecuta cada vez que las propiedades de un componente o directiva son comprobadas y se ejecutará después del `OnInit`. Se utiliza para ampliar la detección de cambios realizando una comprobación personalizada.
+
+```javascript
+import { Component, DoCheck } from '@angular/core';
+...
+export class ParquesComponent implements OnInit {
+   
+    ngDoCheck(){
+        console.log('Método DoCheck se ha ejecutado');
+    }
+}
+```
+
+#### **`OnDestroy()`**
+
+Se ejecuta justo antes que Angular elimine un componente. Por ejemplo, cuando se muestra un componente con un `ngIf` al no mostrarse se elimina el componente.
+
+```javascript
+import { Component, OnDestroy } from '@angular/core';
+...
+
+export class ParquesComponent implements OnDestroy {
+        ngOnDestroy() {
+        console.log('OnDestroy se ha ejecutado');
     }
 }
 ```
@@ -907,6 +1096,116 @@ export class CochesComponent implements OnInit{
     }
 }
 ```
+
+## LocalStorage
+
+### Obtener y almacenar datos en LocalStorage
+
+Nos permite guardar en una sesión en nuestro navegador datos en formato json.
+
+```javascript
+// Asignamos un valor a una clave
+localStorage.setItem('emailContacto', this.emailContacto);
+// Recuperamos el valor de una clave
+this.emailContacto = localStorage.getItem('emailContacto');
+```
+
+Veámoslo con un ejemplo para añadir un correo electrónico y que se muestre automáticamente con el **Hook `DoChange`**
+
+**contacto.component.html**
+```html
+<h1>{{title}}</h1>
+
+<input type="text" [(ngModel)]="emailContacto" />
+<button (click)="guardarEmail()">Guardar email</button>
+```
+
+**contacto.component.ts**
+```javascript
+...
+guardarEmail() {
+    localStorage.setItem('emailContacto', this.emailContacto);
+
+    /* console.log('localStorage.getItem(emailContacto): ', localStorage.getItem('emailContacto')); */
+}
+...
+```
+
+**app.component.html**
+```html
+<span *ngIf="emailContacto">Email de Contacto: {{emailContacto}}</span>
+```
+
+**app.component.ts**
+```javascript
+import { Component, DoCheck } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+
+export class AppComponent implements DoCheck {
+  public emailContacto: string;
+
+  ngDoCheck() {
+    this.emailContacto = localStorage.getItem('emailContacto');    
+  }
+}
+```
+
+### Borrar una clave o vaciar el LocalStorage
+
+Eliminamos el email de la clave almacenada en el LocalStorage.
+
+```javascript
+// Elimina una clave del LocalStorage
+localStorage.removeItem('emailContacto');
+// Vacía el LocalStorage
+localStorage.clear();
+```
+
+**`app.component.html`**
+```html
+<input type="text" [(ngModel)]="emailContacto" />
+<button (click)="guardarEmail()">Guardar email</button>
+
+<span *ngIf="emailContacto">
+  Email de Contacto: {{emailContacto}}
+  <button (click)="borrarEmail">Eliminar email de contacto</button>
+</span>
+```
+
+**`app.component.ts`**
+```javascript
+import { Component, DoCheck } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent implements DoCheck {
+  public emailContacto: string;
+
+    ngDoCheck() {
+        this.emailContacto = localStorage.getItem('emailContacto');    
+    }
+
+    guardarEmail() {
+        localStorage.setItem('emailContacto', this.emailContacto);
+    }
+ 
+    borrarEmail() {
+        localStorage.removeItem('emailContacto');
+        this.emailContacto = null;
+    }
+}
+```
+
+
+
 
 ## Chuleta Angular 4
 
