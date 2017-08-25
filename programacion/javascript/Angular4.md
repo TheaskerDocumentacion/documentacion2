@@ -46,14 +46,19 @@
     - [LocalStorage](#localstorage)
         - [Obtener y almacenar datos en LocalStorage](#obtener-y-almacenar-datos-en-localstorage)
         - [Borrar una clave o vaciar el LocalStorage](#borrar-una-clave-o-vaciar-el-localstorage)
-    - [Chuleta Angular 4](#chuleta-angular-4)
-        - [Instrucciones CLI:](#instrucciones-cli)
-        - [Binding](#binding)
-        - [Rutas y navegación:](#rutas-y-navegación)
-        - [Directivas:](#directivas)
     - [Uso de librerías externas](#uso-de-librerías-externas)
         - [Uso de JQuery en Angular 4](#uso-de-jquery-en-angular-4)
-    - [Paso de producción de un proyecto](#paso-de-producción-de-un-proyecto)
+        - [Intalación de Tinymce](#intalación-de-tinymce)
+    - [Flujo de trabajo de proyectos](#flujo-de-trabajo-de-proyectos)
+        - [Creación de módulo presonalizado con rutas](#creación-de-módulo-presonalizado-con-rutas)
+    - [Animaciones en Angular 4](#animaciones-en-angular-4)
+        - [Animaciones en Angular 4 entre estados](#animaciones-en-angular-4-entre-estados)
+        - [Animaciones entre componentes](#animaciones-entre-componentes)
+    - [Paso a de producción de un proyecto](#paso-a-de-producción-de-un-proyecto)
+- [equivalentes](#equivalentes)
+- [equivalentes](#equivalentes-1)
+- [entornos definidos en angular-cli.json](#entornos-definidos-en-angular-clijson)
+    - [Enlaces](#enlaces)
 
 <!-- /TOC -->
 
@@ -1204,7 +1209,416 @@ export class AppComponent implements DoCheck {
 }
 ```
 
+## Uso de librerías externas
 
+### Uso de JQuery en Angular 4
+
+Después de incluir el script en el `head` del `index.html` del proyecto, en el componente que queramos usarlo, deberemos de declarar las variables `$` y/o `jQuery`
+
+```javascript
+declare var jQuery: any;
+declare var $: any;
+```
+
+### Intalación de Tinymce
+
+> [https://www.tinymce.com/docs/integrations/angular2/](Documentación de Tinymce)
+
+En el fichero `angular-cli.json` agregamos los scripts que queremos incluir:
+
+```json
+...
+"scripts": [
+        "../node_modules/tinymce/tinymce.js",
+        "../node_modules/tinymce/themes/modern/theme.js",
+        "../node_modules/tinymce/plugins/link/plugin.js",
+        "../node_modules/tinymce/plugins/paste/plugin.js",
+        "../node_modules/tinymce/plugins/table/plugin.js"
+      ],
+...
+```
+
+El siguiente paso es agregar los **typings** en el fichero **`typings.d.ts`**. Esta es la manera de poder incluir variables globales para toda la aplicación como hemos hecho antes con jQuery en el componente. Agregamos al fichero la declaración de la variable que necesitemos.
+
+```javascript
+...
+declare var jQuery:any;
+declare var $:any;
+declare var tinymce: any;
+```
+
+Ahora creamos el componente para poder usar el tinymce en cualquier otro componente. Creamos el fichero `simple-tiny.component.ts`:
+
+```javascript
+import {
+  Component,
+  OnDestroy,
+  AfterViewInit,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core';
+
+@Component({
+  selector: 'simple-tiny',
+  template: `<textarea id="{{elementId}}"></textarea>`
+})
+export class SimpleTinyComponent implements AfterViewInit, OnDestroy {
+  @Input() elementId: String;
+  @Output() onEditorKeyup = new EventEmitter<any>();
+
+  editor;
+
+  ngAfterViewInit() {
+    tinymce.init({
+      selector: '#' + this.elementId,
+      plugins: ['link', 'paste', 'table'],
+      skin_url: 'assets/skins/lightgray',
+      setup: editor => {
+        this.editor = editor;
+        editor.on('keyup', () => {
+          const content = editor.getContent();
+          this.onEditorKeyup.emit(content);
+        });
+      },
+    });
+  }
+
+  ngOnDestroy() {
+    tinymce.remove(this.editor);
+  }
+}
+```
+
+Y ahora ya lo podemos usar en cualquier componente agregando el selector correspondiente del componente:
+
+```html
+<simple-tiny
+  [elementId]="'descripcionTienda'"
+  (onEditorKeyup)="textoRichEditor($event)">
+</simple-tiny>
+```
+
+Ahora en el componente en el que pongamos el tag, podremos implementar el método `textoRichEditor(event)` en el que cada vez que pulsamos una tecla en el editor recibimos todo el contendido en el evento.
+
+```javascript
+public textoRichEditor(content) {
+    console.log('content: ', content);
+}
+```
+
+## Flujo de trabajo de proyectos
+
+### Creación de módulo presonalizado con rutas
+
+Para generar un módulo nuevo y poder usarlo en nuestra aplicación y módulo principal, primero deberemos crear un archivo con la configuración del módulo y los componentes que lo componene para luego agregar esta configuración a la configuración de nuestro módulo principal.
+
+Creamos una estructura de componentes dentro del directorio `app`
+
+```
+app/
+|-- admin
+|   |-- admin.module.ts
+|   |-- admin-routing.module.ts
+|   `-- components
+|       |-- add
+|       |   |-- add.component.html
+|       |   `-- add.component.ts
+|       |-- edit
+|       |   |-- edit.component.html
+|       |   `-- edit.component.ts
+|       |-- list
+|       |   |-- list.component.html
+|       |   `-- list.component.ts
+|       `-- main
+|           |-- main.component.html
+|           `-- main.component.ts
+```
+
+Módulo de rutas hijas que cuelgan de las principales**`admin-routing.module.ts`**
+
+```javascript
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+// Componentes
+import { MainComponent } from './components/main/main.component';
+import { ListComponent } from './components/list/list.component';
+import { AddComponent } from './components/add/add.component';
+import { EditComponent } from './components/edit/edit.component';
+
+// Rutas
+const adminRoutes: Routes = [
+    {
+        path: 'admin-panel',
+        component: MainComponent,
+        children: [
+            { path: '', redirectTo: 'listado', pathMatch: 'full' },
+            { path: 'listado', component: ListComponent },
+            { path: 'crear', component: AddComponent },
+            { path: 'editar', component: EditComponent }
+        ]
+    }
+];
+
+@NgModule({
+    imports: [RouterModule.forChild(adminRoutes)],
+    exports: [RouterModule]
+})
+
+export class AdminRoutingModule { }
+```
+
+Creamos el fichero de configuración de nuestro módulo, en el que tendremos que referenciar el módulo de rutas.
+
+Módulo de rutas hijas que cuelgan de las principales**`admin.module.ts`**
+
+```javascript
+// Importar módulos necesarios para crear el módulo
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
+import { AdminRoutingModule } from './admin-routing.module';
+
+// Componentes
+import { MainComponent } from './components/main/main.component';
+import { ListComponent } from './components/list/list.component';
+import { AddComponent } from './components/add/add.component';
+import { EditComponent } from './components/edit/edit.component';
+
+@NgModule({
+    declarations: [MainComponent, ListComponent, AddComponent, EditComponent],
+    imports: [CommonModule, FormsModule, HttpModule, AdminRoutingModule],
+    exports: [MainComponent, ListComponent, AddComponent, EditComponent],
+    providers: []
+})
+
+export class AdminModule { }
+```
+
+Luego en al fichero del módulo principal **`app.module.ts`** importamos nuestro módulo
+
+```javascript
+...
+import { ModuloEmailModule } from './moduloemail/moduloemail.module';
+...
+@NgModule({
+  declarations: [
+    AppComponent,
+    ....
+  ],
+  imports: [
+    ...,
+    AdminModule
+  ],
+  ...
+})
+```
+
+Ahora ya podremos usar nuestros componentes del nuevo módulo en cualquie parte de la aplicación, por lo que podemos usar los selectores de los componentes.
+
+## Animaciones en Angular 4
+
+Animaciones entre **estados** y animación entre **componnetes**.
+
+### Animaciones en Angular 4 entre estados
+
+Primero tenemos que instalar e importar las librerias/módulos de Angular para animaciones en nuestro componente para poder usarlos.
+
+Instalamos la librería de naimaciones para Angular 4:
+
+```
+npm install --save @angular/animations
+```
+
+En **`app.module.ts`**:
+```javascript
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+...
+@NgModule({
+  declarations: [
+    AppComponent,
+    ...
+  ],
+  imports: [
+    ...,
+    BrowserAnimationsModule
+  ],
+  providers: [
+    appRoutingProviders
+  ],
+  bootstrap: [AppComponent]
+})
+
+```
+
+En nuestro componente:
+```javascript
+import { trigger, state, style, transition, animate } from '@angular/core';
+```
+
+Luego en nuestro decorador `@Component` definiremos un **trigger** con un numbre, en el que estarán definidas todas las transiciones con css en formato json:
+
+```javascript
+@Component({
+    selector: 'app-tienda',
+    templateUrl: `./tienda.component.html`,
+    styles: ['h1 {color: blue}'],
+    animations: [
+        trigger('marcar', [
+            state('inactive', style({
+                border: '5px solid #ccc'
+            })),
+            state('active', style({
+                border: '5px solid yellow',
+                background: 'red',
+                borderRadius: '50px',
+                transform: 'scale(1.2)'
+            })),
+            transition('inactive => active', animate('300ms linear')),
+            transition('active => inactive', animate('1s linear')),
+        ])
+    ]
+})
+```
+
+Con esto ya estaremos preparados para usar nuestra animación con el nombre del trigger que le hayamos puesto. Usamos una variable `status` en nuestro componente para controlar el estado de la animación, con un valor 'inactive' por defecto:
+
+```javascript
+...
+
+export class TiendaComponent {
+    public status: string;
+
+    constructor(){
+        this.status = 'inactive';
+    }
+
+    public animarBoton(){
+        if (this.status === 'inactive') {
+            this.status = 'active';
+        } else {
+            this.status = 'inactive';
+        }
+    }
+}
+```
+
+```html
+<a class="boton_activo btn btn-success" 
+    [@marcar]="status"
+    (click)="animarBoton()">
+        Boton
+</a>
+```
+
+### Animaciones entre componentes
+
+Creamos un fichero con el código de la animación que luego importaremos en los componentes que queramos utilizarla.
+
+```
+app/
+|-- components
+|   |-- animation.ts
+```
+
+**`animation.ts`**
+```javascript
+import { animate, state, style, transition, trigger } from '@angular/animations';
+
+export const fundido: any = 
+trigger('fadeIn', [
+    transition(':enter', [
+        style({
+            opacity: 0,
+            transform: 'translateY(-55%)'
+        }),
+        animate('500ms linear',
+            style({
+                opacity: 1,
+                transform: 'translateY(0)'
+            })
+        )
+    ])
+]);
+```
+
+Genera una animación estilo "fadein" que cuando "entramos" (`:enter`) en el componente realizamos una animación de 500ms de duración de opacidad 0 a opacidad 1.
+
+Luego en el componente que queramos usarlo lo importamos:
+
+```javascript
+import { fundido } from '../animation';
+
+@Component({
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  animations: [fundido]
+})
+...
+```
+Y luego en el tag de html que englobe el componente por completo añadimos la directiva que realiza la animación.
+
+```html
+<div [@fadeIn]>
+    
+</div>
+```
+
+## Paso a de producción de un proyecto
+
+1. Creamos el proyecto con Angular CLI: `ng new <proyecto>`
+2. Copiar directorio `app` del proyecto
+3. Cambiar paths de vistas e imágenes para adaptar la estructura de CLI.
+4. Probar la APP con `ng serve` o `npm start`
+5. Generar build: `ng build --prod`
+6. Cambiar base url (si estamos en un subdirectorio)
+7. Copiar al directorio del servidor (host)
+8. Añadir .htaccess (si estamos en un subdirectorio)
+
+```
+<IfModule mod_rewrite.c>
+    Options Indexes FollowSymLinks
+    RewriteEngine On
+    RewriteBase /client/
+    RewriteRule ^index\.html$ - [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . index.html [L]
+</IfModule>
+```
+
+Si al hacer el `ng build --prod` de el siguient error:
+
+```
+ERROR in ./src/main.ts
+Module not found: Error: Can't resolve './$$_gendir/app/app.module.ngfactory' in '/home/theasker/www/curso-angular4-webapp/src'
+ @ ./src/main.ts 4:0-74
+ @ multi ./src/main.ts
+```
+
+Se arregla haciendo el build con la siguiente opción:
+
+```ng build --prod --aot=false```
+
+### Poner el producción en un subdirectorio del servidor
+
+Si queremos colgar el proyecto en producción de un subdirectorio, para poder aprovechar ese hosting para otros "clientes", necesitaremos hacer algunas modificaciones.
+
+Si suponemos que el proyecto lo ponemos en producción en el subdirectorio `cliente`, en el archivo `index.html`, cambiamos la línea `<base href="/">` por `<base href="/cliente/">`. También crearemos el fichero `.htaccess` en esa carpeta raiz de nuestro proyecto con el siguiene contenido:
+
+```
+<IfModule mod_rewrite.c> 
+    Options Indexes FollowSymLinks
+    RewriteEngine On                        # Activamos el módulo mod_rewrite
+    RewriteBase /client/                    # Directorio base del mod_rewrite
+    RewriteRule ^index\.html$ - [L]         
+    RewriteCond %{REQUEST_FILENAME} !-f     # No deja que veamos los ficheros
+    RewriteCond %{REQUEST_FILENAME} !-d     # Dice el fichero que tiene que buscar
+    RewriteRule . index.html [L]
+</IfModule>
+```
 
 
 ## Chuleta Angular 4
@@ -1424,72 +1838,7 @@ export class AppComponent {
         this.opcion = num;
     }
 }
-```
 
-## Uso de librerías externas
-
-### Uso de JQuery en Angular 4
-
-Después de incluir el script en el `head` del `index.html` del proyecto, en el componente que queramos usarlo, deberemos de declarar las variables `$` y/o `jQuery`
-
-```javascript
-declare var jQuery: any;
-declare var $: any;
-```
-
-## Paso de producción de un proyecto
-
-1. Creamos el proyecto con Angular CLI: `ng new <proyecto>`
-2. Copiar directorio `app` del proyecto
-3. Cambiar paths de vistas e imágenes para adaptar la estructura de CLI.
-4. Probar la APP con `ng serve` o `npm start`
-5. Generar build: `ng build --prod`
-6. Cambiar base url (si estamos en un subdirectorio)
-7. Copiar al directorio del servidor (host)
-8. Añadir .htaccess (si estamos en un subdirectorio)
-
-```
-<IfModule mod_rewrite.c>
-    Options Indexes FollowSymLinks
-    RewriteEngine On
-    RewriteBase /client/
-    RewriteRule ^index\.html$ - [L]
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule . index.html [L]
-</IfModule>
-```
-
-Si al hacer el `ng build --prod` de el siguient error:
-
-```
-ERROR in ./src/main.ts
-Module not found: Error: Can't resolve './$$_gendir/app/app.module.ngfactory' in '/home/theasker/www/curso-angular4-webapp/src'
- @ ./src/main.ts 4:0-74
- @ multi ./src/main.ts
-```
-
-Se arregla haciendo el build con la siguiente opción:
-
-```ng build --prod --aot=false```
-
-### Poner el producción en un subdirectorio del servidor
-
-Si queremos colgar el proyecto en producción de un subdirectorio, para poder aprovechar ese hosting para otros "clientes", necesitaremos hacer algunas modificaciones.
-
-Si suponemos que el proyecto lo ponemos en producción en el subdirectorio `cliente`, en el archivo `index.html`, cambiamos la línea `<base href="/">` por `<base href="/cliente/">`. También crearemos el fichero `.htaccess` en esa carpeta raiz de nuestro proyecto con el siguiene contenido:
-
-```
-<IfModule mod_rewrite.c> 
-    Options Indexes FollowSymLinks
-    RewriteEngine On                        # Activamos el módulo mod_rewrite
-    RewriteBase /client/                    # Directorio base del mod_rewrite
-    RewriteRule ^index\.html$ - [L]         
-    RewriteCond %{REQUEST_FILENAME} !-f     # No deja que veamos los ficheros
-    RewriteCond %{REQUEST_FILENAME} !-d     # Dice el fichero que tiene que buscar
-    RewriteRule . index.html [L]
-</IfModule>
-```
 
 ## Enlaces
 
