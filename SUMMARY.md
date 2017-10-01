@@ -1,6 +1,6 @@
-# Summary
+# Your Book Name
 
-<<<<<<< HEAD
+- Book
   - [AWS](_book/AWS/aws.md)
   - AWS
   - Cursos
@@ -117,6 +117,3 @@
 * [Javascript](javascript.md)
 * [Sshsinclaves](sshsinclaves.md)
 * [Tmux](tmux.md)
-
-=======
->>>>>>> 2c2a803dadf2cbfed6b3c2b8b34971b54a42e76c
