@@ -200,7 +200,7 @@ Para crear plantillas de forma global, las podemos definir en el directorio `/ap
 
 El sistema de plantillas de twig funciona con bloques del estilo a:
 
-```twig
+````html
 <!DOCTYPE html>
 <html>
     <head>
@@ -214,10 +214,10 @@ El sistema de plantillas de twig funciona con bloques del estilo a:
         {% block javascripts %}{% endblock %}
     </body>
 </html>
-```
+````` 
 
 En la ruta `/app/Resources/views` podemos definir plantillas para luego heredarlas. Podemos crear la plantilla `/app/Resources/views/layaut.html.twig` con este contenido:
-```twig
+````html
 <!DOCTYPE html>
 <html>
     <head>
@@ -243,21 +243,21 @@ En la ruta `/app/Resources/views` podemos definir plantillas para luego heredarl
         {% block javascripts %}{% endblock %}
     </body>
 </html>
-```
+````
 
 Y luego en nuestra vista heredamos de esta plantilla:
 `/src/AppBundle/Resources/views/pruebas/index.html.twig`
-```twig
+````html
 {% extends "layaut.html.twig" %}
 {% block container %}
   {{parent()}}
   {{texto}}
 {%endblock%}
-```
+````
 ### Variables, y estructuras de control
 
 `/src/AppBundle/Controller/PruebasController.php`
-```php
+````php
 ...
 
 class PruebasController extends Controller{
@@ -280,9 +280,9 @@ class PruebasController extends Controller{
     ));
   }    
 }
-```
+````
 `/src/AppBundle/Resources/views/pruebas/index.html.twig`
-```twig
+````twig
 {% extends "layaut.html.twig" %}
 {% block container %}
 
@@ -313,7 +313,7 @@ class PruebasController extends Controller{
   {% endif %}
     
 {%endblock%}
-```
+````
 ### Funciones predefinidas de Twig 
 
   * `{% set fecha = date() %}`: Guarda en la variable fecha el objeto que devuelve la función.
@@ -323,11 +323,11 @@ class PruebasController extends Controller{
   * Las funciones `max()` y `min()` sacan el mayor o menor respectivamente de un array de valores.
   * La función `random()` visualiza un valor aleatorio del parámetro dado, que puede ser un array `{{ random(1000) }}` o `{{ random([52,5,73]) }}`.
   * La función `range()' nos devuelve un rango de números dado como parámetros `(1-10)` y si le damos el tercer parámetro lo usará como valor de salto entre el rango, es decir, si ponemos 2 saltará de 2 en 2 y si es 3 saltará de 3 en 3. Este es un bucle for que hace una secuencia de 0 a 10 saltando de 2 en 2:
-```twig
+````twig
 {% for i in range(0,10,2) %}
   {{i}}
 {% endfor %}
-```
+````
 
 ### Funciones predefinidas por el usuario para Twig
 
@@ -335,7 +335,7 @@ creamos un archivo php para definir nuestra nueva función para archivos Twig en
 
 `/src/AppBundle/Twig`
 
-```php
+````php
 <?php
 namespace AppBundle\Twig;
  
@@ -365,11 +365,11 @@ class HelperVistas extends \Twig_Extension{
     return "app_bundle";
   }
 }
-```
+````
 
 Esta nueva funcionalidad habrá que decir a Symfony que existe en el fichero `/app/config/services.yml`
 
-```yaml
+````yaml
 services:
   app.twig_extension:
     class: AppBundle\Twig\HelperVistas
@@ -377,14 +377,14 @@ services:
     tags:
       - { name: twig.extension }
 
-```
+````
 Lo usaremos con el nombre que le hemos dado a la función, en este caso `generateTable()` con el filtro `raw` para que en vez de imprimir el código html nos la dibuje correctamente:
 
-```twig
+````twig
 ...
 {{ generateTable(productos)|raw }}
 ...
-```
+````
 
 ## Trabajar con Bases de Datos
 
@@ -392,37 +392,37 @@ Lo usaremos con el nombre que le hemos dado a la función, en este caso `generat
 
 Tenemos que pasar la estructura de la base de datos a Symfony. Primero la exportamos a metadatos en formato xml con el comando:
 
-```bash
+````bash
 php bin/console doctrine:mapping:convert xml ./src/AppBundle/Resources/doctrine/metadata/orm --from-database --force
 Processing entity "Productos"
 Processing entity "Usuarios"
 
 Exporting "xml" mapping information to "/home/theasker/code/CursoSymfony3/src/AppBundle/Resources/doctrine/metadata/orm"
 
-```
+````
 
 Si la tabla se llama **Usuarios** la entidad la llamará también **Usuarios** y habrá que cambiarlo a singular, es decir, usuario.
 
 Luego lo que hay que hacer es importar los metadatos a yaml, con el comando
 
-```bash
+````bash
 php bin/console doctrine:mapping:import AppBundle yml
 Importing mapping information from "default" entity manager
   > writing /home/theasker/code/CursoSymfony3/src/AppBundle/Resources/config/doctrine/Productos.orm.yml
   > writing /home/theasker/code/CursoSymfony3/src/AppBundle/Resources/config/doctrine/Usuarios.orm.yml
 
-```
+````
 
 Esto creará el esquema de la base de datos en el directorio `/src/AppBundle/config/doctrine`. Y con esto generaremos las entidades con las que podremos interactuar:
 
-```bash
+````bash
 php bin/console doctrine:generate:entities AppBundle
 Generating entities for bundle "AppBundle"
   > backing up Usuario.php to Usuario.php~
   > generating AppBundle\Entity\Usuario
   > backing up Producto.php to Producto.php~
   > generating AppBundle\Entity\Producto
-```
+````
 
 ### Cómo generar una Entidad para crear la base de datos
 
@@ -430,33 +430,33 @@ Generating entities for bundle "AppBundle"
 
 Con este comando nos generará la Entity preguntando el **Bundle** de la Entity, el nombre de la Entity, así como los campos con sus tipos y opciones de cada campo.
 
-```bash
+````bash
 php bin/console doctrine:generate:entity
-```
+````
 
 Luego le diremos que con las especificaciones que hemos introducido, actualice o cree la tabla que le hemos indicado anteriormente
 
-```bash
+````bash
 php bin/console doctrine:schema:update --force
-```
+````
 
 También tendremos que ejecutar este comando cada vez que modifiquemos nuestras Entidades.
 
 Para eliminar todo el esquema de la base de datos y generar uno nuevo:
 
-```bash
+````bash
 php bin/console doctrine:schema:drop --force
-```
+````
 Ahora generamos el nuevo
-```bash
+````bash
 php bin/console doctrine:schema:create --force
-```
+````
 
 ### Insert, update, modify, delete datos en la base de datos
 
 En `/src/AppBundle/Controller/PruebasController.php`:
 
-```php
+````php
 ...
 public function createAction(){
   $curso = new Curso();
@@ -523,11 +523,11 @@ public function deleteAction($id){
     die();
 }
 ...
-```
+````
 
 Para hacerlo correctamente, usamos otra ruta para cada acción, modificando el fichero `/src/Appbundle/Resources/config/routing.yml`:
 
-```yaml
+````yaml
 pruebas_create:
   path: /pruebas/create
   defaults: {_controller: AppBundle:Pruebas:create}
@@ -543,13 +543,13 @@ pruebas_update:
 pruebas_delete:
   path: /pruebas/delete/{id}
   defaults: {_controller: AppBundle:Pruebas:delete}
-```
+````
 
 #### Tipos de find para hacer consultas
 
 Podemos usar el método **`findBy()`** que es como una cláusula WHERE en SQL. Vamos a buscar todos los cursos que tengan como precio 80:
 
-```php
+````php
 ...
 $curso_ochenta = $cursos_repo->findBy(array("precio"=>80));
 
@@ -559,24 +559,24 @@ foreach($curso_ochenta as $curso){
     echo $curso->getPrecio()."<br/><hr/>";
 }
 ...
-```
+````
 
 Si en vez de varios cursos sabemos que sólo hay un registro que vaya a cumplir con el parámetro podemos usar **`findOneBy`**:
 
-```php
+````php
 ...
 $curso_ochenta = $cursos_repo->findOneByPrecio(80);
 
 echo $curso_ochenta->getTitulo();
 ...
-```
+````
 como se ve usamos como método `findOneBy` y seguido el nombre del campo por el que queremos buscar.
 
 #### Consultas SQL
 
 Tenemos la opción de hacer consultas con SQL nativo.
 
-```php
+````php
 public function nativeSqlAction(){
   $em = $this->getDoctrine()->getEntityManager();
   $db = $em->getConnection();
@@ -593,16 +593,16 @@ public function nativeSqlAction(){
   }
   die();
 }
-```
+````
 
 y añadir la ruta para poder acceder a la página
 
-```yaml
+````yaml
 ...
 pruebas_native:
 	path: /pruebas/native
 	defaults: { _controller: AppBundle:Pruebas:nativeSql }
 ...
-```
+````
 
 #### Consultas DQL
