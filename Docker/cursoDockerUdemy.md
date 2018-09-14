@@ -151,6 +151,11 @@ RUN \
 * No instalar paquetes innecesarios.
 * Usar LABELS que den información de nuestra imagen, como pueden ser versiones y descripciones.
 
+
+### Multi Stage Build
+
+Es una funcionalidad en la que nos permiete untilizar varios **FROM** dentro de un mismo DockerFile
+
 ## Tratamiento de imagenes
 
 ### Eliminar imágenes `docker rmi`
@@ -274,8 +279,7 @@ EXPOSE 443
 VOLUME /var/www/html /var/log/php-fpm /var/lib/php-fpm
 COPY ./vonf/nginx.conf /etc/nginx/conf.d/nginx.conf
 COPY ./bin/start.sh /start.sh
-
-
+CMD /start.sh
 ````
 
 ## Enlaces
