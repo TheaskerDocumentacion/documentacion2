@@ -56,6 +56,10 @@
         - [Eliminar redes](#eliminar-redes)
         - [Asignar una IP a un contenedor](#asignar-una-ip-a-un-contenedor)
         - [La red Host](#la-red-host)
+        - [La red None](#la-red-none)
+        - [Enlazar contenedores](#enlazar-contenedores)
+            - [Enlace de 2 contenedores con apache2 y MySQL para su uso en producción.](#enlace-de-2-contenedores-con-apache2-y-mysql-para-su-uso-en-producción)
+    - [Docker Compose](#docker-compose)
     - [Enlaces](#enlaces)
 
 <!-- /TOC -->
@@ -695,6 +699,28 @@ Si creamos un contenedor y lo inspeccionamos con `docker inspect <id|nombre>`:
 "IPAddress": "172.17.0.3",
 ````
 
+Tomaremos como premisa que la IP de nuestro Docker Host es `192.168.100.2` 
+
+Al exponer un puerto en un contenedor, por defecto, este utiliza todas las interfaces de nuestra máquina. Veámos un ejemplo:
+
+    [ricardo@localhost ~]$ docker run -d -p 8080:80 nginx
+    196a13fe6198e1a3e8d55aedda90882f6abd80f4cdf41b2f29219a9632e5e3a1
+    [ricardo@localhost ~]$ docker ps -l
+    CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                  NAMES
+    196a13fe6198        nginx               "nginx -g 'daemon of…"   5 seconds ago       Up 2 seconds        0.0.0.0:8080->80/tcp   frosty_jenning
+
+Si observamos la parte de ports, veremos un 0.0.0.0 . Esto significa que podremos acceder al servicio en el puerto 8080  utilizando localhost:8080 , o 127.0.0.1:8080 , 192.168.100.2:8080 .
+
+Si quisiéramos que sea accesible solamente vía localhost  y no vía 192.168.100.2 , entonces haríamos lo siguiente:
+
+    [ricardo@localhost ~]$ docker run -d -p 127.0.0.1:8081:80 nginx
+    1d7e82ff15da55b8c774baae56827aef12d59ab848a5f5fb7f883d1f6d1ee6e1
+    [ricardo@localhost ~]$ docker ps -l
+    CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
+    1d7e82ff15da        nginx               "nginx -g 'daemon of…"   3 seconds ago       Up 1 second         127.0.0.1:8081->80/tcp   musing_tesla
+
+Como observamos, ahora en vez de 0.0.0.0  vemos un 127.0.0.1 , lo que indica que nuestro servicio es accesible sólo vía localhost  y no usando 192.168.100.2 
+
 ### Red por defecto de docker
 
 Para ver la red por defecto de docker:
@@ -1074,14 +1100,14 @@ Para que funcione esto, tenemos que habe creado **una red con una subred y un ga
 
 ### La red Host
 
-Es la red de nuestra máquina:
+Es la red de nuestra máquina la ip es `145.239.196.19`:
 ````
 $ ip a | grep ens
 2: ens3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
     inet 145.239.196.19/32 brd 145.239.196.19 scope global ens3
 ````
 
-Creamos un contenedor y entramos para ver la ip:
+Creamos un contenedor en la red **Host** con `--network host` y entramos para ver la ip y vemos que tiene ahora la misma que el host `145.239.196.19` (tendremos que instalar una utilidad de centos llamada **net-tools** para poder ejecutar el comando **ifconfig**:
 ````
 theasker@vps462589:~$ docker run -it --name centos --network host centos bash
 [root@vps462589 /]# ifconfig
@@ -1105,6 +1131,138 @@ vps462589
 ````
 
 
+
+### La red None
+
+Es para que los contenedores a los contenedores que pongamos en la red None no tenga salida a red.
+
+### Enlazar contenedores
+
+Crear un contenedor añadiendole cierta información de otro contenedor ya existente para que el acceso entre ambas sea más sencillo con variables de entorno.
+
+	docker run -it --name test1 -h test1 mijack/apache2 bash
+	docker run --link test1 -rm -it --name test2 -h test2 debian bash
+
+
+Docker modifica el fichero '/etc/hosts' añadiendo la ip de la máquina enlazada para que su acceso sea rápido
+
+	root@test2:/# cat /etc/hosts
+	[...]
+	172.17.0.2      test1 test1
+	172.17.0.3      test2
+
+Crea unas variables de entorno por cada puerto expuesto en test1 para que sea más fácil su acceso, así como el hostname del contenedor enlazado, así como su variable HOME y PATH.
+
+	root@test2:/# env
+	TEST1_NAME=/test2/test1
+	TEST1_PORT_80_TCP_ADDR=172.17.0.2
+	HOSTNAME=test2
+	TEST1_PORT_80_TCP=tcp://172.17.0.2:80
+	TERM=xterm
+	TEST1_PORT_80_TCP_PROTO=tcp
+	TEST1_PORT=tcp://172.17.0.2:80
+	PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+	TEST1_PORT_80_TCP_PORT=80
+	PWD=/
+	SHLVL=1
+	HOME=/root
+	_=/usr/bin/env
+
+#### Enlace de 2 contenedores con apache2 y MySQL para su uso en producción.
+
+Vamos a enlazar un contendor con apache2 y otro con Mysql.
+
+Primero creamos un contenedor ('run') con consola virtual interactiva ('-it') que lo llamaremos db ('--name db') con hostname db ('-h db') basado en debian con el intérprete de comandos bash
+
+	docker run -it --name db -h db debian bash
+
+Comentamos la línea del archivo /etc/mysql/my.cnf
+
+	#bind-address = 127.0.0.1
+
+Comprobamos que es cierto que mysql está escuchando en todos los interfaces de red. (Instalamos antes net-tools para usar netstat)
+
+	netstat -planet |grep LISTEN
+	tcp        0      0 0.0.0.0:3306            0.0.0.0:*               LISTEN      104        128309      -             
+
+Damos permisos a todas las bases de datos al usuario root
+
+	mysql> grant all on *.* to 'root'@'%';
+	mysql> flush privileges;
+
+Ahora arrancamos el segundo contenedor enlazado al contenedor web:
+
+	docker run --link db -it --name web -h web mijack/apache2 bash
+
+Vemos las variables de entorno:
+
+	root@web:/# env
+	HOSTNAME=web
+	DB_NAME=/web/db
+	TERM=xterm
+	PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+	PWD=/
+	SHLVL=1
+	HOME=/root
+	_=/usr/bin/env
+
+Ahora podemos hacer un ping a la máquina enlazada
+
+	root@web:/# ping db
+	PING db (172.17.0.2): 56 data bytes
+	64 bytes from 172.17.0.2: icmp_seq=0 ttl=64 time=0.128 ms
+
+Ahora nos podemos conectar a MySQL desde el contenedor web
+
+	root@web:~# mysql -h db -uroot
+	...
+	mysql>
+
+## Docker Compose
+
+Es una aplicación que nos ayuda a crear aplicaciones multicontenedor.
+
+Se confecciona en archivos **.yml** con 4 grandes partes 2 obligatorias y 2 opcionales:
+* **`version:`** (obligatorio) Siempre ponemos la última versión que haya, consultando en la documentación de docker-compose.
+* **`services:`** (obligatorio)
+* **`volumes:`** (opcional)
+* **`networks:`** (opcional)
+
+Vamos a crear por ejemplo un contenedor con el servidor web nginx, exponiendo el puerto, como crearíamos con el comando:
+````
+docker run -d --name nginx -p 8080:80 nginx
+````
+
+La opción `-d` de **detached** es por defecto. Creamos el fichero `docker-compose.yml`
+````yml
+version: '3'
+services:
+  web:
+    container_name: nginx1
+    ports:
+      - "8080:80"
+    image: nginx
+````
+
+Para "levantar" esta configuración ejecutaremos:
+* `docker-compose up` si queremos que se quede enviando la salida por la pantalla.
+* `docker-compose up -d` (detached) si queremos separar la ejecución del contenedor de la consola, para poder ejecutar otros comandos.
+````
+$ docker-compose up -d
+Creating network "dockercompose_default" with the default driver
+Creating nginx1
+````
+Vemos que automáticamente docker crea una red para ese contenedor llamada **dockercompose_default**.
+
+Para elminar el contenedor y la red creada asociada a ese contenedor creado con docker-compose tenemos que ejecutar:
+````
+$ docker-compose down
+Stopping nginx1 ... done
+Removing nginx1 ... done
+Removing network dockercompose_default
+````
+
+Y vemos como elimina lo que hemos creado.
 
 ## Enlaces
 - https://www.udemy.com/docker-de-principiante-a-experto
