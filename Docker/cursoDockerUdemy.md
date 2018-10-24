@@ -60,6 +60,7 @@
         - [Enlazar contenedores](#enlazar-contenedores)
             - [Enlace de 2 contenedores con apache2 y MySQL para su uso en producción.](#enlace-de-2-contenedores-con-apache2-y-mysql-para-su-uso-en-producción)
     - [Docker Compose](#docker-compose)
+        - [Variables de entorno](#variables-de-entorno)
     - [Enlaces](#enlaces)
 
 <!-- /TOC -->
@@ -1263,6 +1264,27 @@ Removing network dockercompose_default
 ````
 
 Y vemos como elimina lo que hemos creado.
+
+### Variables de entorno
+
+Creo un fichero `docker-compose-mysql.yml` para usar la imagen de MySQL
+````yml
+version: '2'
+services:
+  db:
+    image: mysql:5.7
+    container_name: mysql
+    ports:
+      - "3333:3306"
+    environment:
+      - "MYSQL_ROOT_PASSWORD=12345678"
+````
+
+Y lo iniciamos:
+````
+docker-compose -f docker-compose-mysql.yml up -d
+````
+
 
 ## Enlaces
 - https://www.udemy.com/docker-de-principiante-a-experto
