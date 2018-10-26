@@ -61,6 +61,10 @@
             - [Enlace de 2 contenedores con apache2 y MySQL para su uso en producción.](#enlace-de-2-contenedores-con-apache2-y-mysql-para-su-uso-en-producción)
     - [Docker Compose](#docker-compose)
         - [Variables de entorno](#variables-de-entorno)
+        - [Volúmenes](#volúmenes-1)
+            - [Volumen nombrado](#volumen-nombrado)
+            - [Volumen de host](#volumen-de-host)
+        - [Redes](#redes)
     - [Enlaces](#enlaces)
 
 <!-- /TOC -->
@@ -578,7 +582,7 @@ docker run -d  --name mongo mongo
 
 Sirve para crear una imagen a partir de un contenedor. **Si en ese contenedor se han hecho cambios en un volumen, estos no se guardarán**, ya que se supone que ese volumen se monta en el host y se guardan alli.
 ````
-docker commit <imagen origen> <imagen destino>
+docker commit <contenedor origen> <nombre imagen destino>
 ````
 
 ## Volúmenes
@@ -1280,11 +1284,120 @@ services:
       - "MYSQL_ROOT_PASSWORD=12345678"
 ````
 
-Y lo iniciamos:
+Y lo iniciamos, y vemos las variables de entorno que hay dentro del contenedor
 ````
-docker-compose -f docker-compose-mysql.yml up -d
+$ docker-compose -f docker-compose-mysql.yml up -d
+Creating network "dockercompose_default" with the default driver
+Creating mysql
+theasker@vps462589:~/docker-images/dockerCompose$ docker exec -it mysql bash
+root@7db79e2765d2:/# env
+HOSTNAME=7db79e2765d2
+MYSQL_ROOT_PASSWORD=12345678
+PWD=/
+HOME=/root
+MYSQL_MAJOR=5.7
+GOSU_VERSION=1.7
+MYSQL_VERSION=5.7.23-1debian9
+TERM=xterm
+SHLVL=1
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+_=/usr/bin/env
 ````
 
+También podemos poner las variables de entorno dentro de un fichero. Metemos nuestra variable en el fichero `common.env`:
+````
+MYSQL_ROOT_PASSWORD=12345678
+````
+Y luego en el fichero docker-compose en vez de **environment:** lo cambiamos por **env_file:** apuntando al fichero en que tenemos las variables de entorno, y el fichero docker-compose quedaría así:
+````yml
+version: '2'
+services:
+  db:
+    image: mysql:5.7
+    container_name: mysql
+    ports:
+      - "3333:3306"
+    env_file: common.env
+````
+
+### Volúmenes
+
+#### Volumen nombrado
+````yml
+version: '2'
+services:
+  web:
+    container_name: nginx1
+    ports:
+      - "8080:80"
+    image: nginx
+    volumes:
+      - "vol2:/usr/share/nginx/html"
+volumes:
+    vol2:
+````
+Nos creará un volumen en disco en el **docker root** por defecto en `/var/lib/docker`. Este volumen se creará entonces en `/var/lib/docker/volumes/dockercompose_vol2`.
+
+#### Volumen de host
+
+````yml
+version: '3'
+services:
+  web:
+    container_name: nginx1
+    ports:
+      - "8080:80"
+    image: nginx
+    volumes:
+      - "/home/theasker/volumen:/usr/share/nginx/html"
+````
+
+### Redes
+
+````yml
+version: '2'
+services:
+  web:
+    container_name: nginx1
+    ports:
+      - "8080:80"
+    image: nginx
+    networks:
+      - net-test
+networks:
+    net-test:
+````
+
+Con esto, nos creará una red llamada net-test. Con esto podemos enlazar y comunicar contenedores creando varios servicios con la misma red:
+
+````yml
+version: '2'
+services:
+  web:
+    container_name: apache1
+    ports:
+      - "8080:80"
+    image: httpd
+    networks:
+      - net-test
+  web2:
+    container_name: apache2
+    ports:
+      - "8081:80"
+    image: httpd
+    networks:
+      - net-test
+networks:
+    net-test:
+````
+
+Y arrancamos los contenedores:
+````
+$ docker-compose -f docker-compose-networks.yml up -d
+Creating network "dockercompose_net-test" with the default driver
+Creating apache2
+Creating apache1
+````
 
 ## Enlaces
 - https://www.udemy.com/docker-de-principiante-a-experto
