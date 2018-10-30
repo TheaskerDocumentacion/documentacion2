@@ -1557,6 +1557,10 @@ Usaremos la opción **`restart`**, que **por defecto está a no**.
 * **restart: on-failure**: Sólo se reinicia si hay un error interno en el contenedor. Si el código de error es difernte a 0 lo reiniciará. Por ejemplo, lo podemos forzar con un `exit 1` en un script.
 * **restart: unless-stopped**: A menos que nosotros hayamos detenido el contenedor se reiniciará, con `docker stop test`.
 
+Todo esto también lo podemos hacer diretamente en línea de comandos con **docker run**:
+
+    docker run -dit --restar unless-stopped redis
+
 Voy a crear un archivo de Docker Compose:
 
 ````
