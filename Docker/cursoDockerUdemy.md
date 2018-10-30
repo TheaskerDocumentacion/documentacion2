@@ -65,6 +65,10 @@
             - [Volumen nombrado](#volumen-nombrado)
             - [Volumen de host](#volumen-de-host)
         - [Redes](#redes)
+        - [Construir imágenes en Docker Compose](#construir-imágenes-en-docker-compose)
+        - [Sobreescribir el CMD de un contenedor con Docker Compose](#sobreescribir-el-cmd-de-un-contenedor-con-docker-compose)
+        - [Limitar recursos para contenedores usando Docker Compose](#limitar-recursos-para-contenedores-usando-docker-compose)
+        - [Política de reinicio de contenedores](#política-de-reinicio-de-contenedores)
     - [Enlaces](#enlaces)
 
 <!-- /TOC -->
@@ -1377,14 +1381,14 @@ services:
     container_name: apache1
     ports:
       - "8080:80"
-    image: httpd
+    image: httpdping
     networks:
       - net-test
   web2:
     container_name: apache2
     ports:
       - "8081:80"
-    image: httpd
+    image: httpdping
     networks:
       - net-test
 networks:
@@ -1398,6 +1402,209 @@ Creating network "dockercompose_net-test" with the default driver
 Creating apache2
 Creating apache1
 ````
+
+Como hemos agregado los 2 contenedores (web, web2) a la misma red `net-test`, podemos hacer un ping de uno a otro:
+````
+theasker@vps462589:~/docker-images/dockerCompose$ docker exec -ti apache1 sh -c "ping apache2"
+PING apache2 (172.27.0.2) 56(84) bytes of data.
+64 bytes from apache2.dockercompose_net-test (172.27.0.2): icmp_seq=1 ttl=64 time=0.134 ms
+64 bytes from apache2.dockercompose_net-test (172.27.0.2): icmp_seq=2 ttl=64 time=0.092 ms
+64 bytes from apache2.dockercompose_net-test (172.27.0.2): icmp_seq=3 ttl=64 time=0.068 ms
+64 bytes from apache2.dockercompose_net-test (172.27.0.2): icmp_seq=4 ttl=64 time=0.074 ms
+64 bytes from apache2.dockercompose_net-test (172.27.0.2): icmp_seq=5 ttl=64 time=0.106 ms
+^C
+--- apache2 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4098ms
+rtt min/avg/max/mdev = 0.068/0.094/0.134/0.026 ms
+theasker@vps462589:~/docker-images/dockerCompose$ docker exec -ti apache2 sh -c "ping apache1"
+PING apache1 (172.27.0.3) 56(84) bytes of data.
+64 bytes from apache1.dockercompose_net-test (172.27.0.3): icmp_seq=1 ttl=64 time=0.055 ms
+64 bytes from apache1.dockercompose_net-test (172.27.0.3): icmp_seq=2 ttl=64 time=0.070 ms
+64 bytes from apache1.dockercompose_net-test (172.27.0.3): icmp_seq=3 ttl=64 time=0.085 ms
+^C
+--- apache1 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2041ms
+rtt min/avg/max/mdev = 0.055/0.070/0.085/0.012 ms
+````
+
+Pero no sólo podemos hacer ping por nombre del contenedor, sino por el nombre del servicio que le hemos dado en el archivo docker-compose, es decir, al serivicio **web** y **web2**:
+
+````
+theasker@vps462589:~/docker-images/dockerCompose$ docker exec -ti apache1 sh -c "ping -c2 web2"
+PING web2 (172.27.0.2) 56(84) bytes of data.
+64 bytes from apache2.dockercompose_net-test (172.27.0.2): icmp_seq=1 ttl=64 time=0.111 ms
+64 bytes from apache2.dockercompose_net-test (172.27.0.2): icmp_seq=2 ttl=64 time=0.088 ms
+
+--- web2 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1024ms
+rtt min/avg/max/mdev = 0.088/0.099/0.111/0.015 ms
+theasker@vps462589:~/docker-images/dockerCompose$ docker exec -ti apache2 sh -c "ping -c2 web"
+PING web (172.27.0.3) 56(84) bytes of data.
+64 bytes from apache1.dockercompose_net-test (172.27.0.3): icmp_seq=1 ttl=64 time=0.057 ms
+64 bytes from apache1.dockercompose_net-test (172.27.0.3): icmp_seq=2 ttl=64 time=0.180 ms
+
+--- web ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1029ms
+rtt min/avg/max/mdev = 0.057/0.118/0.180/0.062 ms
+````
+
+### Construir imágenes en Docker Compose
+
+Docker Compose tiene el comando **build** para construir imágenes.
+
+Creamos el fichero `docker-compose.yml`. Con el apartado **context** le decimos en que carpeta está el fichero Dockerfile
+````
+version: '2'
+services:
+  web:
+    container_name: web
+    image: web-test
+    build:
+      context: .
+      dockerfile: Dockerfile2
+````
+
+
+
+Y el fichero `Dockerfile2`, que es el nombre que le hemos dicho, que buscará al contruir la imagen, que tiene que estar situado en el directorio que hemos puesto en **context** que está el docker-compose.yml.
+````dockerfile
+FROM centos
+
+RUN mkdir /opt/test
+````
+
+Luego ejecutamos el comando **`docker-compose build`** para constuir la imagen y ejecutar el servicio
+````
+$ docker-compose build
+Building web
+Step 1/2 : FROM centos
+ ---> 5182e96772bf
+Step 2/2 : RUN mkdir /opt/test
+ ---> Running in 610769722bc7
+Removing intermediate container 610769722bc7
+ ---> 49d977a2b675
+Successfully built 49d977a2b675
+Successfully tagged web-test:latest
+````
+
+### Sobreescribir el CMD de un contenedor con Docker Compose
+
+Primero vamos a ver el CMD por defecto de un contenedor de Centos (que vamos a usar por ejemplo):
+````
+$ docker run -dti --name centos centos
+11d152c3d103931e200301b31c1ff9a1cc429b89ad524f1db8ad1afdadf8fbea
+$ docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+11d152c3d103        centos              "/bin/bash"         6 seconds ago       Up 4 seconds                            centos
+````
+Y vemos que el CMD por defecto de la imagen de Centos es `/bin/bash`
+
+Creamos el fichero `docker-compose-cmd.yml`
+````
+version: '2'
+services:
+  web:
+    image: centos
+    command: python -m SimpleHTTPServer 8080
+    ports:
+      - "8080:8080"
+````
+Aquí definimos un nuevo CMD para el contenedor que creamos y debería sobreescribir el CMD por defecto que lleve la imagen.
+````
+e$ docker-compose -f docker-compose-cmd.yml up -d
+Creating network "dockercompose_default" with the default driver
+Creating dockercompose_web_1
+theasker@vps462589:~/docker-images/dockerCompose$ docker ps -a
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
+bcefeabaac8a        centos              "python -m SimpleHTT…"   11 seconds ago      Up 11 seconds       0.0.0.0:8080->8080/tcp   dockercompose_web_1
+11d152c3d103        centos              "/bin/bash"              About an hour ago   Up About an hour                             centos
+````
+Vemos que el CMD ahora es el que hemos especificado en el Docker Compose.
+
+### Limitar recursos para contenedores usando Docker Compose
+
+Creamos el archivo `docker-compose-memory.yml`
+````
+version: '2'
+services:
+  web:
+    container_name: nginx
+    mem_limit: 20m
+    cpuset: "0"
+    image: nginx:alpine
+````
+
+Levantamos el servicio con el comando:
+````
+docker-compose -f docker-compose-memory.yml up -d
+````
+
+Con el comando **stats** veremos las estadísticas de recursos en uso según contenedor:
+````
+$ docker stats --no-stream
+CONTAINER ID        NAME                CPU %               MEM USAGE / LIMIT   MEM %               NET I/O             BLOCK I/O           PIDS
+485e8f347c10        nginx               0.00%               1.754MiB / 20MiB    8.77%               1.72kB / 0B         0B / 0B             2
+````
+Y vemos como está limitada la memoria.
+
+### Política de reinicio de contenedores
+
+Condiciones o reglas en las que le decimos a un contenedor que tiene que ser reiniciado.
+
+Usaremos la opción **`restart`**, que **por defecto está a no**.
+* **restart: "no"**: Opción por defecto
+* **restart: always**: Se reinicia siempre que se haya apagado
+* **restart: on-failure**: Sólo se reinicia si hay un error interno en el contenedor. Si el código de error es difernte a 0 lo reiniciará. Por ejemplo, lo podemos forzar con un `exit 1` en un script.
+* **restart: unless-stopped**: A menos que nosotros hayamos detenido el contenedor se reiniciará, con `docker stop test`.
+
+Voy a crear un archivo de Docker Compose:
+
+````
+version: '2'
+services:
+  test:
+    container_name: test
+    image: restar-image
+    build: .
+    restart: always
+````
+
+Ahora creamos un Dockerfile que usará el apartado **build**:
+
+    FROM centos
+    COPY start.sh /start.sh
+    RUN chmod +x /start.sh
+    CMD /start.sh
+
+
+Ahora creamos el script `start.sh`:
+
+    #!/bin/bash
+    echo "Estoy vivo"
+    sleep 5
+    echo "Estoy detenido"
+
+
+Ahora creamos la imagen:
+
+    docker-compose build
+
+Arrancamos el contenedor
+
+    docker-compose up -d
+
+Luego con el comando **watch**, veremos como se va reiniciando:
+
+     watch -d docker ps -a
+
+Y sino con los logs del contenedor de docker veremos el histórico de lo que ha hecho:
+
+    docker logs -f test
+
+
+
+
+
 
 ## Enlaces
 - https://www.udemy.com/docker-de-principiante-a-experto
