@@ -69,6 +69,9 @@
         - [Sobreescribir el CMD de un contenedor con Docker Compose](#sobreescribir-el-cmd-de-un-contenedor-con-docker-compose)
         - [Limitar recursos para contenedores usando Docker Compose](#limitar-recursos-para-contenedores-usando-docker-compose)
         - [Política de reinicio de contenedores](#política-de-reinicio-de-contenedores)
+        - [Personalizar el nombre de tu proyecto en Docker Compose](#personalizar-el-nombre-de-tu-proyecto-en-docker-compose)
+        - [Ejemplos de Docker Compose](#ejemplos-de-docker-compose)
+            - [Wordpress + MySQL](#wordpress--mysql)
     - [Enlaces](#enlaces)
 
 <!-- /TOC -->
@@ -1599,13 +1602,71 @@ Arrancamos el contenedor
 
 Luego con el comando **watch**, veremos como se va reiniciando:
 
-     watch -d docker ps -a
+    watch -d docker ps -a
 
 Y sino con los logs del contenedor de docker veremos el histórico de lo que ha hecho:
 
     docker logs -f test
 
+### Personalizar el nombre de tu proyecto en Docker Compose
 
+Cuando levantamos un servicio, docker automáticamente nos **crea una red con el nombre de la carpeta** y poniendo después "default".
+
+    # docker-compose -f docker-compose-cmd.yml up -d
+    Creating network "dockercompose_default" with the default driver
+    Creating dockercompose_web_1
+
+Pero esto lo podemos personalizar usando la opción **`-p`** de proyect, de esta manera:
+
+    # docker-compose -p webtest -f docker-compose-cmd.yml up -d
+    Creating network "webtest_default" with the default driver
+    Creating webtest_web_1
+
+### Ejemplos de Docker Compose
+
+#### Wordpress + MySQL
+
+````docker
+version: '2.4'
+
+services:
+  db:
+    container_name: wp-mysql
+    image: mysql:5.7
+    volumes:
+      - $PWD/data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345678
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    ports:
+      - "3306:3306"
+    networks:
+      - my_net
+
+  wordpress:
+    container_name: wp
+    image: wordpress
+    depends_on:
+      - db
+    volumes:
+      - "$PWD/html:/var/www/html"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+    ports:
+      - "81:80"
+    networks:
+      - my_net
+networks:
+  my_net:
+````
+
+Cuando iniciamos los servicios con `docker-compose up -d` podemos usar otro comando de docker para ver como va iniciando y los mensajes que va arrojando a medida que se ejecutan los servicios con:
+
+    docker-compose logs -f
 
 
 
