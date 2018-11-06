@@ -50,7 +50,6 @@
             - [VOLUME en un Dockerfile](#volume-en-un-dockerfile)
         - [Volúmenes nombrados](#volúmenes-nombrados)
         - [Eliminar dangling Volumes](#eliminar-dangling-volumes)
-- [ip a | grep docker](#ip-a--grep-docker)
         - [Conectar contenedores de la misma red](#conectar-contenedores-de-la-misma-red)
         - [Conectar contenedores de distintas redes](#conectar-contenedores-de-distintas-redes)
         - [Eliminar redes](#eliminar-redes)
@@ -72,6 +71,8 @@
         - [Personalizar el nombre de tu proyecto en Docker Compose](#personalizar-el-nombre-de-tu-proyecto-en-docker-compose)
         - [Ejemplos de Docker Compose](#ejemplos-de-docker-compose)
             - [Wordpress + MySQL](#wordpress--mysql)
+            - [Drupal +  PostgreSQL](#drupal---postgresql)
+            - [PrestaShop + MySQL](#prestashop--mysql)
     - [Enlaces](#enlaces)
 
 <!-- /TOC -->
@@ -698,12 +699,12 @@ docker run -d -e ENV=dev -e VIRTUALIZATION=docker -p 5555:80 -v /home/theasker/d
 ## Redes en Docker
 
 Cuando instalamos Docker, se crea una interfaz de red virtual con su propia ip, en este caso `172.17.0.1/16`:
-````
-# ip a | grep docker
-3: docker0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default
-    inet 172.17.0.1/16 scope global docker0
-25: vethb962238@if24: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master docker0 state UP group default
-````
+
+    # ip a | grep docker
+    3: docker0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default
+        inet 172.17.0.1/16 scope global docker0
+    25: vethb962238@if24: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master docker0 state UP group default
+
 
 Si creamos un contenedor y lo inspeccionamos con `docker inspect <id|nombre>`:
 ````
@@ -1626,7 +1627,7 @@ Pero esto lo podemos personalizar usando la opción **`-p`** de proyect, de esta
 
 #### Wordpress + MySQL
 
-````docker
+````
 version: '2.4'
 
 services:
@@ -1668,7 +1669,73 @@ Cuando iniciamos los servicios con `docker-compose up -d` podemos usar otro coma
 
     docker-compose logs -f
 
+#### Drupal +  PostgreSQL
 
+````docker
+version: '2.4'
+
+services:
+  drupal:
+    volumes:
+      - drupal:/var/www/html
+    image: drupal:8-apache
+    ports:
+      - "80:80"
+    networks:
+      - net
+  postgres:
+    image: postgres:10
+    environment:
+      POSTGRES_PASSWORD: drupal
+    volumes:
+      - "$PWD/data:/var/lib/postgreslq/data"    
+    networks:
+      - net
+volumes:
+  drupal:
+networks:
+  net:
+````
+
+#### PrestaShop + MySQL
+
+````docker
+version: '2.4'
+
+services:
+  db:
+    container_name: ps-mysql
+    image: mysql:5.7
+    volumes:
+      - $PWD/data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345678
+      MYSQL_DATABASE: ps
+      MYSQL_USER: ps
+      MYSQL_PASSWORD: ps
+    ports:
+      - "3306:3306"
+    networks:
+      - net
+  ps:
+    container_name: ps-web
+    volumes:
+      - "$PWD/html:/var/www/html"
+    depends_on:
+      - db
+    image: prestashop/prestashop
+    ports:
+      - "80:80"
+    environment:
+      DB_SERVER: db
+      DB_USER: ps
+      DB_PASSWD: ps
+      DB_NAME: ps
+    networks:
+      - net
+networks:
+  net:
+````
 
 
 ## Enlaces
