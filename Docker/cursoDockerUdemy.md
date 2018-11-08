@@ -73,6 +73,8 @@
             - [Wordpress + MySQL](#wordpress--mysql)
             - [Drupal +  PostgreSQL](#drupal---postgresql)
             - [PrestaShop + MySQL](#prestashop--mysql)
+            - [Joomla + MySQL](#joomla--mysql)
+            - [Reaction Ecommerce - NodeJS + MongoDB](#reaction-ecommerce---nodejs--mongodb)
     - [Enlaces](#enlaces)
 
 <!-- /TOC -->
@@ -1735,6 +1737,58 @@ services:
       - net
 networks:
   net:
+````
+
+#### Joomla + MySQL
+
+````
+version: '2'
+services:
+  web:
+    imge: joomla
+    ports:
+      - 8080:80
+    environment:
+      JOOMLA_DB_HOST: db
+      JOOMLA_DB_PASSWORD: example
+      JOOMLA_DB_USER: joomla
+      JOOMLA_DB_NAME: joomla
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_USER: joomla
+      MYSQL_DATABASE: joomla
+      MYSQL_PASSWORD: joomla
+````
+
+#### Reaction Ecommerce - NodeJS + MongoDB
+
+````
+version: '2'
+
+services:
+  reaction:
+    image: reactioncommerce/reaction:latest
+    networks:
+      - net
+    depends_on:
+      - mongo
+    ports:
+      - "3000:3000"
+    environment:
+      ROOT_URL: "http:/localhost"
+      MONGO_URL: "mongodb://mongo:27017/reaction"
+
+  mongo:
+    image: mongo
+    volumes:
+      - $PWD/data:/data/db
+    networks:
+      - net
+
+  networks:
+    net:
 ````
 
 
