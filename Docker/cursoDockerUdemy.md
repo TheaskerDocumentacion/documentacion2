@@ -75,6 +75,7 @@
             - [PrestaShop + MySQL](#prestashop--mysql)
             - [Joomla + MySQL](#joomla--mysql)
             - [Reaction Ecommerce - NodeJS + MongoDB](#reaction-ecommerce---nodejs--mongodb)
+            - [Instalando Guacamole](#instalando-guacamole)
     - [Enlaces](#enlaces)
 
 <!-- /TOC -->
@@ -1790,6 +1791,82 @@ services:
   networks:
     net:
 ````
+
+#### Instalando Guacamole
+
+`./docker-compose.yml`
+````
+version: '2'
+services:
+  db:
+    container_name: guacamole-db
+    networks:
+      - net
+    image: mysql:5.7
+    volumes:
+      - ./conf/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+      - .data:/var/lib/mysql
+    env_file: .env
+  daemon:
+    container_name: guacamole-daemon
+    networks:
+      - net
+    image: guacamole/guacd
+    depends_on:
+      - db
+  web:
+    container_name: guacamole-web
+    networks:
+      - net
+    image: guacamole/guacamole
+    env_file: .env
+    depends_on:
+      - daemon
+  proxy:
+    container_name: guacamole-proxy
+    hostname: guacamole-proxy
+    networks:
+      - net
+    image: nginx
+    ports:
+      - "80:80"
+    restart: always
+    volumes
+networks:
+  net:
+    driver: bridge
+````
+* https://guacamole.apache.org/doc/gug/guacamole-docker.html
+Con este comando sacamos el script de base de datos con las tablas que necesita Guacamole y nos genera el fichero `initdb.sh`:
+
+    $ docker run --rm guacamole/guacamole /opt/guacamole/bin/initdb.sh --mysql > initdb.sql
+
+Fichero de variables `.env`:
+````
+MYSQL_ROOT_PASSWORD=12345678
+MYSQL_DATABASE=guacamole_db
+GUACD_HOSTNAME=daemon
+MYSQL_HOSTNAME=db
+MYSQL_PASSWORD=12345678
+MYSQL_USER=guacamole
+````
+
+Usamos el servidor web nginx para usarlo de proxy y que redireccione el puerto 8080 de guacamole por el 80 o el que queramos, con el archivo de configuración `nginx.conf`.
+
+* https://guacamole.apache.org/doc/gug/proxying-guacamole.html
+
+````
+location /guacamole/ {
+    proxy_pass http://HOSTNAME:8080/guacamole/;
+    proxy_buffering off;
+    proxy_http_version 1.1;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $http_connection;
+    access_log off;
+````
+
+
 
 
 ## Enlaces
