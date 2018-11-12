@@ -76,6 +76,8 @@
             - [Joomla + MySQL](#joomla--mysql)
             - [Reaction Ecommerce - NodeJS + MongoDB](#reaction-ecommerce---nodejs--mongodb)
             - [Instalando Guacamole](#instalando-guacamole)
+            - [Instala Zabbix con Compose](#instala-zabbix-con-compose)
+        - [Ejercicio](#ejercicio-1)
     - [Enlaces](#enlaces)
 
 <!-- /TOC -->
@@ -1865,6 +1867,136 @@ location /guacamole/ {
     proxy_set_header Connection $http_connection;
     access_log off;
 ````
+
+#### Instala Zabbix con Compose
+
+Zabbix es una herramienta para monitorizar servidores.
+
+`docker-compose.yml`
+````
+version: '2'
+services:
+  zabbix:
+    container_name: zabbix-web
+    image: zabbix
+    build: .
+    volumes:
+      - "$PWD/html:/usr/share/zabbix"
+    ports:
+      - "80:80"
+    networks:
+      - net
+  db:
+    container_name: zabbix-db
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_USER: zabbix
+      MYSQL_PASSWORD: zabbix
+      MYSQL_DATABASE: zabbix
+    volumes:
+      - "$PWD/data:/var/lib/mysql"
+      - "$PWD/conf/create.sql:/docker-entrypoint-initdb.d/zabbix.sql"
+    ports:
+      - "3306:3306"
+    networks:
+      - net
+networks:
+  net:
+````
+
+Generamos nuestra propia imagen de **Zabbix** con el comando `build .`, que buscará el fichero **Dockerfile** en la carpeta en la que está el fichero docker-compose.yml y se ejecutará cuando ejecutemos el comando `docker-compose up -d`.
+
+Usamos el **directorio html** con los datos de una instalación limpia en un volumen separado.
+
+En el volumen de la base de datos de MySQL usamos un volumen para guardar los datos de la base de datos y otro que será un script. 
+
+**IMPORTANTE:** Cuando usamos la **imagen oficial de MySQL** tiene una funcionalidad: si colocamos con un archivo sql en la ruta `/docker-entrypoint-initdb.d/` MySQL lo ejecutará cuando se inicie la base de datos.
+
+`Dockerfile`
+````
+FROM centos:7
+
+ENV ZABBIX_REPO http://repo.zabbix.com/zabbix/3.4/rhel/7/x86_64/zabbix-release-3.4.1.el7.centos.noarch.rpm
+
+RUN \
+  yum -y install $ZABBIX_REPO && \
+  yum -y install \
+    zabbix-get \
+    zabbix-server-mysql \
+    zabbix-web-mysql \
+    zabbix-agent
+
+EXPOSE 80 443
+COPY ./bin/start.sh /start.sh
+COPY ./conf/zabbix-http.conf /etc/httpd/conf.d/zabbix.conf
+COPY ./conf/zabbix-server.conf /etc/zabbix/zabbix_server.conf
+COPY ./conf/zabbix-conf.conf /etc/zabbix/web/zabbix.conf.php
+VOLUME /usr/share/zabbix /var/log/httpd
+RUN chmod +x /start.sh
+CMD /start.sh
+````
+
+Fichero de arranque del servicio `start.sh`:
+````
+#!/bin/bash
+
+# Start zabbix server
+/usr/sbin/zabbix_server -c /etc/zabbix/zabbix_server.conf
+
+# Start zabbix agent
+/usr/sbin/zabbix_agentd
+
+# Start httpd
+apachectl -DFOREGROUND
+````
+
+Fichero de configuración de Apache para Zabbix `zabbix.conf`:
+````
+#
+# Zabbix monitoring system php web fronted
+#
+
+Alias /zabbix /usr/share/zabbix
+
+<Dyrectory "/usr/share/zabbix">
+  Options FollowSymLinks
+  AllowOverride None
+  Require all granted
+
+  <IfModule mod_php5.c>
+    php_value max_execution_time 300
+    php_value memory_limit 128M
+    php_value post_max_size 16M
+    php_value upload_max_filesize 2M
+    php_value max_input_time 300
+    php_value always_populate_raw_post_data -1
+    php_value date.timezone Europe/Madrid
+  </IfModule>
+</Dyrectory>
+
+<Dyrectory "/usr/share/zabbix/conf">
+  Require all denied
+</Dyrectory>
+
+<Dyrectory "/usr/share/zabbix/app">
+  Require all denied
+</Dyrectory>
+
+<Dyrectory "/usr/share/zabbix/include">
+  Require all denied
+</Dyrectory>
+
+<Dyrectory "/usr/share/zabbix/local">
+  Require all denied
+</Dyrectory>
+````
+
+El fichero `zabbix_server.conf` es el archivo de configuración de zabbix que lo podemos copiar de la web, en donde se encuentra, entre otras cosas, la configuración de conexión a la base de datos.
+
+El archivo `zabbix.conf.php` es la configuración de conexión a la base de datos pero en php.
+
+### Ejercicio
 
 
 
