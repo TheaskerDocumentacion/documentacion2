@@ -77,7 +77,14 @@
             - [Reaction Ecommerce - NodeJS + MongoDB](#reaction-ecommerce---nodejs--mongodb)
             - [Instalando Guacamole](#instalando-guacamole)
             - [Instala Zabbix con Compose](#instala-zabbix-con-compose)
-        - [Ejercicio](#ejercicio-1)
+        - [Ejercicios](#ejercicios)
+            - [Ejercicio 1](#ejercicio-1)
+            - [Ejercicio 2](#ejercicio-2)
+    - [Docker Registry](#docker-registry)
+        - [Subir imágenes al repositorio local](#subir-imágenes-al-repositorio-local)
+        - [Descargar imágenes del repositorio local](#descargar-imágenes-del-repositorio-local)
+        - [Compartir imágenes con la red](#compartir-imágenes-con-la-red)
+        - [Crear un Docker Registry con autenticación](#crear-un-docker-registry-con-autenticación)
     - [Enlaces](#enlaces)
 
 <!-- /TOC -->
@@ -1996,10 +2003,220 @@ El fichero `zabbix_server.conf` es el archivo de configuración de zabbix que lo
 
 El archivo `zabbix.conf.php` es la configuración de conexión a la base de datos pero en php.
 
-### Ejercicio
+### Ejercicios
 
+Deberás crear un docker-compose para cada definición de contenedores de los ejercicios anteriores:
 
+Puntos a tener en cuenta:
+
+* Docker Compose V2
+
+* La imagen (De apache y php) debe poder construirse desde el docker-compose
+
+* Se deben definir los volúmenes solicitados en el ejericicio anterior, más las variables de entorno, límite y demás requisitos especificados en los ejercicios anteriores.
+
+---
+
+#### Ejercicio 1
+
+En donde trabajas, solicitan los siguientes contendores con las siguientes características:
+
+Un contenedor con la imagen de Apache + php creada en la anterior solicitud con:
+* 50Mb límites de RAM
+* Solo podrá acceder a la CPU 0
+* Debe tener dos variables de entorno:
+    * ENV = dev
+    * VIRTUALIZATION = docker
+* El webserver debe ser accesible vía puerto 5555 en el navegador
+
+**Con línea de comandos**:
+````
+docker run -d -m "50mb" --cpuset-cpus 0 --name apachephpmemcpu -e "ENV=dev" -e "VIRTUALIZATION=docker" -p 5555:80 apachephp
+````
+
+**Con docker-compose**:
+
+`Dockerfile`
+````
+FROM debian:9
+RUN     apt-get update && \
+        apt-get -y install apache2 php7.0 php7.0-cli php7.0-common
+RUN echo "<?php phpinfo(); ?>" > /var/www/html/phpinfo.php
+
+RUN a2enmod php7.0
+
+CMD apachectl -DFOREGROUND
+````
+`docker-compose.yml`
+````
+version: '2'
+services:
+  web:
+    container_name: apachephp
+    build: .
+    ports:
+      - "5555:80"
+    volumes:
+      - "./html:/var/www/html"
+    environment:
+      ENV: stg
+      VIRTUALIZATION: docker
+      TYPE: container
+    mem_limit: 50m
+    cpuset: "0"
+    networks:
+      - net
+networks:
+  net:
+````
+Como creamos un volumen con el documentRoot del sistio web de apache está vacío, por lo que creamos un fichero con información de php
+
+  echo "<?php phpinfo(); ?>" > ./html/phpinfo.php
+
+#### Ejercicio 2
+
+Crear un docker-compose v3 con dos servicios:
+
+db y admin.
+
+En el servicio DB, debe ir una db con mysql:5.7 y las credenciales de tu preferencia.
+
+En el admin, debes usar la imagen oficial de phpmyadmin, y por medio de redes, comunicarla con mysql. Debes exponer el puerto de tu preferencia y para validar que funcione, debes loguearte en el UI de phpmyadmin vía navegador, usando las credenciales del root de mysql.
+
+`docker-compose.yml`
+````
+version: '2'
+services:
+  db:
+    container_name: db
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_USER: phpmyadmin
+      MYSQL_PASSWORD: phpmyadmin
+      MYSQL_DATABASE: phpmyadmin
+    volumes:
+      - "$PWD/data:/var/lib/mysql"
+    networks:
+      - net
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+      - db
+    ports:
+      - "81:80"
+    environment:
+      PMA_HOST: db
+    networks:
+      - net
+networks:
+  net:
+````
+
+## Docker Registry
+
+Docker registry es un servicio al que nosotros podemos subir y bajar imágenes. Es decir crear un repositorio privado para subir y bajar imágenes propias.
+
+La documentación está en https://docs.docker.com/registry/.
+
+  docker run -d -p 5000:5000 --name registry -v $PWD/data:/var/lib/registry registry:2
+
+### Subir imágenes al repositorio local
+
+* Primero descargamos o creamos la imagen
+* Luego etiquetamos la imagen con el repositorio de destino con **`docker tag`**, cuyo uso es **`docker tag <imagen origen>[:TAG] <servidor de destino:puerto>/<nombre imagen en el registry>[:TAG]`**. 
+````
+$ docker tag --help
+
+Usage:  docker tag SOURCE_IMAGE[:TAG] TARGET_IMAGE[:TAG]
+
+Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+````
+* Finalmente la subimos con **`docker push <imagen>`**:
+````
+docker push --help
+
+Usage:  docker push [OPTIONS] NAME[:TAG]
+
+Push an image or a repository to a registry
+
+Options:
+      --disable-content-trust   Skip image signing (default true)
+````
+
+Como ejemplo vamos a subir la imagen `hello world` de docker:
+
+````
+$ docker pull hello-world
+Using default tag: latest
+latest: Pulling from library/hello-world
+d1725b59e92d: Pull complete
+Digest: sha256:0add3ace90ecb4adbf7777e9aacf18357296e799f81cabc9fde470971e499788
+Status: Downloaded newer image for hello-world:latest
+$ docker images | grep hello-world
+hello-world             latest              4ab4c602aa5e        2 months ago        1.84kB
+$ docker tag hello-world:latest localhost:5000/my-hello-world
+$ docker images | grep hello-world
+hello-world                     latest              4ab4c602aa5e        2 months ago        1.84kB
+localhost:5000/my-hello-world   latest              4ab4c602aa5e        2 months ago        1.84kB
+$ docker push localhost:5000/my-hello-world
+The push refers to repository [localhost:5000/my-hello-world]
+428c97da766c: Pushed
+latest: digest: sha256:1a6fd470b9ce10849be79e99529a88371dff60c60aab424c077007f6979b4812 size: 524
+````
+
+Vemos que ahora el directorio **data** que hemos puesto como volumen está ahora con datos:
+````
+$ tree -d -L 5 data/
+data/
+└── docker
+    └── registry
+        └── v2
+            ├── blobs
+            │   └── sha256
+            └── repositories
+                └── my-hello-world
+````
+
+### Descargar imágenes del repositorio local
+
+Simplemente es usar el el comando **`docker pull <servidor>/<nombre de la imagen>`**
+
+````
+docker pull localhost:5000/hello-world
+````
+
+### Compartir imágenes con la red
+
+Si intentamos subir una imagen a un repositorio con ip nos va a dar un error:
+````
+$ docker tag hello-world 145.239.196.19:5000/hello-world
+$ docker push 145.239.196.19:5000/hello-world
+The push refers to repository [145.239.196.19:5000/hello-world]
+Get https://145.239.196.19:5000/v2/: http: server gave HTTP response to HTTPS client
+````
+
+Ya que estamos intentando subir a una localización insegura sin autenticación. Sólo podemos hacer esto cuando es localhost por ser nuestra misma máquina. 
+
+Para poder realizar estas operaciones, es decir, **subir y descargar imágenes de un registro de otra localización** que no es localhost, tenemos que editar el fichero `/lib/systemd/system/docker.service` y modificar la línea **ExecStart** y añadir **`--insecure-registry ip:port`**, quedando:
+
+  ExecStart=/usr/bin/dockerd --insecure-registry 145.239.196.19:5000 -H fd://
+
+y ahora ya nos dejaría subir nuestras imágenes:
+````
+$ docker push 145.239.196.19:5000/hello-world
+The push refers to repository [145.239.196.19:5000/hello-world]
+Get https://145.239.196.19:5000/v2/: http: server gave HTTP response to HTTPS client
+````
+
+### Crear un Docker Registry con autenticación
+
+* https://www.linuxfacilito.online/docker-registry-con-basic-auth/
 
 
 ## Enlaces
-- https://www.udemy.com/docker-de-principiante-a-experto
+* https://www.udemy.com/docker-de-principiante-a-experto
+* Para hacer todas las pruebas hay un **sandbox de Docker** en: https://labs.play-with-docker.com
+* **Docker registry**: https://docs.docker.com/registry/
+* **Docker registri con autenticación**: https://www.linuxfacilito.online/docker-registry-con-basic-auth/ 
