@@ -7,7 +7,7 @@ Tutorial al ejecutar "vimtutor es"
   - [Lección 1.2: ENTRANDO Y SALIENDO DE VIM](#lección-12-entrando-y-saliendo-de-vim)
   - [Lección 1.3: EDICIÓN DE TEXTO - BORRADO](#lección-13-edición-de-texto---borrado)
   - [Lección 1.4: EDICIÓN DE TEXTO - INSERCIÓN](#lección-14-edición-de-texto---inserción)
-  - [Lección 2.1:  MANDATOS PARA BORRAR](#lección-21--mandatos-para-borrar)
+  - [Lección 2.1: MANDATOS PARA BORRAR](#lección-21-mandatos-para-borrar)
   - [Lección 2.2: MÁS MANDATOS PARA BORRAR](#lección-22-más-mandatos-para-borrar)
   - [Lección 2.3: SOBRE MANDATOS Y OBJETOS](#lección-23-sobre-mandatos-y-objetos)
   - [Lección 2.4: UNA EXCEPCIÓN AL 'MANDATO-OBJETO'](#lección-24-una-excepción-al-mandato-objeto)
@@ -49,26 +49,30 @@ P
 ## Lección 1.4: EDICIÓN DE TEXTO - INSERCIÓN
 Estando en modo Normal pulse  `i`  para insertar texto.
 
-## Lección 2.1:  MANDATOS PARA BORRAR
+## Lección 2.1: MANDATOS PARA BORRAR
 * `dw` => para borrar hasta el final de una palabra
 
 ## Lección 2.2: MÁS MANDATOS PARA BORRAR
 * `d$` =>  para borrar hasta el final de la línea.
+* **Borrar un caracter**: posicionar el cursor sobre el carácter a borrar y presionar `x`. Esto también borra el espacio ocupado por el caracter. Para borrar el carácter anterior a la posición del cursor pulsar X.
+* **Remover una palabra**: posicionar el cursor al principio de la palabra y pulsar `dw`, entonces se borrara la palabra y el espacio que la misma ocupaba. Para borrar parte de una palabra, hay que colocar el cursor a la derecha de la parte a modificar y teclear `dw`.
+* **Eliminar una línea**: pulsando `dd` se borra una línea y el espacio que esta ocupaba. Para remover parte de una línea, podemos a) borrar todo lo que este a la derecha del cursor presionando la tecla `D`, o `b`) borrar todo lo que este a la izquierda del mismo basta con pulsar `d0` (`d` seguida del número `cero`).
+* **Borrar hasta el final del archivo**: posicionar el cursor sobre la primera línea que se desea eliminar y presionar `dG`. Esto eliminará todo desde la línea actual hasta el final del archivo.
+* **Borrar desde el principio del archivo**: colocar el cursor en la última línea que haya que remover y luego presionar `d1G`.
 
 ## Lección 2.3: SOBRE MANDATOS Y OBJETOS
 El formato del mandato de borrar   d   es como sigue:
-```
-         [número]   d   objeto      O        d   [número]   objeto
-```
+`[número]   d   objeto      O        d   [número]   objeto`
+
 donde:
-   número - es cuántas veces se ha de ejecutar el mandato (opcional, defecto=1).
-   d - es el mandato para borrar.
-   objeto - es sobre lo que el mandato va a operar (lista, abajo).
+*   número - es cuántas veces se ha de ejecutar el mandato (opcional, defecto=1).
+*   d - es el mandato para borrar.
+*   objeto - es sobre lo que el mandato va a operar (lista, abajo).
 
   Una lista corta de objetos:
-   w - desde el cursor hasta el final de la palabra, incluyendo el espacio.
-   e - desde el cursor hasta el final de la palabra, SIN incluir el espacio.
-   $ - desde el cursor hasta el final de la línea.
+*   `w` - desde el cursor hasta el final de la palabra, incluyendo el espacio.
+*   e - desde el cursor hasta el final de la palabra, SIN incluir el espacio.
+*   $ - desde el cursor hasta el final de la línea.
 
 ## Lección 2.4: UNA EXCEPCIÓN AL 'MANDATO-OBJETO'
 * `dd` => para borrar una línea entera.
