@@ -50,8 +50,7 @@
     * https://www.udemy.com/juegos-en-javascript/
     * http://www.lessmilk.com/phaser-tutorial/
    * **Varios**
-    * [Tutoriales en castellano muy variados](http://www.es.w3eacademy.com/)
-    * Jenkins
+     * [Tutoriales en castellano muy variados](http://www.es.w3eacademy.com/)
   * **Virtualización**
 	  * [Listado de cursos online y gratuitos de VMware en Español](http://www.dbigcloud.com/virtualizacion/224-listado-de-cursos-online-y-gratuitos-de-vmware-en-espanol.html)
   
