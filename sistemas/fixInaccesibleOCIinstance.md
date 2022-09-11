@@ -4,14 +4,16 @@ Steps to recover inaccessible OCI Compute instances, fix ssh configuration, upda
 Step-by-Step Guide
 1. Stop the instance from the OCI Compute console.
 2. Detach the volume from the OCI console: (let's call it broken volume) [1].
-    - Select the instance from the OCI Compute Console.
+    - Select the instance from the OCI Compute Console. 
     - Select 'Boot Volume' from the Resources.
     - Click the '...' on the boot volume snd select 'Detach'.
+    - (Almacenamiento > Almacenamiento de bloques > Volúmenes de inicio > Click en la instancia > Instancias asociadas > ... > Desasociar de instancia)
 3. Launch a recovery instance in the same AD. (Lets call it recovery instance). You may use an existing instance in the same Availability domain.
 4. Once the instance is started, attach the broken volume as Block Volumes.
     - Select 'Attached Block Volumes' from the Resources.
     - Click ' Attach Block Volume' and select the broken volume from the 'BLOCK VOLUME' tab.
     - Click Attach - just make sure you have selected READ/Write' and attach the volume as Paravirtualized one so that you do not have to run the iSCSI commands.
+    - (Recursos informáticos > Instancias > Click en la instancia > Volúmenes de bloque asociados > Asociar volumen en bloque)
 5. If you have attached the volume as iSCSI disk, connect to the disk to the recovery instance using iSCSI commands from the OCI console [2].
 6. SSH into the recovery instance and follow the steps:
 
@@ -54,6 +56,8 @@ Once the recovery processes are done, you may proceed to detach the volume and a
     - Select 'Boot Volume' from the Resources.
     - Click the '...' on the boot volume (it should be the same volume we detached earlier).
     - Select 'Attach'.
+    - (Recursos informáticos > Instancias > Click en la instancia > Detalles de la instancia > Volumen de inicio > ... > Asociar Volumen de inicio
+    - ocid1.instance.oc1.eu-marseille-1.anwxeljrcnwqlsicibsn2nixkato4jmslrlekidxdwagidx4pwob2w6jt5ka
 15. Start the instance.
 
 16. Check if the issue has been fixed, if not you need to redo the above process to check the logs again and try to fix it.
