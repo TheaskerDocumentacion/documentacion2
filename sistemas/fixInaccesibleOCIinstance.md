@@ -57,7 +57,6 @@ Once the recovery processes are done, you may proceed to detach the volume and a
     - Click the '...' on the boot volume (it should be the same volume we detached earlier).
     - Select 'Attach'.
     - (Recursos informáticos > Instancias > Click en la instancia > Detalles de la instancia > Volumen de inicio > ... > Asociar Volumen de inicio
-    - ocid1.instance.oc1.eu-marseille-1.anwxeljrcnwqlsicibsn2nixkato4jmslrlekidxdwagidx4pwob2w6jt5ka
 15. Start the instance.
 
 16. Check if the issue has been fixed, if not you need to redo the above process to check the logs again and try to fix it.

@@ -1,0 +1,2 @@
+# backup
+sudo rsync -avd --stats /etc ubuntu@theaskervps.duckdns.org:/home/ubuntu/temp
