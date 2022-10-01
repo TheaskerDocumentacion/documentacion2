@@ -11,7 +11,6 @@
 # bash_version: 5.1.16(1)-release
 #==============================================================================
 
-
 function initVars {
     # Hay que configurar las variables SOURCESFILE y DESTBASE
     SOURCESFILE="$PWD/backups.config"
