@@ -51,7 +51,7 @@ Con esto ya tenemos abierto el **tunel ssh** por medio del puerto 2020 que hemos
 Luego ya en una terminal nueva desde nuestro equipo nos podremos conectar al segundo servidor, haciendo:
 `ssh localhost:2020`
 
-Ejemplo:
+**Ejemplo**:
 Queremos acceder a una máquina que no tiene acceso al exterior, pero si desde otra máquina de la red que sólo tiene expuesto su puerto ssh (22):
 - **Ip/dominio externo de la red (accesible)**: theaskervps.duckdns.org
 - **ip privada de la máquina con el servicio no expuesto**: 10.0.0.88
