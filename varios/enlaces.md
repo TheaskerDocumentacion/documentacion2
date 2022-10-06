@@ -9,6 +9,9 @@
  * https://robotmoon.com/bash-prompt-generator/ => Generador de prompt, variable PS1 con colores.
  * https://bashrcgenerator.com/ => Creador de prompt
 
+### Varios
+ * **Automouse* : https://autoclose.net/automouse.html => Automatización de acciones del ratón
+
 ## Varios
 ### GPS
  * https://www.qgis.org/es/site/about/index.html => QGIS es un Sistema de Información Geográfica (SIG) de Código Abierto.
