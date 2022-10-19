@@ -8,6 +8,7 @@
  * https://starship.rs/ => Ayuda para la modificación del prompt de sistema
  * https://robotmoon.com/bash-prompt-generator/ => Generador de prompt, variable PS1 con colores.
  * https://bashrcgenerator.com/ => Creador de prompt
+ * https://github.com/fcambus/ansiweather => Mostrar el clima en la terminal
 
 ### Varios
  * **Automouse* : https://autoclose.net/automouse.html => Automatización de acciones del ratón
