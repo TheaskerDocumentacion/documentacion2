@@ -12,6 +12,15 @@
     - [Creación de snapshots](#creación-de-snapshots)
   - [Redimensión de espacio](#redimensión-de-espacio)
   - [Recuperación del sistema de ficheros](#recuperación-del-sistema-de-ficheros)
+    - [Crear un RAID5](#crear-un-raid5)
+    - [Cómo montar un disco RAID](#cómo-montar-un-disco-raid)
+      - [Visualizar el estado de un sistema de ficheros Btrfs](#visualizar-el-estado-de-un-sistema-de-ficheros-btrfs)
+    - [Equilibrar los datos entre todos los discos BTRFS](#equilibrar-los-datos-entre-todos-los-discos-btrfs)
+    - [Cómo sustituir o añadir una unidad](#cómo-sustituir-o-añadir-una-unidad)
+    - [Cómo reparar un volumen dañado](#cómo-reparar-un-volumen-dañado)
+  - [Fragmentación](#fragmentación)
+  - [Compresión al vuelo](#compresión-al-vuelo)
+    - [Ajustar compresión en archivo /etc/fstab](#ajustar-compresión-en-archivo-etcfstab)
   - [Bibliografía](#bibliografía)
 
 
@@ -368,19 +377,219 @@ Para añadir 1g al tamaño:
 
 ## Recuperación del sistema de ficheros
 
+Vamos a hacer un ejemplo, de cómo recuperar la información de un disco dañado.
 
+### Crear un RAID5
 
+Primero crearemos un RAID5 con 5 discos:
 
+    root@theasker-proliantml110g5 /mnt # lsblk /dev/sde
+    NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
+    sde      8:64   0 111,8G  0 disk 
+    ├─sde1   8:65   0    10G  0 part 
+    ├─sde2   8:66   0     1G  0 part 
+    ├─sde3   8:67   0     1G  0 part 
+    ├─sde4   8:68   0     2G  0 part 
+    └─sde5   8:69   0     4G  0 part 
 
+    root@theasker-proliantml110g5 /mnt # mkfs.btrfs -L data -m raid5 -d raid5 -f /dev/sde1 /dev/sde2 /dev/sde3 /dev/sde4 /dev/sde5
+    btrfs-progs v5.19
+    See http://btrfs.wiki.kernel.org for more information.
 
+    WARNING: RAID5/6 support has known problems is strongly discouraged
+        to be used besides testing or evaluation.
 
+    NOTE: several default settings have changed in version 5.15, please make sure
+        this does not affect your deployments:
+        - DUP for metadata (-m dup)
+        - enabled no-holes (-O no-holes)
+        - enabled free-space-tree (-R free-space-tree)
 
+    Label:              data
+    UUID:               2b0a78d6-de5c-454c-a3bd-aa4d0ca84a12
+    Node size:          16384
+    Sector size:        4096
+    Filesystem size:    18.00GiB
+    Block group profiles:
+    Data:             RAID5             1.44GiB
+    Metadata:         RAID5           204.75MiB
+    System:           RAID5            12.75MiB
+    SSD detected:       no
+    Zoned device:       no
+    Incompat features:  extref, raid56, skinny-metadata, no-holes
+    Runtime features:   free-space-tree
+    Checksum:           crc32c
+    Number of devices:  5
+    Devices:
+    ID        SIZE  PATH
+        1    10.00GiB  /dev/sde1
+        2     1.00GiB  /dev/sde2
+        3     1.00GiB  /dev/sde3
+        4     2.00GiB  /dev/sde4
+        5     4.00GiB  /dev/sde5
 
+  * `L` - es una etiqueta o nombre del sistema de archivos
+  * `d` - establecemos el tipo RAID5 para los datos.
+  * `m` - establecemos el tip RAID5 para metadatos.
+  * `f` - sirve para forzar la creación de btrfs incluso si alguna de las unidades está formateada en un sistema de archivos diferente.
+
+### Cómo montar un disco RAID
+
+Ahora, se puede montar utilizando cualquiera de las unidades que están incluidas.
+
+    # mount /dev/sde1 /mnt/temp
+
+    # sudo df -h .
+    S.ficheros     Tamaño Usados  Disp Uso% Montado en
+    /dev/sde1         18G   3,7M  7,8G   1% /mnt/temp
+
+#### Visualizar el estado de un sistema de ficheros Btrfs
+
+Y para ver la **información sobre el espacio ocupado** y libre de la matriz, introduzca:
+
+    # sudo btrfs filesystem usage /mnt/temp
+    Overall:
+        Device size:		  18.00GiB
+        Device allocated:		   2.07GiB
+        Device unallocated:		  15.93GiB
+        Device missing:		     0.00B
+        Used:			 180.00KiB
+        Free (estimated):		  14.19GiB	(min: 14.19GiB)
+        Free (statfs, df):		   7.78GiB
+        Data ratio:			      1.25
+        Metadata ratio:		      1.25
+        Global reserve:		   3.50MiB	(used: 0.00B)
+        Multiple profiles:		        no
+
+    Data,RAID5: Size:1.44GiB, Used:0.00B (0.00%)
+    /dev/sde1	 368.62MiB
+    /dev/sde2	 368.62MiB
+    /dev/sde3	 368.62MiB
+    /dev/sde4	 368.62MiB
+    /dev/sde5	 368.62MiB
+
+    Metadata,RAID5: Size:204.75MiB, Used:128.00KiB (0.06%)
+    /dev/sde1	  51.19MiB
+    /dev/sde2	  51.19MiB
+    /dev/sde3	  51.19MiB
+    /dev/sde4	  51.19MiB
+    /dev/sde5	  51.19MiB
+
+    System,RAID5: Size:12.75MiB, Used:16.00KiB (0.12%)
+    /dev/sde1	   3.19MiB
+    /dev/sde2	   3.19MiB
+    /dev/sde3	   3.19MiB
+    /dev/sde4	   3.19MiB
+    /dev/sde5	   3.19MiB
+
+    Unallocated:
+    /dev/sde1	   9.59GiB
+    /dev/sde2	 601.00MiB
+    /dev/sde3	 601.00MiB
+    /dev/sde4	   1.59GiB
+    /dev/sde5	   3.59GiB
+
+Para desmontar un array, basta con introducir:
+
+    sudo umount /mnt/temp
+
+### Equilibrar los datos entre todos los discos BTRFS
+Si queremos rebalancear los datos que contiene cada uno de los discos de un FS BTRFS para que cada uno soporte el mismo volumen de carga, ejecutaremos el siguiente comando:
+
+    # btrfs filesystem balance /mnt/temp
+    Done, had to relocate 3 out of 3 chunks  
+
+De esta manera evitamos que, por ejemplo, todos los datos estén almacenados en el disco /dev/sde1
+
+### Cómo sustituir o añadir una unidad
+
+Para reemplazar una unidad debe escribir btrfs replace en el terminal. Se ejecuta de forma asíncrona, es decir, se ejecuta gradualmente:
+
+ * **start** - para iniciar,
+ * **cancel** - para parar,
+ * **status** - para ver el estado.
+
+Lo primero que hay que hacer es determinar el número de la unidad dañada:
+
+    # sudo btrfs filesystem show
+    Label: 'data'  uuid: 2b0a78d6-de5c-454c-a3bd-aa4d0ca84a12
+        Total devices 5 FS bytes used 144.00KiB
+        devid    1 size 10.00GiB used 423.00MiB path /dev/sde1
+        devid    2 size 1.00GiB used 423.00MiB path /dev/sde2
+        devid    3 size 1.00GiB used 423.00MiB path /dev/sde3
+        devid    4 size 2.00GiB used 423.00MiB path /dev/sde4
+        devid    5 size 4.00GiB used 423.00MiB path /dev/sde5
+
+Luego se debe cambiar por una nueva:
+
+    btrfs replace start <dispositivo a eliminar o su ID> < dispositivo a añadir> <la ruta donde se monta el dispositivo btrfs>
+
+Si fallara el disco 3
+
+    # btrfs replace start 3 /dev/sde6 /mnt/temp
+
+Donde: 3 – es el número de la unidad que falta a sustituir, y sde6 la unidad nueva que sustituye, y /mnt/temp donde esta montado el RAID5.
+
+### Cómo reparar un volumen dañado
+
+Para restaurar una matriz Btrfs, debemos utilizar la opción de montaje incorporada - recovery:
+
+    # mount -o recovery /dev/sde1 /mnt/temp2
+
+## Fragmentación
+
+En esta caso práctico se muestra como realizar una fragmentación de un sistema de ficher BTRFS ya que para ofrecer tantas ventajas como las que ofrece tiene un punto negativo y es que sufre fragmentación. Para poder realizar una desfragmentación en btrfs tendremos que introducir el siguiente comando.
+
+    root@apache:/# btrfs filesystem defrag /mnt/
+
+## Compresión al vuelo
+
+Existen dos forma de compresión al vuelo y es ZLIB y LZO. La diferencia que existe entre los dos es que LZO es una compresión mas rápida pero menos exigente lo que penaliza la capacidad de compresión (no llega a comprimirlo tanto) y la opción ZLIB es mas exigente y por ello comprime más la información con la penalización en cuanto a tiempo y la carga de CPU que es mayor.
+
+    # mount -o compress=zlib /dev/sde2 /mnt/temp
+
+Una vez introducido este comando vamos a introducir información  para así comprobar como puede almacenar mas información de la que permite el dispositivo de almacenamiento ya que la comprime. En nuestro caso vamos a utilizar un dispositivo de almacenamiento con 1G de capacidad como aparece a continuación.
+
+    # btrfs filesystem show
+    Label: none  uuid: 4cdd3e63-18af-41a8-a650-48dcec4f4146
+        Total devices 1 FS bytes used 144.00KiB
+        devid    1 size 1.00GiB used 126.38MiB path /dev/sde2
+
+Acto seguido introduciremos información con el comando dd.
+
+    # dd if=/dev/zero of=/mnt/temp/fichero
+    dd: escribiendo en '/mnt/temp/fichero': No queda espacio en el dispositivo
+    59234114+0 records in
+    59234113+0 records out
+    30327865856 bytes (30 GB, 28 GiB) copied, 517,176 s, 58,6 MB/s
+
+Vemos lo que ocupa el fichero:
+
+    # ls -la
+    total 29617080
+    drwxr-xr-x 1 root root          14 oct 20 20:09 .
+    drwxr-xr-x 8 root root        4096 oct 18 19:14 ..
+    -rw-r--r-- 1 root root 30327865856 oct 20 20:18 fichero
+    root@theasker-proliantml110g5 /mnt/temp # du -h
+    29G
+
+Por último mostramos las caracteristicas de ese dispositivo y vemos como eso 25G comprimidos en el tamaño real del dispositivo solo esta ocupando 1023.00MiB.
+
+    # btrfs filesystem show /mnt/temp
+    Label: none  uuid: 4cdd3e63-18af-41a8-a650-48dcec4f4146
+        Total devices 1 FS bytes used 941.94MiB
+        devid    1 size 1.00GiB used 1023.00MiB path /dev/sde2
+
+### Ajustar compresión en archivo /etc/fstab
+
+/dev/sdb                /srv            btrfs           compress=zstd:9,relatime,rw     0 0
 
 ## Bibliografía
- * https://juanjoselo.wordpress.com/2018/01/28/uso-de-btrfs-en-linux/
+ * **https://juanjoselo.wordpress.com/2018/01/28/uso-de-btrfs-en-linux/**
  * https://puerto53.com/linux/filesystems-btrfs/
  * https://www.nishantnadkarni.tech/posts/arch_installation/
  * https://wiki.archlinux.org/title/Btrfs_(Espa%C3%B1ol)
  * https://odiseageek.es/posts/instalar-archlinux-con-btrfs-y-encriptacion-luks/
- * https://hetmanrecovery.com/es/blog/how-to-recover-data-from-btrfs-raid.htm
+ * https://hetmanrecovery.com/es/blog/how-to-recover-data-from-btrfs-raid.htm => Cómo usar "recovery"
+ * https://wiki.gentoo.org/wiki/Btrfs/es
+ * https://linuxhint.com/enable-btrfs-filesystem-compression/ => Compresión

@@ -10,9 +10,8 @@
 
 ## Dotfiles
 
-  * https:/It is possible to add devices to a multiple-device filesystem later on. See the Btrfs wiki article for more information.
-Devices can be of different sizes. However, if one drive in a RAID configuration is bigger than the others, this extra space will not be used.
-Some boot loaders such as Syslinux do not support multi-device file systems.
-Btrfs does not automatically read from the fastest device, so mixing different kinds of disks results in inconsistent performance. See [1] for details./atareao.es/podcast/dotdrop-un-completo-gestor-de-dotfiles/ => Gestor de dotfiles
+  * https://atareao.es/podcast/dotdrop-un-completo-gestor-de-dotfiles/ => Gestor de dotfiles
   
-  
+## Varios
+ * ventoy => Aplicación para grabar isos en USB
+ * Crear un fichero de ceros: `dd if=/dev/zero of=/archivogrande bs=1024 count=512k`

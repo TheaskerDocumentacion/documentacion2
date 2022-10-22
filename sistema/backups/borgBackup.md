@@ -10,7 +10,6 @@ o
 
     borg init -e repokey-blake2 borgbackup@BACKUPHOSTNAME:/home/borgbackup/borgbackup/
 
-
  1. Before a backup can be made a repository has to be initialized:
 
     $ borg init --encryption=repokey /path/to/repo
