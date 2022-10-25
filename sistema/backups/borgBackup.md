@@ -10,9 +10,9 @@ o
 
     borg init -e repokey-blake2 borgbackup@BACKUPHOSTNAME:/home/borgbackup/borgbackup/
 
- 1. Before a backup can be made a repository has to be initialized:
+Yo he hecho:
 
-    $ borg init --encryption=repokey /path/to/repo
+   $ borg init --encryption=none ubuntu@podereuropeo.duckdns.org:/home/ubuntu/borgbackups
 
  2. Backup the ~/src and ~/Documents directories into an archive called Monday:
 
@@ -73,6 +73,7 @@ This backup will be a lot quicker and a lot smaller since only new never before 
 Bibliografía
 ------------
  * https://www.borgbackup.org/demo.html
+ * https://www.linuxsysadmin.ml/2019/05/haciendo-backups-con-borgbackup.html
  * https://borgbackup.readthedocs.io/en/stable/quickstart.html
  * https://howtoforge.es/copias-de-seguridad-solo-con-borg-en-otro-vps-o-servidor-dedicado/
  * https://www.cloudcenterandalucia.es/blog/una-historia-sobre-backups-borg-la-resistencia-es-inutil/
