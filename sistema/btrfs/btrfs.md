@@ -7,7 +7,7 @@
     - [Soporte RAID](#soporte-raid)
     - [Añadir dispostivo al RAID](#añadir-dispostivo-al-raid)
   - [Creación de subvolumnes y snapshots](#creación-de-subvolumnes-y-snapshots)
-    - [Creación de volúmenes](#creación-de-volúmenes)
+    - [Creación de subvolúmenes](#creación-de-subvolúmenes)
     - [Borrado de volúmenes](#borrado-de-volúmenes)
     - [Creación de snapshots](#creación-de-snapshots)
   - [Redimensión de espacio](#redimensión-de-espacio)
@@ -262,7 +262,7 @@ Primero vamos a crear el sistema de ficheros btrfs:
         4     2.00GiB  /dev/sde4
         5     4.00GiB  /dev/sde5
 
-### Creación de volúmenes
+### Creación de subvolúmenes
 
 Ahora crearemos los subvolumentes.
 Los subvolumenes son dinamicos lo que quiere decir que iran expandiendo cuando sea necesario y se tiene que crear estando el dispositivo montado.
