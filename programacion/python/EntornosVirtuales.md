@@ -3,15 +3,13 @@
 - [Entornos virtuales en Python](#entornos-virtuales-en-python)
   - [Virtualenv](#virtualenv)
     - [Crear un entorno](#crear-un-entorno)
-    - [Lista de entornos](#lista-de-entornos)
-    - [Activar un entorno](#activar-un-entorno)
     - [Instalar paquetes](#instalar-paquetes)
     - [Desactivar un entorno](#desactivar-un-entorno)
     - [Eliminar un entorno](#eliminar-un-entorno)
   - [Conda](#conda)
     - [Crear un entorno](#crear-un-entorno-1)
-    - [Lista de entornos](#lista-de-entornos-1)
-    - [Activar un entorno](#activar-un-entorno-1)
+    - [Lista de entornos](#lista-de-entornos)
+    - [Activar un entorno](#activar-un-entorno)
     - [Instalar paquetes](#instalar-paquetes-1)
     - [Desactivar un entorno](#desactivar-un-entorno-1)
     - [Eliminar un entorno](#eliminar-un-entorno-1)
@@ -21,43 +19,20 @@
 ## Virtualenv
 virtualenv es una herramienta que se utiliza para crear entornos Python aislados. Crea una carpeta que contiene todos los ejecutables necesarios para usar los paquetes que necesitaría un proyecto de Python.
 
-Puedes instalarlo con pip:
+Instalar en ubuntu
 
-    pip install virtualenv
-
-Verifica la instalación con el siguiente comando:
-
-    virtualenv --version
+    apt install python3.10-venv
 
 ### Crear un entorno
 
 Para crear un entorno virtual utiliza:
 
-    virtualenv --no-site-packages my-env
-
-Esto crea una carpeta en el directorio actual con el nombre del entorno `(my-env/)`. Esta carpeta contiene los directorios para instalar módulos y ejecutables de Python.
-
-También puedes especificar la versión de Python con la que quieres trabajar. Simplemente usa el argumento `--python=/ruta/a/la/version/de/python`. Por ejemplo, python2.7:
-
-    virtualenv --python=/usr/bin/python2.7 my-env
-
-### Lista de entornos
-
-Puedes enumerar los entornos disponibles con:
-
-    lsvirtualenv
-
-### Activar un entorno
-
-Antes de utilizar el entorno, debes activarlo:
-
-    source my-env/bin/activate
-
-Esto asegura que solo se usen los paquetes bajo my-env/.
-
-Notarás que el nombre del entorno se muestra a la izquierda de la línea de comandos. De esta forma puedes ver cuál es el entorno activo.
+    python3 -m venv venv
+    source venv/bin/activate
 
 ### Instalar paquetes
+
+    python3 -m pip install --upgrade pip
 
 Puede instalar paquetes uno por uno o configurando un archivo requirements.txt para tu proyecto.
 

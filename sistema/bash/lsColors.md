@@ -43,6 +43,26 @@ Si quieres especificar un color de fondo, tienes que añadir otro código numero
 
  * ## Lista de códigos de colores:
 
+|Color  	    | Foreground Code	| Background Code   |
+|---------------|-------------------|-------------------|
+|Black	        | 30	            | 40                |
+|Red	        | 31	            | 41                |
+|Green	        | 32	            | 42                |
+|Yellow	        | 33	            | 43                |
+|Blue	        | 34	            | 44                |
+|Magenta	    | 35	            | 45                |
+|Cyan	        | 36	            | 46                |
+|Light Gray	    | 37	            | 47                |
+|Gray	        | 90	            | 100               |
+|Light Red	    | 91	            | 101               |
+|Light Green	| 92	            | 102               |
+|Light Yellow	| 93	            | 103               |
+|Light Blue	    | 94	            | 104               |
+|Light Magenta	| 95	            | 105               |
+|Light Cyan	    | 96	            | 106               |
+|White	        | 97	            | 107               |
+
+
  * 0 = default colour
  * 1 = bold
  * 4 = underlined
@@ -50,38 +70,4 @@ Si quieres especificar un color de fondo, tienes que añadir otro código numero
  * 7 = reverse field (exchange foreground and background color)
  * 8 = concealed (invisible)
  * 0 = default colour
- 
- * 31 = red		
- * 32 = green	
- * 33 = orange
- * 34 = blue	
- * 35 = purple
- * 36 = cyan
- * 37 = grey
- * 40 = black background
- * 41 = red background
- * 42 = green background
- * 43 = orange background
- * 44 = blue background
- * 45 = purple background
- * 46 = cyan background
- * 47  = grey background
- 
- * 90 = dark grey
- * 91 = light red
- * 92 = light green
- * 93 = yellow
- * 94 = light blue
- * 95 = light purple
- * 96 = turquoise
- * 97 = white
- 
- * 100 = dark grey background	
- * 101 = light red background	
- * 102 = light green background	
- * 103 = yellow background	
- * 104 = light blue background	
- * 105 = light purple background	
- * 106 = turquoise background	
- * 107 = white background
  

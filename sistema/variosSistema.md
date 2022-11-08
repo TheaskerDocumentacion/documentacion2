@@ -12,7 +12,14 @@
 
   * https://atareao.es/podcast/dotdrop-un-completo-gestor-de-dotfiles/ => Gestor de dotfiles
 
-## Unificar el historial de bash
+## Bash
+
+### Tutorial sobre la terminal de Atareao.es
+
+ * https://atareao.es/tutorial/terminal/
+
+
+### Unificar el historial de bash
 
 Agregar estas líneas al fichero `~/.bashrc`:
 

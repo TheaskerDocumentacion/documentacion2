@@ -536,6 +536,10 @@ Para restaurar una matriz Btrfs, debemos utilizar la opción de montaje incorpor
 
     # mount -o recovery /dev/sde1 /mnt/temp2
 
+Para reparar un volumen btrfs que está corrupto o dañado no puede estar montado
+
+    btrfs check /dev/sdb2
+
 ## Fragmentación
 
 En esta caso práctico se muestra como realizar una fragmentación de un sistema de ficher BTRFS ya que para ofrecer tantas ventajas como las que ofrece tiene un punto negativo y es que sufre fragmentación. Para poder realizar una desfragmentación en btrfs tendremos que introducir el siguiente comando.

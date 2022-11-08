@@ -52,7 +52,7 @@ Podemos descargar un backup comprimido
 
 Para elegir los archivos especícos podemos montar un backup específico y tendremos acceso a todos los ficheros de ese backup:
 
-    $ sudo borg umount ssh://ubuntu@podereuropeo.duckdns.org:22/home/ubuntu/borgbackups::backup01 /mnt/borgbackup
+    $ sudo borg mount ssh://ubuntu@podereuropeo.duckdns.org:22/home/ubuntu/borgbackups::backup01 /mnt/borgbackup
 
 Si no especificamos ningún backup se montarán todos como directorios:
 

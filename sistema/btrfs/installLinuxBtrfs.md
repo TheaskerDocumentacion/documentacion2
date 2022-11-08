@@ -23,6 +23,23 @@
     ```
 
 
+ * /dev/sda3 => datos1 => 0d475404-655d-4d8c-af2c-8e3258ce5bd3
+ * /dev/sdd1 => datos2 => 4a894b50-328d-4f57-9460-f76b4bd2a67e
+ * /dev/sdb1 => datos3 => 7720197f-b04d-47fd-b180-143b028eb852
+
+``` 
+UUID=0bfb231a-c214-4c65-856e-e7c4479e7f16	/	ext4	defaults,noatime	0	1
+tmpfs	/tmp	tmpfs	defaults,noatime,mode=1777	0	0
+
+/dev/sdd2   none    swap    defaults    0   0
+
+UUID=0d475404-655d-4d8c-af2c-8e3258ce5bd3	/mnt/datos1	btrfs	compress=zstd,relatime,rw  0 0
+UUID=4a894b50-328d-4f57-9460-f76b4bd2a67e	/mnt/datos2	btrfs	compress=zstd,relatime,rw  0 0
+UUID=7720197f-b04d-47fd-b180-143b028eb852	/mnt/datos3	btrfs	compress=zstd,relatime,rw  0 0
+
+/dev/sdb                /srv            btrfs           compress=zstd:9,relatime,rw     0 0
+```
+
 ## Bibliografía
 
  * https://www.muylinux.com/2022/01/27/archinstall-2-3-1/

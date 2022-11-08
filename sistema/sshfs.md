@@ -14,6 +14,12 @@ Por ejemplo:
 
 Aquí -p 9876 especifica el número de puerto y -C activa la compresión. Para más opciones véase la sección #Opciones.
 
+Y para sólo lectura:
+
+    sshfs user@123.123.123.123:/home/user /media/mountpoint/ -o allow_other -o ro
+
+ * `-o allow_other` => allow access by all users
+
 ### Desmontaje
 
     $ umount /ruta/local
