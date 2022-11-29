@@ -4,18 +4,11 @@ rsync -avzhH ubuntu@laflordearagon.es:/home/ubuntu/temp ./backups/
 **Copia incremental con Hard Links**
 rsync -avzhb -H --delete --backup-dir=/home/ubuntu/temp/incrementales/copia_$(date +%d%m%Y%H%M%S) ubuntu@laflordearagon.es:/home/ubuntu/temp/ ./backups/
 
-
  * -H es para crear Hard Links
 
-## Array en bash (para array de )
-```
-myArray=("cat" "dog" "mouse" "frog)
+Con `--link-dest` compara para crear una copia incremental y lo que no se modifica crea un "Hard Link"
 
-for str in ${myArray[@]}; do
-  echo $str
-done
-```
-
+  rsync -azv -e "ssh -p $PORT" --link-dest $LASTBACKUP $SOURCE $DEST
 
 ## Bibliografía
 * https://linuxconfig.org/how-to-create-incremental-backups-using-rsync-on-linux

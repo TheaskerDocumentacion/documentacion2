@@ -248,8 +248,8 @@ Primero vamos a crear el sistema de ficheros btrfs:
     Data:             single            8.00MiB
     Metadata:         RAID1           256.00MiB
     System:           RAID1             8.00MiB
-    SSD detected:       no
-    Zoned device:       no
+    SSD detected:      
+  no
     Incompat features:  extref, skinny-metadata, no-holes
     Runtime features:   free-space-tree
     Checksum:           crc32c
@@ -287,7 +287,8 @@ Ahora mostramos los subvolumenes creados:
     ID 257 gen 9 top level 5 path sub2
     ID 258 gen 10 top level 5 path sub3
     ID 259 gen 11 top level 5 path sub4
-    ID 260 gen 12 top level 5 path sub5
+    ID 260 gen 12 top l
+evel 5 path sub5
 
 En el caso en el queramos montar un subvolumen en concreto tendremos que utilizar el ID del subvolume y para ello visualizaremos las caracteristicas del subvolumen con el siguiente comando.
 

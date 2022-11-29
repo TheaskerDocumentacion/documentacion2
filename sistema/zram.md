@@ -26,7 +26,7 @@ o con mucha más información:
     /dev/zram1 zstd            2G  77,7M 19,8M 21,5M       4 [SWAP]
     /dev/zram0 zstd            2G 103,2M 23,9M 25,5M       4 [SWAP]
 
-El archivo de configuración está en `/etc/default/zramd
+El archivo de configuración está en `/etc/default/zramd`
 
 ```
 $ cat /etc/default/zramd 
