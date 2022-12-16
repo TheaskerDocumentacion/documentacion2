@@ -3,14 +3,47 @@
 #==============================================================================
 # title: ScriptBackup.sh
 # description:  Automatic Backup Script in Bash Shell
+# bash_version: 5.1.16(1)-release (x86_64-pc-linux-gnu)
 # author: Mauricio Segura Ariño
 # date: 20220915
-# usage:    Create external file with the source directories
+# usage:    Create external file with the source directories like this
+# 
+# {
+# 	"config": {
+# 		"target": "dir/backups"
+# 	},
+# 	"backups": [
+# 		{
+# 			"Domain": "domain.es",
+# 			"Port": "22",
+# 			"Folders": [
+# 				"/home/ubuntu/temp",
+# 				"/home/ubuntu/docker",
+# 				"/etc"
+# 			]
+# 		},
+# 		{
+# 			"Domain": "domain.duckdns.org",
+# 			"Port": "22",
+# 			"Folders": [
+# 				"/home/ubuntu/docker",
+# 				"/etc"
+# 			]
+# 		}
+# 	]
+# }
+# 
 #           bash ScriptBackup.sh
-# notes: 
-#    Configure the initVars function and init de variables
-#    Fill the config file with the source to backup
-# bash_version: 5.1.16(1)-release
+# Requirements: 
+#   - Configure the initVars function and init de variables
+#   - Fill the config file with the sources to backup
+#   - We have intalled jq application for read config.json file
+#
+#   MODIFICATIONS:
+#       2022-09-15 => Initial script 
+#       2022-11-28 => Change config file to json format with jq
+
+# 
 #==============================================================================
 
 function initVars {
@@ -47,9 +80,7 @@ function dispatch {
     done < $SOURCESFILE
 }
 
-function dispath2 {
-    CONFIGFILE="$PWD/config.json"
-    DESTBASE="$PWD/backups"
+function dispachJson {
     # Check number of domains to make backup
     N_DOMAINS=$(jq -r '.backups[].Domain' $CONFIGFILE | wc -l)
     # Walk through all domains + port
@@ -114,5 +145,6 @@ function backup {
 }
 
 initVars
-dispatch2
+# dispatch
+dispachJson
 exit 0

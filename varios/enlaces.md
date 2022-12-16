@@ -1,5 +1,10 @@
 # Enaces varios
 
+## Internet
+
+ * Almacenamiento en la nube gratis => https://www.whizlabs.com/blog/best-free-cloud-storage/
+ * 200 Gb de almacenamiento en la nube gratis => https://www.blomp.com/
+
 ## Multimedia
  * https://mynoise.net/ => Generadores de sonido que se pueden mezclar, como lluvia, ruido blanco, rosa, etc.
  
