@@ -32,5 +32,6 @@ PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; h
 > Fuente: https://www.enmimaquinafunciona.com/pregunta/25760/pueden-unificar-archivos-de-historial-de-bash
 
 ## Varios
- * **ventoy** => Aplicación para grabar isos en USB
+ * **ventoy**: Aplicación para grabar isos en USB
  * Crear un fichero de ceros: `dd if=/dev/zero of=/archivogrande bs=1024 count=512k`
+ * **LSD (LSDeluxe)**: https://github.com/Peltoche/lsd
