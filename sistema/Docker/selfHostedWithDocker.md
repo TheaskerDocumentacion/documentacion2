@@ -9,3 +9,7 @@
 * photoprism/photoprism: PhotoPrism® is an AI-Powered Photos App for the Decentralized Web. It makes use of the latest technologies to tag and find pictures automatically without getting in your way. You can run it at home, on a private server, or in the cloud.
 * Firefly III: is a (self-hosted) manager for your personal finances. 
 * Snippet Box: guarda tus trozos de código
+* Para controlar desde consola los contenedores docker:
+    ```sh
+    docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock lirantal/dockly
+    ```

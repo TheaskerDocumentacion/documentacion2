@@ -8,3 +8,4 @@
    ```
    docker run --rm -v $(pwd):/music spotdl/spotify-downloader download <url_spotify>
    ```
+ * https://excalidraw.com/ => Creación de esquemas y dibujos
