@@ -15,3 +15,6 @@ https://14843.live.streamtheworld.com/AMAZING_BLUES_S01.mp3
  * The Hexmen
  * The Bourbon Boys
  * Wolfmother (como Ledzeppelin)
+
+## Podcast
+ * Sofá Sonoro (Cadeena SER) => https://cadenaser.com/cadena-ser/sofa-sonoro/

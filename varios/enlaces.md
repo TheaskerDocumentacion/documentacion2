@@ -19,5 +19,6 @@
  * **Automouse* : https://autoclose.net/automouse.html => Automatización de acciones del ratón
 
 ## Varios
+ * https://www.shell.how/ => Nos explica todas las opciones del comando que pongamos
 ### GPS
  * https://www.qgis.org/es/site/about/index.html => QGIS es un Sistema de Información Geográfica (SIG) de Código Abierto.

@@ -3,7 +3,7 @@
 Después de ejecutar el comando `tmux`, usamos las combinaciones de teclas para hacer diversas acciones:
 
 * `Ctrl + b` y `%`: Divide verticalmente la terminal en 2 partes.
-* `Ctrl + b` y `"`: Divide verticalmente la terminal en 2 partes.
+* `Ctrl + b` y `"`: Divide horizontalmente la terminal en 2 partes.
 
 * `Ctrl + b` y `Ctrol + cursor derecha` o `Ctrol + cursor izquierda`: Con los cursores derecha e izquierda ajustamos el tamaño de las divisiones verticalmente.
 * `Ctrl + b` y `Ctrol + cursor arriba` o `Ctrol + cursor abajo`: Con los cursores arriba y abajo ajustamos el tamaño de las divisiones horizaontalmente.
