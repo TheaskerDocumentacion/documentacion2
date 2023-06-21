@@ -5,6 +5,7 @@
 		- [Busquedas en la nube](#busquedas-en-la-nube)
 		- [Parada y comienzo de un container](#parada-y-comienzo-de-un-container)
 		- [Publicar una imagen a dockerhub](#publicar-una-imagen-a-dockerhub)
+		- [Grabar / importar una imagen de docker](#grabar--importar-una-imagen-de-docker)
 	- [Networking](#networking)
 		- [Exponer un puerto](#exponer-un-puerto)
 		- [Publicar un puerto](#publicar-un-puerto)
@@ -111,6 +112,17 @@ Ponerle una etiqueta a la imagene que queremos subir.
 Subimos la imagen
 
 	doker push theasker/ubuntu_apache
+
+### Grabar / importar una imagen de docker
+
+Para guardar una imagen en nuestro disco duro:
+
+	docker pull ubuntu:latest
+	docker save ubuntu:latest | gzip > /ruta/al/fichero/ubuntu.tar.gz
+
+Para importar una imagen:
+
+	docker load < /ruta/al/fichero/ubuntu.tar.gz
 
 ## Networking
 

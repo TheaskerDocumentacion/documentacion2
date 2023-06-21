@@ -39,4 +39,3 @@ Para comprobar que hemos el API funciona, lanzamos una consulta usando curl:
 ## Bibliografía
 
  * https://onthedock.github.io/post/170506-habilita-el-acceso-remoto-via-api-a-docker/
- * 

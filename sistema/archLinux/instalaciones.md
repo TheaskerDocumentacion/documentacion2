@@ -16,24 +16,44 @@
 
 ### Nvidia drivers
 
-    sudo pacman -S nvidia-installer-dkms
+    yay -S nvidia-inst
+    
 
 Con esto comprobamos la tarjeta que tenemos y nos dirá qué tenemos que instalar:
 
-    $ nvidia-installer-check
-    NVIDIA card id: 1287
-    The nvidia-dkms version: 520.56.06-2
-    Graphics card (id: 1287):
-    - Is supported by the nvidia-470xx-dkms driver.
-    - To install a driver for this card:
-        - Use the --force option with nvidia-installer-dkms.
-        - Then, BEFORE rebooting,
-        - uninstall nvidia-dkms, nvidia-utils, and related other Nvidia driver packages
-        - install 470 series packages
-        Example:
-        yay -Rsn nvidia-dkms nvidia-utils nvidia-settings
-        yay -S nvidia-470xx-dkms nvidia-470xx-utils nvidia-470xx-settings
-    $ yay -S nvidia-470xx-dkms nvidia-470xx-utils nvidia-470xx-settings
+```bash
+$ nvidia-inst
+2023-06-20 16:52:09: Info: Running: nvidia-inst v23-5
+2023-06-20 16:52:09: Info: Command line: nvidia-inst 
+2023-06-20 16:52:09: Info: Selected mode: nvidia
+NVIDIA card id: 1287
+Fetching driver data from nvidia.com ...
+2023-06-20 16:52:12: Info: Installing packages: nvidia-470xx-dkms nvidia-470xx-utils nvidia-470xx-settings
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+COMMANDS TO RUN:
+    yay -Syu nvidia-470xx-dkms nvidia-470xx-utils nvidia-470xx-settings
+    nvidia-installer-kernel-para nvidia-drm.modeset=1 add
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2023-06-20 16:52:12: Error: Sorry, nvidia-inst does not support installing packages from AUR.
+    To continue, manually run all commands from COMMANDS TO RUN above.
+...
+```bash
+$ nvidia-inst
+2023-06-20 17:25:44: Info: Running: nvidia-inst v23-5
+2023-06-20 17:25:44: Info: Command line: nvidia-inst 
+2023-06-20 17:25:44: Info: Selected mode: nvidia
+NVIDIA card id: 1287
+Fetching driver data from nvidia.com ...
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+COMMANDS TO RUN:
+    nvidia-installer-kernel-para nvidia-drm.modeset=1 add
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+==> NOTE: running the commands may take several minutes...
+
+Root Contraseña:
+```
+
 
 ## sistema
 
