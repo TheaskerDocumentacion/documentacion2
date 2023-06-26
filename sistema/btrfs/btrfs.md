@@ -21,6 +21,7 @@
   - [Fragmentación](#fragmentación)
   - [Compresión al vuelo](#compresión-al-vuelo)
     - [Ajustar compresión en archivo /etc/fstab](#ajustar-compresión-en-archivo-etcfstab)
+    - [Ajustes](#ajustes)
   - [Bibliografía](#bibliografía)
 
 
@@ -551,7 +552,7 @@ En esta caso práctico se muestra como realizar una fragmentación de un sistema
 
 Existen dos forma de compresión al vuelo y es ZLIB y LZO. La diferencia que existe entre los dos es que LZO es una compresión mas rápida pero menos exigente lo que penaliza la capacidad de compresión (no llega a comprimirlo tanto) y la opción ZLIB es mas exigente y por ello comprime más la información con la penalización en cuanto a tiempo y la carga de CPU que es mayor.
 
-    # mount -o compress=zlib /dev/sde2 /mnt/temp
+    # mount -o compress=zstd /dev/sde2 /mnt/temp
 
 Una vez introducido este comando vamos a introducir información  para así comprobar como puede almacenar mas información de la que permite el dispositivo de almacenamiento ya que la comprime. En nuestro caso vamos a utilizar un dispositivo de almacenamiento con 1G de capacidad como aparece a continuación.
 
@@ -588,6 +589,18 @@ Por último mostramos las caracteristicas de ese dispositivo y vemos como eso 25
 ### Ajustar compresión en archivo /etc/fstab
 
 /dev/sdb                /srv            btrfs           compress=zstd:9,relatime,rw     0 0
+
+### Ajustes
+
+Es conveniente desactivar la chaché de escritura en discos SSD o NVME
+```bash
+# hdparm -W 0 /dev/sdc1
+```
+
+O también se puede hacer con:
+```bash
+smartctl --set wcache,off
+```
 
 ## Bibliografía
  * **https://juanjoselo.wordpress.com/2018/01/28/uso-de-btrfs-en-linux/**
