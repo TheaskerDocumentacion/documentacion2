@@ -220,7 +220,7 @@ Para empezar vemos los dispositivos y comprobamos como existe un fallo en uno de
 ## Creación de subvolumnes y snapshots
 
 Primero vamos a crear el sistema de ficheros btrfs:
-
+```bash
     # lsblk /dev/sde
     NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
     sde      8:64   0 111,8G  0 disk 
@@ -262,27 +262,27 @@ Primero vamos a crear el sistema de ficheros btrfs:
         3     1.00GiB  /dev/sde3
         4     2.00GiB  /dev/sde4
         5     4.00GiB  /dev/sde5
-
+```
 ### Creación de subvolúmenes
 
 Ahora crearemos los subvolumentes.
 Los subvolumenes son dinamicos lo que quiere decir que iran expandiendo cuando sea necesario y se tiene que crear estando el dispositivo montado.
+```bash
+# mount /dev/sde1 /mnt/temp
 
-    # mount /dev/sde1 /mnt/temp
-
-    root@theasker-proliantml110g5 /home/theasker # btrfs subvolume create /mnt/temp/sub1
-    Create subvolume '/mnt/temp/sub1'
-    root@theasker-proliantml110g5 /home/theasker # btrfs subvolume create /mnt/temp/sub2
-    Create subvolume '/mnt/temp/sub2'
-    root@theasker-proliantml110g5 /home/theasker # btrfs subvolume create /mnt/temp/sub3
-    Create subvolume '/mnt/temp/sub3'
-    root@theasker-proliantml110g5 /home/theasker # btrfs subvolume create /mnt/temp/sub4
-    Create subvolume '/mnt/temp/sub4'
-    root@theasker-proliantml110g5 /home/theasker # btrfs subvolume create /mnt/temp/sub5
-    Create subvolume '/mnt/temp/sub5'
-
+root@theasker-proliantml110g5 /home/theasker # btrfs subvolume create /mnt/temp/sub1
+Create subvolume '/mnt/temp/sub1'
+root@theasker-proliantml110g5 /home/theasker # btrfs subvolume create /mnt/temp/sub2
+Create subvolume '/mnt/temp/sub2'
+root@theasker-proliantml110g5 /home/theasker # btrfs subvolume create /mnt/temp/sub3
+Create subvolume '/mnt/temp/sub3'
+root@theasker-proliantml110g5 /home/theasker # btrfs subvolume create /mnt/temp/sub4
+Create subvolume '/mnt/temp/sub4'
+root@theasker-proliantml110g5 /home/theasker # btrfs subvolume create /mnt/temp/sub5
+Create subvolume '/mnt/temp/sub5'
+```
 Ahora mostramos los subvolumenes creados:
-
+```bash
     # btrfs subvolume list /mnt/temp 
     ID 256 gen 8 top level 5 path sub1
     ID 257 gen 9 top level 5 path sub2
@@ -290,48 +290,48 @@ Ahora mostramos los subvolumenes creados:
     ID 259 gen 11 top level 5 path sub4
     ID 260 gen 12 top l
 evel 5 path sub5
-
+```
 En el caso en el queramos montar un subvolumen en concreto tendremos que utilizar el ID del subvolume y para ello visualizaremos las caracteristicas del subvolumen con el siguiente comando.
-
-    # btrfs subvolume show /mnt/temp/sub1
-    sub1
-        Name: 			sub1
-        UUID: 			c24c3297-a0ca-0747-b8ca-95df4bf1768b
-        Parent UUID: 		-
-        Received UUID: 		-
-        Creation time: 		2022-10-18 21:20:02 +0200
-        Subvolume ID: 		256
-        Generation: 		8
-        Gen at creation: 	8
-        Parent ID: 		5
-        Top level ID: 		5
-        Flags: 			-
-        Send transid: 		0
-        Send time: 		2022-10-18 21:20:02 +0200
-        Receive transid: 	0
-        Receive time: 		-
-        Snapshot(s):
-
+```bash
+# btrfs subvolume show /mnt/temp/sub1
+sub1
+    Name: 			sub1
+    UUID: 			c24c3297-a0ca-0747-b8ca-95df4bf1768b
+    Parent UUID: 		-
+    Received UUID: 		-
+    Creation time: 		2022-10-18 21:20:02 +0200
+    Subvolume ID: 		256
+    Generation: 		8
+    Gen at creation: 	8
+    Parent ID: 		5
+    Top level ID: 		5
+    Flags: 			-
+    Send transid: 		0
+    Send time: 		2022-10-18 21:20:02 +0200
+    Receive transid: 	0
+    Receive time: 		-
+    Snapshot(s):
+```
 Dicho Id lo utilizaremos para montarlo con el siguiente comando y así trabajar directamente con ese subvolumen.
-
-    # mount -o subvolid=256 /dev/sde1 /mnt/temp2
-
+```bash
+# mount -o subvolid=256 /dev/sde1 /mnt/temp2
+```
 Realizaremos un df -h y veremos como esta ese subvolumen montado (de esta forma podremos acceder al subvolumen por dos vias que es donde esta el dispositivo creado y donde lo hemos montado que en nuestro caso seria en /mnt/temp/sub1 y /mnt/temp2).
-
+```bash
     # df -h | grep sde
     /dev/sde1         18G   4,0M   18G   1% /mnt/temp
     /dev/sde1         18G   4,0M   18G   1% /mnt/temp2
-
+```
 ### Borrado de volúmenes
 
 Tendremos que ejecutar:
-
+```bash
     # btrfs subvolume delete /mnt/temp/sub4
     Delete subvolume (no-commit): '/mnt/temp/sub4'
 
     # ls /mnt/temp
     sub1  sub2  sub3  sub5
-
+```
 ### Creación de snapshots
 
 Para copias de seguridad de un subvolumen con snapshot:
