@@ -28,6 +28,14 @@
   - [Varios](#varios)
   - [Pendiente de comprobar](#pendiente-de-comprobar)
   - [Bibliografía](#bibliografía)
+    - [Cursos e iniciación](#cursos-e-iniciación)
+    - [Específicos](#específicos)
+      - [Boolean](#boolean)
+      - [Materiales](#materiales)
+      - [Curvas](#curvas)
+      - [UVs](#uvs)
+      - [Varios](#varios-1)
+    - [Varios](#varios-2)
     - [Enlaces de Blender España (Telegram)](#enlaces-de-blender-españa-telegram)
 
 
@@ -187,19 +195,45 @@ Los objetos que creamos dentro del **Object mode** se añaden al objeto que tene
  * `Shift` + `-` 
 
 ## Bibliografía
+
+### Cursos e iniciación
  * **Curso gratis de Udemy** => https://www.udemy.com/course/blender-la-guia-completa-para-novatos
+ * **Curso de iniciación de BlendTuts**: 
+   * https://www.blendtuts.es/products/introduccion-a-blender/categories/1579784
+   * https://www.youtube.com/playlist?list=PLBn8E6Sfz0f0UCTEHQ7pL7KKsrvi6HK-8
  * **Curso blender creación de personajes** => https://cursos.uadla.com/curso/curso-de-blender
  * **Primeros pasos** => https://www.youtube.com/watch?v=S-NH7ia_
  * **Guia para principiantes - Objetos Mario Bros** => https://www.youtube.com/watch?v=O-tV7uBf5LI
+ * **Curso de modelado 3D para principiantes** => https://www.youtube.com/playlist?list=PL_7UEOgbqi2Q0qkiLvo8YWWYAz8SJgEny
+
+### Específicos
+
+#### Boolean
  * **Modificador Boolean** => https://www.youtube.com/watch?v=cwOg7Az_TBo
+
+#### Materiales
  * **Guía materiales y texturas** => https://www.youtube.com/watch?v=7SdhsCpNuYY
+
+#### Curvas
  * **Crear tubos con sus curvas** => https://www.youtube.com/watch?v=y-hD-Z3JlYs
  * **Listas de videos en canal sobre Blender** => https://www.youtube.com/@str3dlok/videos
+
+#### UVs
+ * **Aprende UVS avanzadas con UDIMS en Blender** => 
+   * https://www.youtube.com/watch?v=7S1xXHt98_0
+   * https://www.youtube.com/watch?v=yZ7Yx087jfI
+
+#### Varios
  * **Como hacer hierba** => https://www.youtube.com/watch?v=TExXtmwiAUs
  * **Alinear y pegar objetos** => https://www.youtube.com/watch?v=nuP2fRHJ1i8
  * **Grosor a objetos y grabados** => https://www.youtube.com/watch?v=UqfIkGveNe4
  * **Formas de restar o hacer agujeros a objetos** => https://www.youtube.com/watch?v=7OdCT5D-Gz4
  * **Crear un espejo** => https://www.youtube.com/watch?v=ZQIk3MTExaU
+ * **4 formas de crear un array circular** => https://www.youtube.com/watch?v=C2XGjjcks0o
+ * **Cómo hacer un mapeado de texturas** => https://youtu.be/Ek-Y62D9W4k
+
+### Varios
+ * https://www.youtube.com/@TutorialesKames/videos
 
 ### Enlaces de Blender España (Telegram)
 En este enlace vamos guardando todo el material que consideremos oportuno relacionado con Blender. Ya hay algunas carpetas creadas pero esta abierto a ampliaciones y modificaciones: https://mega.nz/#F!Uo4CVIDK!fBQMm_2wzc6PDZQny8lieA
