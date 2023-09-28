@@ -9,6 +9,7 @@
     - [Herramienta mover objeto](#herramienta-mover-objeto)
     - [Herramienta de Rotar objeto](#herramienta-de-rotar-objeto)
     - [Escalar objeto](#escalar-objeto)
+    - [Herramienta de Rotar objeto](#herramienta-de-rotar-objeto-1)
       - [Aplicar transformaciones de objeto](#aplicar-transformaciones-de-objeto)
     - [Duplicar y rotar en un eje (instancia de objeto)](#duplicar-y-rotar-en-un-eje-instancia-de-objeto)
     - [Menú Snap (`Shift` + `s`)](#menú-snap-shift--s)
@@ -28,6 +29,7 @@
     - [Diferencias de objetos (Boolean)](#diferencias-de-objetos-boolean)
     - [Knife Project](#knife-project)
   - [Shading](#shading)
+    - [Node Wrangler](#node-wrangler)
     - [Color de los nodos](#color-de-los-nodos)
     - [Crear cristal (EEVEE - https://www.youtube.com/watch?v=709F2\_wee9k)](#crear-cristal-eevee---httpswwwyoutubecomwatchv709f2_wee9k)
     - [Crear cristal (Cycles - https://www.youtube.com/watch?v=709F2\_wee9k)](#crear-cristal-cycles---httpswwwyoutubecomwatchv709f2_wee9k)
@@ -44,9 +46,12 @@
     - [Específicos](#específicos)
       - [Boolean](#boolean)
       - [Curvas](#curvas)
-    - [Materiales](#materiales)
-      - [UVs](#uvs)
+    - [Materiales / nodos](#materiales--nodos)
+    - [Geometry Nodes](#geometry-nodes)
+      - [Sanctus](#sanctus)
+    - [UVs](#uvs)
     - [Addons](#addons)
+    - [Recursos](#recursos)
     - [Enlaces de interés](#enlaces-de-interés)
     - [Varios](#varios-1)
     - [Para revisar](#para-revisar)
@@ -117,9 +122,14 @@ Cuando pulsamos `Shift` + `x | y | z `, la transformación afecta a las otras 2 
  * `s` => Movimiento en todas direcciones
    * `s` + `x`|`y`|`z` => Limita al eje
    * `s` + rueda central => Limita a los ejes
+ * `Alt` + `r` => Resetea la rotación que se haya hecho en el objeto
+
+### Herramienta de Rotar objeto
 
 #### Aplicar transformaciones de objeto
  * `Alt` + `r` => Resetear rotaciones de un objeto
+ * `Alt` + `g` => Resetear localización de un objeto
+ * `Alt` + `s` => Resetear escala de un objeto
 
 ### Duplicar y rotar en un eje (instancia de objeto)
  * En **modo objeto** Movemos el objeto donde queremos
@@ -155,6 +165,7 @@ Selección de objetos + botón derecho + `m` => Se añade a una nueva colección
 
 ### Selecciones
  * `a` => Seleccionar todo
+ * `a` + `a` => Deseleccionar todo
  * `Alt` + `a` => Deseleccionar todo
 Los objetos que creamos dentro del **Object mode** se añaden al objeto que tenemos seleccionado y es como uno solo.
  * `1` => Selección de vértice
@@ -164,7 +175,7 @@ Los objetos que creamos dentro del **Object mode** se añaden al objeto que tene
  * Numpad `.` => Nos centra en el objeto seleccionado
  * `b` => Caja de selección
 
- * Selección de todo un objeto => Seleccionamos una cara del objeto + `L`
+ * Selección de todo un objeto => Seleccionamos una parte de un obejto y + `L`
 
  * **Seleccionar todas las aristas contiguas (Loop)** => `Shift`+ `Alt` + `Click`
  * **Seleccionar todas las aristas paraleas (anillo)** => `Ctrl` + `Alt` + `Click`
@@ -183,6 +194,7 @@ Los objetos que creamos dentro del **Object mode** se añaden al objeto que tene
  * `s` => Escalar
  * `Alt` + `s` => "Scale Along Normals" (Escalar a lo largo de las normales) o "Shrink/Fatten" (Encoger/Agrandar). Esta acción permite escalar una selección de vértices, aristas o caras a lo largo de sus normales individuales.
  * `i` => Insertar caras en la cara seleccionada (Inset). Pulsando `Ctrl` movemos la subdivisión creada
+ * `i` + `i` => Hace Inset en todas las caras seleccionadas individualmente
  * `Ctrl` + `b` => Bevel
  * **Seleccionar una región entre 2 loops (anillos de aristas)**:
    * Seleccionamos un loop con `Alt` + `Shift` + click y luego otro click en el segundo loop
@@ -224,7 +236,13 @@ Los objetos que creamos dentro del **Object mode** se añaden al objeto que tene
 
 ## Shading
 
-**Hay que activar el Addon __Node Wrangler__** => `Ctrl` + `t` => Genera nodos necesarios
+### Node Wrangler
+
+**Hay que activar el Addon __Node Wrangler__** `Ctrl` + `t` => Genera nodos necesarios
+* `Ctrl` + `0` => Conecta 2 nodos, creando un mixer o como se tenga que hacer.
+* `f` => Conecta 2 nodos
+* `Ctrl` + `j` => Junta varios nodos para agruparlos
+* `Shift` + `Ctrl` + `Click` en un nodo => Nos muestra directamente en la salida la información y lo que está haciendo ese nodo.
 
 ### Color de los nodos
 * **Gris** => Escala de grises o valor numérico
@@ -329,13 +347,23 @@ Se suelen conectar los mismos colores de nodos
  * **Listas de videos en canal sobre Blender** => https://www.youtube.com/@str3dlok/videos
  * **Cómo hacer cuerdas** => https://www.youtube.com/watch?v=hS-O6aS7F8o
 
-### Materiales
+### Materiales / nodos
+ * **Masterclass: Cómo usar los nodos de Blender (¡desde cero!)** => https://www.youtube.com/watch?v=vOFLhLtBlFE
  * **Guía materiales y texturas** => https://www.youtube.com/watch?v=7SdhsCpNuYY
  * **Metal oxidado** => https://www.youtube.com/watch?app=desktop&v=lB01ncko99A
  * **Manual de nodos** => https://www.youtube.com/watch?v=6v7oM1EMSao
  * **Uso básico de nodos** => https://www.youtube.com/watch?v=kZfL_LKUNeY
+ * **CREAR TEXTURAS REALISTAS en Blender (Aura Prods)** => https://www.youtube.com/watch?v=mzmdwyeQOsM
 
-#### UVs
+### Geometry Nodes
+ * **Curso de Geometry Nodes (3Dilusion Arte Blender)** => https://www.youtube.com/playlist?list=PLTFIbZhnzgXu6Xxm_Z8qeaFMrFbh1Db
+ * **Curso completo GN (inglés) (CGMatter)** => https://www.youtube.com/watch?v=ZerJnivvBn4
+#### Sanctus
+ * **Curso de Geometry Nodes (Sanctus)** => https://www.youtube.com/watch?v=xi0YOYkGDqM&list=PLUVrjsAaUObUa4gCZ6_0dOoVrGX653qbS&pp=iAQB
+ * **Flor infinita con GN (Sanctus)** => https://www.youtube.com/playlist?list=PLUVrjsAaUObVu2yUg5t53xhGdtVlW-dec
+ * **Fichas de dominó** => https://www.youtube.com/watch?v=PoorjjlyIHU  
+
+### UVs
  * **Aprende UVs avanzadas con UDIMS en Blender** => 
    * https://www.youtube.com/watch?v=7S1xXHt98_0
    * https://www.youtube.com/watch?v=yZ7Yx087jfI
@@ -343,12 +371,16 @@ Se suelen conectar los mismos colores de nodos
 ### Addons
  * **Medidas precisas y acotaciones** => https://www.youtube.com/watch?v=gVNf6tMURq4
 
+### Recursos
+ * https://polyhaven.com/ => Texturas, imágenes HDRI, objetos, etc.
+
 ### Enlaces de interés
  * Páginas de IOR de Materiales:
    * http://blendersauce.com/ior-list/
    * https://pixelandpoly.com/ior.html
 
 ### Varios
+ * **Hacer render de Topología** => https://www.youtube.com/watch?v=Ot62tefVQsM
  * **Como hacer hierba** => https://www.youtube.com/watch?v=TExXtmwiAUs
  * **Cómo hacer un tornillo (inglés)** => https://www.youtube.com/watch?v=HWL_cpNEKn8
  * **Alinear y pegar objetos** => https://www.youtube.com/watch?v=nuP2fRHJ1i8

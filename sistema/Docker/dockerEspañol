@@ -1,8 +1,35 @@
 # Docker
----
+
+
 
 ## Conceptos importantes:
-  - Docker (daemon)
+  - Docker (daemon)- [Docker](#docker)
+  - [Conceptos importantes:](#conceptos-importantes)
+  - [Introducción](#introducción)
+  - [Instalación](#instalación)
+  - [Empezando](#empezando)
+    - [`images`](#images)
+    - [`events`](#events)
+    - [`run`](#run)
+    - [`ps`](#ps)
+    - [`run` avanzado](#run-avanzado)
+      - [`run` interactivo](#run-interactivo)
+      - [`run` Detached Mode](#run-detached-mode)
+  - [Ciclo de vida de un contenedor](#ciclo-de-vida-de-un-contenedor)
+  - [Crear una imagen Docker con un Dockerfile](#crear-una-imagen-docker-con-un-dockerfile)
+  - [Ejemplo Real: Wordpress Dockerizado.](#ejemplo-real-wordpress-dockerizado)
+    - [Usando Supervisor y en un único contenedor](#usando-supervisor-y-en-un-único-contenedor)
+  - [Corriendo Wordpress usando 2 contenedores linkeados.](#corriendo-wordpress-usando-2-contenedores-linkeados)
+  - [Haciendo backups de la base de datos de un contenedor](#haciendo-backups-de-la-base-de-datos-de-un-contenedor)
+  - [Compartir información entre el Docker Host y los contenedores](#compartir-información-entre-el-docker-host-y-los-contenedores)
+  - [Compartir información entre contenedores](#compartir-información-entre-contenedores)
+  - [Copiando datos entre el host desde y para los contenedores](#copiando-datos-entre-el-host-desde-y-para-los-contenedores)
+  - [Crear y compartir `Docker Images`](#crear-y-compartir-docker-images)
+  - [Guardando Images y Containers como archivos .tar para compartir](#guardando-images-y-containers-como-archivos-tar-para-compartir)
+  - [Escribiendo Nuestro primer DockerFile](#escribiendo-nuestro-primer-dockerfile)
+  - [Empaquetando una aplicación Flask en un contenedor](#empaquetando-una-aplicación-flask-en-un-contenedor)
+    - [Optimizando el Dockerfile siguiendo buenas prácticas](#optimizando-el-dockerfile-siguiendo-buenas-prácticas)
+
   - Docker-machine (client)
   - Docker Images
   - Docker Containers
