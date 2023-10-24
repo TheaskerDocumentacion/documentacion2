@@ -129,6 +129,12 @@ nano ~/.bashrc
 alias dotdrop='/mnt/datos1/backup/dotfiles/dotdrop/dotdrop.sh'
 ```
 ### /etc/fstab
+```bash
+sudo pacman -S sshfs
+sudo mkdir /mnt/datos1 /mnt/datos2 /mnt/datos3 /mnt/raspberry
+sudo chown theasker:theasker /mnt/*
+sudo chmod 777 /mnt/*
+```
 ```
 UUID=48b71f34-1eca-4f20-96fd-016bcbf12a57 /              ext4    defaults,noatime 0 1
 tmpfs                                     /tmp           tmpfs   defaults,noatime,mode=1777 0 0
@@ -137,8 +143,11 @@ UUID=f6a5653d-8f33-4efe-99d7-0f710342c949   none    swap    defaults    0   0
 
 # Discos de datos
 UUID=0d475404-655d-4d8c-af2c-8e3258ce5bd3	/mnt/datos1	btrfs	compress=zstd,relatime,rw  0 0
-UUID=4a894b50-328d-4f57-9460-f76b4bd2a67e	/mnt/datos2	btrfs	compress=zstd,relatime,rw  0 0
-UUID=7720197f-b04d-47fd-b180-143b028eb852	/mnt/datos3	btrfs	compress=zstd,relatime,rw  0 0
+UUID=d93076c2-bdd2-4261-afc2-9e18e5fdc7f7	/mnt/datos2	ext4	defaults  0 0
+UUID=260af836-02dd-400a-8dec-06928e0b5124	/mnt/datos3	ext4	defaults  0 0
+
+# Raspberry
+pi@192.168.0.70:/mnt/datos/torrents/ /mnt/raspberry  fuse.sshfs  noauto,x-systemd.automount,_netdev,user,idmap=user,follow_symlinks,identityfile=/home/theasker/.ssh/id_rsa,allow_other,default_permissions,uid=1000,gid=1000 0 0
 ```
 ### Grub
 ```bash

@@ -38,6 +38,7 @@
   - [Compositing](#compositing)
   - [Varios](#varios)
     - [Crear espejo](#crear-espejo)
+    - [Renderización desde Google Colab](#renderización-desde-google-colab)
   - [Pendiente de comprobar](#pendiente-de-comprobar)
   - [Bibliografía](#bibliografía)
     - [Cursos e iniciación](#cursos-e-iniciación)
@@ -49,6 +50,7 @@
     - [Materiales / nodos](#materiales--nodos)
     - [Geometry Nodes](#geometry-nodes)
       - [Sanctus](#sanctus)
+    - [Python](#python)
     - [UVs](#uvs)
     - [Addons](#addons)
     - [Recursos](#recursos)
@@ -313,6 +315,37 @@ Se suelen conectar los mismos colores de nodos
 
 <!-- Pendiente de comprobar -->
 
+### Renderización desde Google Colab
+
+  (https://www.youtube.com/watch?v=MWC-GIdaN-A)
+
+ - Crear un nuevo cuaderno
+ - Para ver la tarjeta gráfica asignada:
+  ```
+  ! nvidia-msi
+
+   Mon Oct 16 10:49:14 2023       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 525.105.17   Driver Version: 525.105.17   CUDA Version: 12.0     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  Tesla T4            Off  | 00000000:00:04.0 Off |                    0 |
+| N/A   62C    P8    12W /  70W |      0MiB / 15360MiB |      0%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
+|  No running processes found                                                 |
++-----------------------------------------------------------------------------+
+  ```
+
 ## Pendiente de comprobar 
  * Pulsar `g` 2 veces
  * `Shift` + `-` 
@@ -363,16 +396,25 @@ Se suelen conectar los mismos colores de nodos
  * **Flor infinita con GN (Sanctus)** => https://www.youtube.com/playlist?list=PLUVrjsAaUObVu2yUg5t53xhGdtVlW-dec
  * **Fichas de dominó** => https://www.youtube.com/watch?v=PoorjjlyIHU  
 
+### Python
+ * **Curtis Holt** => https://www.youtube.com/playlist?list=PLRKZHg6r5mu42davqG2wUl_P-JDgJTaus
+
 ### UVs
  * **Aprende UVs avanzadas con UDIMS en Blender** => 
    * https://www.youtube.com/watch?v=7S1xXHt98_0
    * https://www.youtube.com/watch?v=yZ7Yx087jfI
+
+
 
 ### Addons
  * **Medidas precisas y acotaciones** => https://www.youtube.com/watch?v=gVNf6tMURq4
 
 ### Recursos
  * https://polyhaven.com/ => Texturas, imágenes HDRI, objetos, etc.
+ * https://ambientcg.com/
+ * https://texturehaven.com/
+ * https://hdrihaven.com/
+ * https://3dmodelhaven.com/
 
 ### Enlaces de interés
  * Páginas de IOR de Materiales:
@@ -391,6 +433,8 @@ Se suelen conectar los mismos colores de nodos
  * **Cómo hacer un mapeado de texturas** => https://youtu.be/Ek-Y62D9W4k
  * https://www.youtube.com/@TutorialesKames/videos
  * **Preparar modelo para venta y subir a una web** (3D Sudido MAX ) => https://www.youtube.com/watch?v=gIH72L8npmk
+ * **Crea tu cabeza en 3D usando fotografías Muy fácil** => https://www.youtube.com/watch?v=WucxVU-YRQ8
+ * **Hacer huecos en cilindros o esferas** => https://www.youtube.com/watch?v=S6_MSPPiGZY
 
 ### Para revisar
  * https://youtu.be/BzTN2yTgTj0
@@ -399,8 +443,6 @@ Se suelen conectar los mismos colores de nodos
 ### Enlaces de Blender España (Telegram)
 En este enlace vamos guardando todo el material que consideremos oportuno relacionado con Blender. Ya hay algunas carpetas creadas pero esta abierto a ampliaciones y modificaciones: https://mega.nz/#F!Uo4CVIDK!fBQMm_2wzc6PDZQny8lieA
 Enlaces de interés:
-https://texturehaven.com/
-https://hdrihaven.com/
-https://3dmodelhaven.com/
+
 En este TRELLO se van recopilando todos los vídeo-tutoriales que se consideran interesantes y actualizados. Muy recomendable que los que os iniciáis con Blender lo miréis. 
 https://trello.com/b/Nzmp6jSh/grupo-telegram-blender-espa%C3%B1a

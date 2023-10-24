@@ -1,5 +1,7 @@
 # Modificación de los colores del comando ls
 
+
+
 ## Variable de entorno LS_COLORS
 La variable donde se almacenan los colores de cada tipo de fichero es **LS_COLORS**
 
