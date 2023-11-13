@@ -14,3 +14,9 @@
    docker run --rm -v $(pwd):/music spotdl/spotify-downloader download <url_spotify>
    ```
  * https://excalidraw.com/ => Creación de esquemas y dibujos
+
+## Youtube
+ * https://github.com/yt-dlp/yt-dlp
+```bash
+yt-dlp --print filename --write-auto-subs -o "%(upload_date>%Y-%m-%d)s %(channel)s - %(title)s.%(ext)s" <youtube_url>
+```

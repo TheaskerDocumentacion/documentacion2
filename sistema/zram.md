@@ -1,7 +1,7 @@
 # Zram
 
 ## ¿Qué es ZRAM?
-Aunque esto es algo complicado de comprender, ZRAM es un módulo para optimizar Linux notablemente el uso de la memoria de intercambio SWAP y mejora notablemente el rendimiento general del sistema. En términos técnicos, ZRAM comprime la caché de la memoria de intercambio de SWAP en forma de páginas comprimidas, también llamadas ZPAGES. Estas páginas se almacenan en la memoria RAM y se ejecuta desde allí.
+ZRAM es un módulo para optimizar Linux notablemente el uso de la memoria de intercambio SWAP y mejora notablemente el rendimiento general del sistema. En términos técnicos, ZRAM comprime la caché de la memoria de intercambio de SWAP en forma de páginas comprimidas, también llamadas ZPAGES. Estas páginas se almacenan en la memoria RAM y se ejecuta desde allí.
 
 El uso de zram también es una buena manera de reducir los ciclos de lectura/escritura del disco debido al intercambio en SSD.
 
@@ -52,4 +52,4 @@ NUM_DEVICES=2
 ## Bibliografía
 
 * https://wiki.archlinux.org/title/Improving_performance_(Espa%C3%B1ol)
-* 
+* https://www.youtube.com/watch?v=J5VSlVoumrk

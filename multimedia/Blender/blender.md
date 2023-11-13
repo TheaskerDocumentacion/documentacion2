@@ -28,7 +28,9 @@
     - [Suavizado](#suavizado)
     - [Diferencias de objetos (Boolean)](#diferencias-de-objetos-boolean)
     - [Knife Project](#knife-project)
-  - [Shading](#shading)
+  - [Materiales](#materiales)
+  - [Materiales procedurales](#materiales-procedurales)
+    - [Textrure Coordenate](#textrure-coordenate)
     - [Node Wrangler](#node-wrangler)
     - [Color de los nodos](#color-de-los-nodos)
     - [Crear cristal (EEVEE - https://www.youtube.com/watch?v=709F2\_wee9k)](#crear-cristal-eevee---httpswwwyoutubecomwatchv709f2_wee9k)
@@ -236,7 +238,19 @@ Los objetos que creamos dentro del **Object mode** se añaden al objeto que tene
  - Pulsamos `Ctrl` y hacemos click en el objeto cortador
  - Menú **Mesh** > **Knife Project**
 
-## Shading
+## Materiales
+
+## Materiales procedurales
+
+### Textrure Coordenate
+ * **Generated** => Va desde los valores 0 a 1
+   * X: 0 en la parte más a la izquierda del objeto y 1 en la parte más a la derecha del objeto
+   * Y: 0 en la parte más inferior del objeto y 1 en la parte mas superior del objeto (vista superior)
+   * Z: 0 en la parte más abajo y 1 en la parte más arriba del objeto
+ * **Object** => El 0 está en el origen del objeto o en un objeto seleccionado
+   * X: 1 a la derecha y -1 a la izquierda
+   * Y: 1 superior y -1 inferior
+   * Z: 1 en la parte arriba y -1 en la abajo
 
 ### Node Wrangler
 
@@ -387,14 +401,20 @@ Se suelen conectar los mismos colores de nodos
  * **Manual de nodos** => https://www.youtube.com/watch?v=6v7oM1EMSao
  * **Uso básico de nodos** => https://www.youtube.com/watch?v=kZfL_LKUNeY
  * **CREAR TEXTURAS REALISTAS en Blender (Aura Prods)** => https://www.youtube.com/watch?v=mzmdwyeQOsM
+ * **Introducción a texturas procedurales (SANCTUS)**
+   * **I** => https://www.youtube.com/watch?v=9n0BblnwOH8
+   * **II** => https://www.youtube.com/watch?v=nq-LZTiApHU
+   * **III (patrones)** => https://www.youtube.com/watch?v=z6hmFmUoN5s
 
 ### Geometry Nodes
  * **Curso de Geometry Nodes (3Dilusion Arte Blender)** => https://www.youtube.com/playlist?list=PLTFIbZhnzgXu6Xxm_Z8qeaFMrFbh1Db
  * **Curso completo GN (inglés) (CGMatter)** => https://www.youtube.com/watch?v=ZerJnivvBn4
+
+
 #### Sanctus
  * **Curso de Geometry Nodes (Sanctus)** => https://www.youtube.com/watch?v=xi0YOYkGDqM&list=PLUVrjsAaUObUa4gCZ6_0dOoVrGX653qbS&pp=iAQB
  * **Flor infinita con GN (Sanctus)** => https://www.youtube.com/playlist?list=PLUVrjsAaUObVu2yUg5t53xhGdtVlW-dec
- * **Fichas de dominó** => https://www.youtube.com/watch?v=PoorjjlyIHU  
+ * **Fichas de dominó** => https://www.youtube.com/watch?v=PoorjjlyIHU 
 
 ### Python
  * **Curtis Holt** => https://www.youtube.com/playlist?list=PLRKZHg6r5mu42davqG2wUl_P-JDgJTaus
@@ -435,6 +455,8 @@ Se suelen conectar los mismos colores de nodos
  * **Preparar modelo para venta y subir a una web** (3D Sudido MAX ) => https://www.youtube.com/watch?v=gIH72L8npmk
  * **Crea tu cabeza en 3D usando fotografías Muy fácil** => https://www.youtube.com/watch?v=WucxVU-YRQ8
  * **Hacer huecos en cilindros o esferas** => https://www.youtube.com/watch?v=S6_MSPPiGZY
+ * **Foro Blender Hoy** => https://blender.community/c/hoy/?sorting=hot
+ * **Renderizar con Google Colab** => https://zao3d.com/tutorial/renderizar-con-blender-en-los-servidores-de-google-con-colab/
 
 ### Para revisar
  * https://youtu.be/BzTN2yTgTj0
