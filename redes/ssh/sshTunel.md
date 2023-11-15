@@ -14,7 +14,50 @@ ssh -p 22 -N -D 8081 pi@theasker.mooo.com
 
 * **`-N`**: **Permite que se establezca el tunel SSH pero que no se abra una sesión interactiva con el servidor SSH**. En el caso de no usar esta opción, nuestra conexión SSH estará permanentemente abierta y si alguien nos robará el ordenador o nos despistaros y alguien malintencionado tuviera acceso al ordenador nos podría por ejemplo borrar completamente la información que tenemos almacenada en nuestro servidor SSH.
 
+## VPN con ssh
+
+### Configuración
+#### Archivo de configuración de SSH
+Primero activaremos en la configuración de ssh la activación de tunel en la configuración de ssh en el archivo `/etc/ssh/sshd_config`:
+```
+PermitTunnel yes
+```
+
+#### Creación de interfaces
+Con el comando `ip` creamos una interface de tipo **tun** (tunel)
+```bash
+ip tuntap add mode tun tun0
+```
+Este comando se utiliza para crear una interfaz TUN (Tunnel) o TAP (Ethernet Bridging) en un sistema Linux. Estas interfaces se utilizan comúnmente para configurar túneles de red virtuales para una variedad de propósitos, como redes privadas virtuales (VPN), túneles IPv6 sobre IPv4, entre otros.
+
+En cuanto al comando específico:
+
+ * `ip` es una utilidad de línea de comandos para manipular diferentes aspectos de la red en Linux.
+ * `tuntap` es un subcomando de ip que permite manipular interfaces TUN/TAP.
+ * `add` es la acción que indica que se está añadiendo una nueva interfaz TUN o TAP.
+ * `mode` tun especifica que se está creando una interfaz del tipo TUN (dispositivo de red punto a punto, capa 3), que opera en el nivel de la capa de red (nivel IP).
+ * `tun0` es el nombre de la interfaz que se está creando. Puede ser cualquier nombre válido para la interfaz.
+
+En resumen, este comando crea una interfaz de red TUN (nivel IP) en el sistema con el nombre tun0. Las interfaces TUN se utilizan generalmente para enrutar paquetes IP entre diferentes redes o sistemas, creando un túnel de red virtual punto a punto. Este túnel puede ser utilizado para varios propósitos, incluyendo la implementación de VPN, redes privadas, entre otros.
+
+Ahora vamos a asignar una ip a esa interfaz
+```bash
+ip add add 192.168.0.71/24 dev tun0
+```
+Este comando ip add add 192.168.0.71/24 dev tun0 se utiliza para asignar una dirección IP a una interfaz de red específica (tun0 en este caso) en un sistema Linux utilizando la herramienta ip para la configuración de red.
+
+Explicando los elementos del comando:
+
+ * `ip` es la utilidad de línea de comandos para manipular aspectos de la red en Linux.
+ * `add` address
+ * `add` indica que se va a agregar una nueva configuración a la interfaz de red especificada.
+ * `192.168.0.71/24` es la dirección IP que se asignará a la interfaz de red. El /24 es la notación de máscara de red que define la porción de red de la dirección IP (en este caso, los primeros 24 bits, lo que indica que los primeros tres octetos de la dirección IP son la parte de red).
+ * `dev tun0` especifica que la dirección IP se agregará a la interfaz tun0. Esta interfaz es una interfaz TUN (dispositivo de red punto a punto, capa 3) que puede haber sido creada previamente para establecer un túnel virtual.
+
+En resumen, este comando asigna la dirección IP 192.168.0.71 con una máscara de red de /24 a la interfaz de red tun0 en el sistema. Esto se usa comúnmente en configuraciones de redes virtuales, como VPNs (Redes Privadas Virtuales), para asignar direcciones IP a interfaces de túneles de red virtuales.
+
 ## Enlaces
 * https://geekland.eu/establecer-un-tunel-ssh/
 * https://geekland.eu/que-es-y-para-que-sirve-un-tunel-ssh/
 * https://blog.desdelinux.net/como-crear-un-tunel-ssh-entre-un-servidor-linux-y-un-cliente-windows/
+* VPN con ssh => https://www.youtube.com/watch?v=NxUga9g7xa0

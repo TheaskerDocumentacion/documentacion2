@@ -8,6 +8,10 @@
 
     badblocks -v /dev/sda > /tmp/badblocks.txt
 
+## Virtualización con aceleración gráfica QEMU
+
+https://www.youtube.com/watch?v=WqvtGeIsngU
+
 ## Dotfiles
 
   * https://atareao.es/podcast/dotdrop-un-completo-gestor-de-dotfiles/ => Gestor de dotfiles
@@ -30,6 +34,8 @@ PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; h
 ```
 
 > Fuente: https://www.enmimaquinafunciona.com/pregunta/25760/pueden-unificar-archivos-de-historial-de-bash
+
+
 
 ## Varios
  * **ventoy**: Aplicación para grabar isos en USB
