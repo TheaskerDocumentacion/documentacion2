@@ -15,7 +15,7 @@ ssh -p 22 -N -D 8081 pi@theasker.mooo.com
 * **`-N`**: **Permite que se establezca el tunel SSH pero que no se abra una sesión interactiva con el servidor SSH**. En el caso de no usar esta opción, nuestra conexión SSH estará permanentemente abierta y si alguien nos robará el ordenador o nos despistaros y alguien malintencionado tuviera acceso al ordenador nos podría por ejemplo borrar completamente la información que tenemos almacenada en nuestro servidor SSH.
 
 ## VPN con ssh
-
+ * https://www.youtube.com/watch?v=NxUga9g7xa0&t=1185s
 ### Configuración
 #### Archivo de configuración de SSH
 Primero activaremos en la configuración de ssh la activación de tunel en la configuración de ssh en el archivo `/etc/ssh/sshd_config`:
@@ -55,6 +55,8 @@ Explicando los elementos del comando:
  * `dev tun0` especifica que la dirección IP se agregará a la interfaz tun0. Esta interfaz es una interfaz TUN (dispositivo de red punto a punto, capa 3) que puede haber sido creada previamente para establecer un túnel virtual.
 
 En resumen, este comando asigna la dirección IP 192.168.0.71 con una máscara de red de /24 a la interfaz de red tun0 en el sistema. Esto se usa comúnmente en configuraciones de redes virtuales, como VPNs (Redes Privadas Virtuales), para asignar direcciones IP a interfaces de túneles de red virtuales.
+
+...
 
 ## Enlaces
 * https://geekland.eu/establecer-un-tunel-ssh/

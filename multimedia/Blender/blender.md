@@ -58,6 +58,7 @@
     - [Recursos](#recursos)
     - [Enlaces de interés](#enlaces-de-interés)
     - [Varios](#varios-1)
+      - [Comercio](#comercio)
     - [Para revisar](#para-revisar)
     - [Enlaces de Blender España (Telegram)](#enlaces-de-blender-españa-telegram)
 
@@ -393,6 +394,7 @@ Se suelen conectar los mismos colores de nodos
  * **Crear tubos con sus curvas** => https://www.youtube.com/watch?v=y-hD-Z3JlYs
  * **Listas de videos en canal sobre Blender** => https://www.youtube.com/@str3dlok/videos
  * **Cómo hacer cuerdas** => https://www.youtube.com/watch?v=hS-O6aS7F8o
+ * **Cuerda en 90 seg.** => https://www.youtube.com/watch?v=Aajp72RBWHw
 
 ### Materiales / nodos
  * **Masterclass: Cómo usar los nodos de Blender (¡desde cero!)** => https://www.youtube.com/watch?v=vOFLhLtBlFE
@@ -405,6 +407,7 @@ Se suelen conectar los mismos colores de nodos
    * **I** => https://www.youtube.com/watch?v=9n0BblnwOH8
    * **II** => https://www.youtube.com/watch?v=nq-LZTiApHU
    * **III (patrones)** => https://www.youtube.com/watch?v=z6hmFmUoN5s
+* **Material de madera procedural** => https://www.youtube.com/watch?v=jDEijCwz6to
 
 ### Geometry Nodes
  * **Curso de Geometry Nodes (3Dilusion Arte Blender)** => https://www.youtube.com/playlist?list=PLTFIbZhnzgXu6Xxm_Z8qeaFMrFbh1Db
@@ -418,6 +421,7 @@ Se suelen conectar los mismos colores de nodos
 
 ### Python
  * **Curtis Holt** => https://www.youtube.com/playlist?list=PLRKZHg6r5mu42davqG2wUl_P-JDgJTaus
+ * **Basic Panel** => https://www.youtube.com/watch?v=yNdjdmepMMQ
 
 ### UVs
  * **Aprende UVs avanzadas con UDIMS en Blender** => 
@@ -436,6 +440,7 @@ Se suelen conectar los mismos colores de nodos
  * https://hdrihaven.com/
  * https://3dmodelhaven.com/
  * https://www.poliigon.com/
+ * https://flippednormals.com/
 
 ### Enlaces de interés
  * Páginas de IOR de Materiales:
@@ -458,6 +463,9 @@ Se suelen conectar los mismos colores de nodos
  * **Hacer huecos en cilindros o esferas** => https://www.youtube.com/watch?v=S6_MSPPiGZY
  * **Foro Blender Hoy** => https://blender.community/c/hoy/?sorting=hot
  * **Renderizar con Google Colab** => https://zao3d.com/tutorial/renderizar-con-blender-en-los-servidores-de-google-con-colab/
+
+#### Comercio
+ * **Vender modelos**: => https://www.youtube.com/watch?v=FtEQTWPYlJw
 
 ### Para revisar
  * https://youtu.be/BzTN2yTgTj0
