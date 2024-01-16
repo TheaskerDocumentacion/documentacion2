@@ -59,6 +59,7 @@
     - [Enlaces de interés](#enlaces-de-interés)
     - [Varios](#varios-1)
       - [Comercio](#comercio)
+      - [Image to 3D](#image-to-3d)
     - [Para revisar](#para-revisar)
     - [Enlaces de Blender España (Telegram)](#enlaces-de-blender-españa-telegram)
 
@@ -376,10 +377,11 @@ Se suelen conectar los mismos colores de nodos
  * **Primeros pasos** => https://www.youtube.com/watch?v=S-NH7ia_
  * **Guia para principiantes - Objetos Mario Bros (★★★)** => https://www.youtube.com/watch?v=O-tV7uBf5LI
  * **Curso de modelado 3D para principiantes** => https://www.youtube.com/playlist?list=PL_7UEOgbqi2Q0qkiLvo8YWWYAz8SJgEny
+ * **BLENDER 3D MASTERCLASS - De 0 a GENERALISTA** => https://www.youtube.com/watch?v=I1wmBI4l52Y
+ * **Blender Guru: Blender 4.0 Beginner Donut Tutorial** => https://www.youtube.com/playlist?list=PLjEaoINr3zgEPv5y--4MKpciLaoQYZB1Z
 
 ### Creación de personajes
  * **Curso de creación de personajes**: https://www.youtube.com/@JohnCuacesf
-
 
 ### Físicas
  * **Tela en movimiento** => https://www.youtube.com/watch?v=Lqn-PCtDZBE
@@ -407,7 +409,9 @@ Se suelen conectar los mismos colores de nodos
    * **I** => https://www.youtube.com/watch?v=9n0BblnwOH8
    * **II** => https://www.youtube.com/watch?v=nq-LZTiApHU
    * **III (patrones)** => https://www.youtube.com/watch?v=z6hmFmUoN5s
-* **Material de madera procedural** => https://www.youtube.com/watch?v=jDEijCwz6to
+ * **Material de madera procedural** => https://www.youtube.com/watch?v=jDEijCwz6to
+
+ * **Anime y Grease Pencil** => https://www.youtube.com/watch?v=pr2vVqwRbzc
 
 ### Geometry Nodes
  * **Curso de Geometry Nodes (3Dilusion Arte Blender)** => https://www.youtube.com/playlist?list=PLTFIbZhnzgXu6Xxm_Z8qeaFMrFbh1Db
@@ -421,14 +425,13 @@ Se suelen conectar los mismos colores de nodos
 
 ### Python
  * **Curtis Holt** => https://www.youtube.com/playlist?list=PLRKZHg6r5mu42davqG2wUl_P-JDgJTaus
- * **Basic Panel** => https://www.youtube.com/watch?v=yNdjdmepMMQ
+ * **Basic Addon** => https://www.youtube.com/watch?v=yNdjdmepMMQ
+ 
 
 ### UVs
  * **Aprende UVs avanzadas con UDIMS en Blender** => 
    * https://www.youtube.com/watch?v=7S1xXHt98_0
    * https://www.youtube.com/watch?v=yZ7Yx087jfI
-
-
 
 ### Addons
  * **Medidas precisas y acotaciones** => https://www.youtube.com/watch?v=gVNf6tMURq4
@@ -441,6 +444,7 @@ Se suelen conectar los mismos colores de nodos
  * https://3dmodelhaven.com/
  * https://www.poliigon.com/
  * https://flippednormals.com/
+ * https://jangafx.com/ => Simulación de terrenos, planetas, líquidos, etc
 
 ### Enlaces de interés
  * Páginas de IOR de Materiales:
@@ -466,6 +470,10 @@ Se suelen conectar los mismos colores de nodos
 
 #### Comercio
  * **Vender modelos**: => https://www.youtube.com/watch?v=FtEQTWPYlJw
+ * **Great Catalog** => https://www.youtube.com/watch?v=xfMzertyfDA
+
+#### Image to 3D
+ * **pifuhd** => https://github.com/facebookresearch/pifuhd
 
 ### Para revisar
  * https://youtu.be/BzTN2yTgTj0
