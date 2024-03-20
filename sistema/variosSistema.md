@@ -35,7 +35,11 @@ PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; h
 
 > Fuente: https://www.enmimaquinafunciona.com/pregunta/25760/pueden-unificar-archivos-de-historial-de-bash
 
-
+### Bash
+ * https://starship.rs/ => Ayuda para la modificación del prompt de sistema
+ * https://robotmoon.com/bash-prompt-generator/ => Generador de prompt, variable PS1 con colores.
+ * https://bashrcgeneracolors prompt linuxtor.com/ => Creador de prompt
+ * https://github.com/fcambus/ansiweather => Mostrar el clima en la terminal
 
 ## Varios
  * **ventoy**: Aplicación para grabar isos en USB
