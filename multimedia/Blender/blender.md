@@ -445,6 +445,9 @@ Se suelen conectar los mismos colores de nodos
  * https://www.poliigon.com/
  * https://flippednormals.com/
  * https://jangafx.com/ => Simulación de terrenos, planetas, líquidos, etc
+ * https://quixel.com/megascans/home/ => Texturas
+ * https://ambientcg.com/list => Texturas y HDRIs
+ * **fSpy**: https://fspy.io/ => Pasar una foto a blender con la orientación y perspectiva correcta
 
 ### Enlaces de interés
  * Páginas de IOR de Materiales:

@@ -4,7 +4,7 @@
 
     cpulimit -p <PID proceso> -l <porcentaje límite>
 
-## Revisar errores de disco
+## Hardware
 
     badblocks -v /dev/sda > /tmp/badblocks.txt
 
@@ -46,3 +46,6 @@ PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; h
  * Crear un fichero de ceros: `dd if=/dev/zero of=/archivogrande bs=1024 count=512k`
  * **LSD (LSDeluxe)**: https://github.com/Peltoche/lsd
  * **starship**: El prompt minimalista, ultrarápido e infinitamente personalizable para cualquier intérprete de comandos => https://starship.rs
+
+## fstab
+ * **genfstab**: Detecta los puntos posibles de montaje y genera la salida para `/etc/fstab`
