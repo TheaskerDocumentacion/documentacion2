@@ -29,6 +29,7 @@ Tutorial al ejecutar "vimtutor es"
   - [Lección 6.3: OTRA VERSIÓN DE «REPLACE» (remplazar)](#lección-63-otra-versión-de-replace-remplazar)
   - [Lección 6.4: FIJAR OPCIONES](#lección-64-fijar-opciones)
   - [Lección 7: MANDATOS PARA LA AYUDA EN LÍNEA](#lección-7-mandatos-para-la-ayuda-en-línea)
+  - [Bibliografia](#bibliografia)
 
 
 ## Lección 1.1: MOVIMIENTOS DEL CURSOR
@@ -164,3 +165,6 @@ Para encontrar ayuda de diferentes temas:
 * `:help insert-index <INTRO>`
 
 
+Bibliografia
+------------
+* https://platzi.com/blog/guia-definitiva-para-vim-y-neovim-instalacion-comandos-y-trucos/

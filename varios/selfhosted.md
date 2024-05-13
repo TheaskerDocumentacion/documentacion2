@@ -1,0 +1,1 @@
+ * https://github.com/meichthys/foss_photo_libraries

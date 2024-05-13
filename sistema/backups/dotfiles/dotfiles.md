@@ -1,11 +1,13 @@
 # Cómo administrar ficheros de configuración
 
 - [Cómo administrar ficheros de configuración](#cómo-administrar-ficheros-de-configuración)
+- [Dotfiles](#dotfiles)
   - [Administrando dotfiles con dotdrop](#administrando-dotfiles-con-dotdrop)
     - [Instalación](#instalación)
     - [Uso de dotdrop](#uso-de-dotdrop)
   - [Bibliografía](#bibliografía)
-
+    - [Dotdrop](#dotdrop)
+# Dotfiles
 
 ## Administrando dotfiles con dotdrop
 ### Instalación
@@ -47,7 +49,10 @@ Listar ficheros de un perfil #
 
 Bibliografía
 ------------
+
+### Dotdrop
  * https://github.com/deadc0de6/dotdrop
  * https://dotdrop.readthedocs.io/en/latest/usage/
  * https://atareao.es/podcast/dotdrop-un-completo-gestor-de-dotfiles/ => Gestor de dotfiles
  * https://elblogdelazaro.oast/dotdrop-un-completo-gestor-de-dotfiles/ => Gestor de dotfilesrg/posts/2019-01-24-backup-dotfiles/
+

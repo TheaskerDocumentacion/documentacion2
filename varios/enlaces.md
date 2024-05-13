@@ -4,6 +4,13 @@
 
  * Almacenamiento en la nube gratis => https://www.whizlabs.com/blog/best-free-cloud-storage/
  * 200 Gb de almacenamiento en la nube gratis => https://www.blomp.com/
+ * https://visualping.io/ => Monitorización de cambios de una web (scrapping)
+
+### Dynamic DNS
+ * https://dynv6.com/
+
+### Torrents
+ * https://www.magnetdl.com : Buscador de torrents
 
 ## Multimedia
  * https://mynoise.net/ => Generadores de sonido que se pueden mezclar, como lluvia, ruido blanco, rosa, etc.

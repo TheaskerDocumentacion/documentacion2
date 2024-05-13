@@ -20,3 +20,6 @@
 ```bash
 yt-dlp --print filename --write-auto-subs -o "%(upload_date>%Y-%m-%d)s %(channel)s - %(title)s.%(ext)s" <youtube_url>
 ```
+
+## Varios
+ * **PureRef**: Aplicación gratuíta para poner y administrar imágenes de referencia y tenerlas visualizadas => https://www.pureref.com/

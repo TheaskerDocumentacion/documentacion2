@@ -1,5 +1,24 @@
 # Instalaciones del sistema
 
+- [Instalaciones del sistema](#instalaciones-del-sistema)
+  - [Docker](#docker)
+  - [Hardware / drivers](#hardware--drivers)
+    - [Nvidia drivers](#nvidia-drivers)
+  - [sistema](#sistema)
+  - [Desactivar el firewall](#desactivar-el-firewall)
+  - [Modificar `~/.bashrc`:](#modificar-bashrc)
+    - [Zram (mejor no)](#zram-mejor-no)
+    - [Dotfiles con dotdrop](#dotfiles-con-dotdrop)
+    - [/etc/fstab](#etcfstab)
+    - [Grub](#grub)
+    - [Swap](#swap)
+    - [Varios](#varios)
+  - [Internet](#internet)
+  - [Multimedia](#multimedia)
+    - [Plex Media Server](#plex-media-server)
+  - [Varios](#varios-1)
+
+
 ## Docker
 ```bash
 sudo pacman -S docker docker-compose
@@ -32,7 +51,7 @@ Fetching driver data from nvidia.com ...
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 COMMANDS TO RUN:
     yay -Syu nvidia-470xx-dkms nvidia-470xx-utils nvidia-470xx-settings
-    nvidia-installer-kernel-para nvidia-drm.modeset=1 add
+    nvidia-installer-kernel-para nvidia-drm.modeset=1 add3.2.1-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 2023-06-20 16:52:12: Error: Sorry, nvidia-inst does not support installing packages from AUR.
     To continue, manually run all commands from COMMANDS TO RUN above.
@@ -74,7 +93,7 @@ sudo pacman -R firewalld
 nano ~/.bashrc
 PS1='\[$(tput setaf 39)\]\u\[$(tput setaf 81)\]@\[$(tput setaf 77)\]\h \[$(tput setaf 226)\]\w \[$(tput sgr0)\]\$ '
 ```
-### Zram
+### Zram (mejor no)
 ```bash
 $ yay -S zramd
 # systemctl enable zramd
@@ -159,6 +178,20 @@ Editar fichero `etc/default/grub` y descomentar la línea: `#GRUB_DISABLE_OS_PRO
 ```bash
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 ```
+
+### Swap
+
+Activar la partición swap:
+```bash
+mkswap /dev/sdb2
+swapon /dev/sdb2
+```
+
+Agregar la línea al fichero `/etc/fstab`:
+```
+UU`D=d627940a-9377-4337-b6fa-3e6ca8b62bf9   none    swap    defaults    0   0
+```
+
 ### Varios
 
 Configuración de dispositivos Logitech
@@ -180,12 +213,10 @@ sudo systemctl start plexmediaserver
 
 Configurar en la url `http://localhost:32400/web/`
 
-### Varios
-```bash
-sudo pacman -S smplayer
-```
-
 ## Varios
+```bash
+sudo pacman -S smplayeryay -Syu nvidia-470xx-dkms nvidia-470xx-utils nvidia-470xx-settings
+```
 ```bash
 sudo pacman -S xfce4-cpugraph-plugin xfce4-weather-plugin
 ```
