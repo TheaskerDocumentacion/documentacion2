@@ -5,13 +5,14 @@
   - [Hardware / drivers](#hardware--drivers)
     - [Nvidia drivers](#nvidia-drivers)
   - [sistema](#sistema)
-  - [Desactivar el firewall](#desactivar-el-firewall)
-  - [Modificar `~/.bashrc`:](#modificar-bashrc)
+    - [Desactivar el firewall](#desactivar-el-firewall)
+    - [Modificar `~/.bashrc`:](#modificar-bashrc)
     - [Zram (mejor no)](#zram-mejor-no)
     - [Dotfiles con dotdrop](#dotfiles-con-dotdrop)
     - [/etc/fstab](#etcfstab)
     - [Grub](#grub)
     - [Swap](#swap)
+    - [Btrfs, snapshots y backups](#btrfs-snapshots-y-backups)
     - [Varios](#varios)
   - [Internet](#internet)
   - [Multimedia](#multimedia)
@@ -66,6 +67,7 @@ NVIDIA card id: 1287
 Fetching driver data from nvidia.com ...
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 COMMANDS TO RUN:
+    yay -Syu nvidia-470xx-dkms nvidia-470xx-utils nvidia-470xx-settings
     nvidia-installer-kernel-para nvidia-drm.modeset=1 add
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -82,13 +84,13 @@ sudo pacman -S partclone
 sudo pacman -S htop
 sudo pacman -S veracrypt
 ```
-## Desactivar el firewall
+### Desactivar el firewall
 ```bash
 sudo systemctl stop firewalld
 sudo systemctl disable --now firewalld
 sudo pacman -R firewalld
 ```
-## Modificar `~/.bashrc`:
+### Modificar `~/.bashrc`:
 ```bash
 nano ~/.bashrc
 PS1='\[$(tput setaf 39)\]\u\[$(tput setaf 81)\]@\[$(tput setaf 77)\]\h \[$(tput setaf 226)\]\w \[$(tput sgr0)\]\$ '
@@ -135,7 +137,6 @@ NUM_DEVICES=2
 # Skip initialization if running inside a virtual machine
 # SKIP_VM=false
 ```
-
 ### Dotfiles con dotdrop
 ```bash
 cd /mnt/datos1/backup/dotfiles
@@ -149,10 +150,14 @@ alias dotdrop='/mnt/datos1/backup/dotfiles/dotdrop/dotdrop.sh'
 ```
 ### /etc/fstab
 ```bash
-sudo pacman -S sshfs
+sudo pacman -S sshfs genfstab
 sudo mkdir /mnt/datos1 /mnt/datos2 /mnt/datos3 /mnt/raspberry
 sudo chown theasker:theasker /mnt/*
 sudo chmod 777 /mnt/*
+```
+Podemos generar el archivo `/etc/fstab` con:
+```bash
+genfstab / > /etc/fstab
 ```
 ```
 UUID=48b71f34-1eca-4f20-96fd-016bcbf12a57 /              ext4    defaults,noatime 0 1
@@ -190,6 +195,13 @@ swapon /dev/sdb2
 Agregar la línea al fichero `/etc/fstab`:
 ```
 UU`D=d627940a-9377-4337-b6fa-3e6ca8b62bf9   none    swap    defaults    0   0
+```
+
+### Btrfs, snapshots y backups
+
+Instalamos **Timeshift**
+```bash
+pacman -S timeshift
 ```
 
 ### Varios
