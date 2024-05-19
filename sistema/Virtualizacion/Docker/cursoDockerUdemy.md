@@ -478,7 +478,7 @@ drwx------  2 root root  4096 sep 18 13:23 tmp
 drwx------  2 root root  4096 oct  5  2017 trust
 drwx------ 18 root root  4096 sep 18 12:02 volumes
 ````
-Editamos el fichero de configuración `/lib/systemd/system/docker.service`. Buscamos la línea donde dice **ExecStart=/usr/bin/dockerd** y la modificamos de esta manera **ExecStart=/usr/bin/dockerd --data-root /mnt/datos/docker**.
+Editamos el fichero de configuración `/lib/systemd/system/docker.service`. Buscamos la línea donde dice **ExecStart=/usr/bin/dockerd** y la modificamos de esta manera **ExecStart=/usr/bin/dockerd --data-root /mnt/datos1/docker**.
 
 Luego avisamos que hemos hecho un cambio en la configuración a **Systemd** y reiniciamos el servicio
 ````

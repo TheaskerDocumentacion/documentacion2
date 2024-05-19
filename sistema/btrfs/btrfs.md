@@ -22,6 +22,9 @@
   - [Compresión al vuelo](#compresión-al-vuelo)
     - [Ajustar compresión en archivo /etc/fstab](#ajustar-compresión-en-archivo-etcfstab)
     - [Ajustes](#ajustes)
+  - [BTRFS con timeshift snapshots en el menu grub](#btrfs-con-timeshift-snapshots-en-el-menu-grub)
+    - [`timeshift-autosnap`](#timeshift-autosnap)
+    - [Snapshots en Grub](#snapshots-en-grub)
   - [Bibliografía](#bibliografía)
 
 
@@ -602,6 +605,73 @@ O también se puede hacer con:
 smartctl --set wcache,off
 ```
 
+## BTRFS con timeshift snapshots en el menu grub
+```bash
+sudo pacman -S timeshift
+```
+Como dependencia Timeshift instala `cronie`, pero no se conecta por defecto:
+```bash
+sudo systemctl enable --now cronie.service
+```
+Ahora podemos ejecutar Timeshift y configurar los backups que queremos realizar.
+
+### `timeshift-autosnap` 
+
+**timeshift-autosnap** proporciona un script que crea una instantánea antes de cada actualización de paquete/sistema utilizando un gancho Pacman. El número de instantáneas que se guardan por defecto es tres. Las instantáneas antiguas se borran para dejar espacio a las nuevas.
+
+Si queremos esa funcionalidad lo instalaremos
+```bash
+yay -S timeshift-autosnap
+```
+
+Si no se instala, los snapshots se harán manualmente.
+
+### Snapshots en Grub
+Para incluir las instantáneas BTRFS de Timeshift en las opciones de arranque, es necesario reconfigurar **grub-btrfs**, ya que está utilizando /.snapshots como directorio de instantáneas por defecto y Timeshift utiliza un directorio diferente:
+```bash
+sudo pacman -S grub-btrfs
+```
+
+Para incluir las instantáneas BTRFS de Timeshift en las opciones de arranque, es necesario reconfigurar grub-btrfs, ya que está utilizando /.snapshots como directorio de instantáneas por defecto y Timeshift utiliza un directorio diferente:
+```bash
+sudo systemctl edit --full grub-btrfsd
+```
+
+Añade la opción `-timeshift-auto` cambiando la siguiente línea:
+```
+ExecStart=/usr/bin/grub-btrfsd --syslog /.snapshots 
+```
+y quedaría:
+
+```
+ExecStart=/usr/bin/grub-btrfsd --syslog --timeshift-auto
+```
+
+El último paso es reconstruir el archivo de configuración de grub:
+```bash
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+```
+
+y nos avisa que hay que realizar esta acción por última vez para que añada los snapshots hay que volver a ejecutar el mismo comando:
+```
+...
+Found 1 snapshot(s)
+
+WARNING: 'grub-mkconfig' needs to run at least once to generate the snapshots (sub)menu entry in grub the main menu. After that this script can run alone to generate the snapshot entries.
+
+Unmount /tmp/grub-btrfs.WiQApNAH5h .. Success
+hecho
+```
+
+```bash
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+```
+
+Y activar el servicio:
+```bash
+sudo systemctl enable --now grub-btrfsd
+```
+
 ## Bibliografía
  * **https://juanjoselo.wordpress.com/2018/01/28/uso-de-btrfs-en-linux/**
  * https://puerto53.com/linux/filesystems-btrfs/
@@ -611,3 +681,4 @@ smartctl --set wcache,off
  * https://hetmanrecovery.com/es/blog/how-to-recover-data-from-btrfs-raid.htm => Cómo usar "recovery"
  * https://wiki.gentoo.org/wiki/Btrfs/es
  * https://linuxhint.com/enable-btrfs-filesystem-compression/ => Compresión
+ * https://discovery.endeavouros.com/encrypted-installation/btrfs-with-timeshift-snapshots-on-the-grub-menu/2022/02/ => Btrfs 
