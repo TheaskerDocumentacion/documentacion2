@@ -78,8 +78,14 @@ qemu-system-x86_64.exe -m 1G -smp 1 -hda ./datos1.qcow2 -hdb ./datos2.qcow2 -hdc
 * `-boot d`: Para que arranque de disco
 * `-cdrom`: CDROM virtual que se suele poner una imagen ISO
 
+## 
+
 ## Bibliografía
  * Qemu | Tutorial fácil (Locos por Linux) => https://www.youtube.com/watch?v=ISvdxtW-Cls
  * https://wiki.archlinux.org/title/Virt-manager
  * https://rumble.com/v39ycci-mquina-virtual-windows-11-en-linux-qemuvirt-manager.html
  * https://wiki.archlinux.org/title/QEMU
+ * https://access.redhat.com/documentation/es-es/red_hat_enterprise_linux/5/html/virtualization/index
+ * https://www.youtube.com/watch?v=NGN9p4pulFM&t=1855s
+ * https://h4ckseed.wordpress.com/2021/07/29/administrando-virtualizacion-kvm-con-virsh/
+ * https://nb.fedorapeople.org/cvsfedora/web/html/docs/virtualization-guide/f12/es-ES/html/part-Virtualization_Guide-Virtualization_Reference_Guide.html
