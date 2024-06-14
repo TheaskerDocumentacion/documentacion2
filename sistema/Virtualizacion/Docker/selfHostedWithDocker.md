@@ -1,3 +1,5 @@
+# Docker selfhosted
+
 * pawelmalak/snippet-box: Snippet Box is a simple self-hosted app for organizing your code snippets
 * composerize: Convierte comando docker client a fichero docker-compose
 * filebrowser/filebrowser: File Browser provides a file managing interface within a specified directory and it can be used to upload, delete, preview, rename and edit your files. It allows the creation of multiple users and each user can have its own directory.
@@ -13,3 +15,7 @@
     ```sh
     docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock lirantal/dockly
     ```
+* https://github.com/cncf/landscape2?tab=readme-ov-file --> Crea una landpage de nuestros servicios
+* https://hub.docker.com/u/kasmweb => Contendores docker de escritorios linux
+  * https://www.kasmweb.com/docs/latest/guide/custom_images.html
+  * https://github.com/kasmtech/workspaces-images

@@ -16,14 +16,13 @@ ssh -p 22 -N -D 8081 pi@theasker.mooo.com
 
 ## VPN con ssh
  * https://www.youtube.com/watch?v=NxUga9g7xa0&t=1185s
-### Configuración
-#### Archivo de configuración de SSH
+### Configuración servidor
+
 Primero activaremos en la configuración de ssh la activación de tunel en la configuración de ssh en el archivo `/etc/ssh/sshd_config`:
 ```
 PermitTunnel yes
 ```
 
-#### Creación de interfaces
 Con el comando `ip` creamos una interface de tipo **tun** (tunel)
 ```bash
 ip tuntap add mode tun tun0
@@ -56,7 +55,42 @@ Explicando los elementos del comando:
 
 En resumen, este comando asigna la dirección IP 192.168.0.71 con una máscara de red de /24 a la interfaz de red tun0 en el sistema. Esto se usa comúnmente en configuraciones de redes virtuales, como VPNs (Redes Privadas Virtuales), para asignar direcciones IP a interfaces de túneles de red virtuales.
 
-...
+Ahora sólo tenemos que levantar la interface:
+```bash
+ip link set tun0 up
+```
+
+### Configuración en el cliente
+
+```bash
+ip tuntap add mode tun tun0
+ip add add 192.168.0.70/24 dev tun0
+```
+Ahora sólo tenemos que levantar la interface:
+```bash
+ip link set tun0 up
+```
+
+### Creación del tunel con ssh en el cliente
+```bash
+ssh -Nf -c aes256-ctr -w 0:0 theasker@<ip remota>
+```
+* **`-N`** -> No se ejecute ningún comando en la terminal
+* **`-f`** -> La ejecución del comando, se manda al background como un servicio
+* **`-w 0:0`** -> -w local_tun[:remote_tun] -> Solicita el reenvío de dispositivos de túnel con los dispositivos tun especificados entre el cliente (local_tun) y el servidor (remote_tun). enlace los túneles especificados.
+* **`-c aes256-ctr`** -> Selección **opcional** de cifrado.
+
+### Hacer que pase todo el tráfico por el tunerl
+Activar en el kernel el reenvío de paquetes
+```bash
+echo '1' > /proc/sys/net/ipv4/ip_forward
+```
+
+Activar NAT con iptables
+```bash
+iptables -t nat -A POSTROUTING -j MASQUERADE 
+```
+
 
 ## Enlaces
 * https://geekland.eu/establecer-un-tunel-ssh/

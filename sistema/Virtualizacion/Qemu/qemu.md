@@ -1,5 +1,14 @@
 # Qemu
 
+- [Qemu](#qemu)
+  - [Instalación de Qemu en Arch Linux](#instalación-de-qemu-en-arch-linux)
+  - [Virsh](#virsh)
+  - [Creación de imagen virtual](#creación-de-imagen-virtual)
+  - [Ejecución de máquina](#ejecución-de-máquina)
+  - [Activar red](#activar-red)
+  - [Bibliografía](#bibliografía)
+
+
 ## Instalación de Qemu en Arch Linux
 Instalación del paquete completo
 ```bash
@@ -32,6 +41,24 @@ sudo usermod -aG libvirt theasker
 Modificamos también el fichero `/etc/libvirt/qemu.conf` las líneas:
 * Duplicamos y modificamos la línea `#user = "libvirt-qemu"` por `user = "theasker"`
 * Duplicamos y moficiamos la línea `#group = "libvirt-qemu"` por `group = "theasker"`
+
+## Virsh
+Comando para ejecutar tareas de virtualización y 
+
+Ver las redes del activas sistema
+```bash
+$ virsh --connect=qemu:///system net-list --all
+ Nombre    Estado   Inicio automático   Persistente
+-----------------------------------------------------
+ default   activo   no                  si
+```
+
+La activamos y le decimos que se autoarranque cuando iniciamos una máquina
+```bash
+$ virsh --connect=qemu:///system net-autostart default
+ Network default marked as autostarted
+```
+
 
 
 ## Creación de imagen virtual
@@ -68,8 +95,8 @@ Child node '/file':
 
 ## Ejecución de máquina
 ```bash
-qemu-system-x86_64.exe -m 1G -smp 1 -name 'Alpine Linux' -boot d -cdrom ./alpine-standard-3.19.1-x86_64.iso
-qemu-system-x86_64.exe -m 1G -smp 1 -hda ./datos1.qcow2 -hdb ./datos2.qcow2 -hdc ./datos3.qcow2 -name 'Alpine Linux' -boot d -cdrom ./alpine-standard-3.19.1-x86_64.iso
+qemu-system-x86_64 -m 1G -smp 1 -name 'Alpine Linux' -boot d -cdrom ./alpine-standard-3.19.1-x86_64.iso
+qemu-system-x86_64 -m 1G -smp 1 -hda ./datos1.qcow2 -hdb ./datos2.qcow2 -hdc ./datos3.qcow2 -name 'Alpine Linux' -boot d -cdrom ./alpine-standard-3.19.1-x86_64.iso
 ```
 * `-m`: memoria
 * `-smp`: procesadores
@@ -78,7 +105,24 @@ qemu-system-x86_64.exe -m 1G -smp 1 -hda ./datos1.qcow2 -hdb ./datos2.qcow2 -hdc
 * `-boot d`: Para que arranque de disco
 * `-cdrom`: CDROM virtual que se suele poner una imagen ISO
 
-## 
+## Activar red 
+
+Listamos las redes
+
+```bash
+$ sudo virsh net-list --all
+
+ Nombre    Estado     Inicio automático   Persistente
+-------------------------------------------------------
+ default   inactivo   si                  si
+```
+
+La activamos
+```bash
+$ sudo virsh net-start default
+La red default se ha iniciado
+```
+
 
 ## Bibliografía
  * Qemu | Tutorial fácil (Locos por Linux) => https://www.youtube.com/watch?v=ISvdxtW-Cls

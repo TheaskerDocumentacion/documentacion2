@@ -1,6 +1,10 @@
-  * [Gulp](http://www.cristalab.com/tutoriales/automatizacion-de-tareas-de-frontend-usando-gulp.js-c114514l/)
-  * [Angular 2 con Sebastian Gómez](http://www.sebastian-gomez.com/desarrollo-web/que-es-angularjs-parte-1/)
-  * [Curso de Angular 2 en Youtube](https://www.youtube.com/playlist?list=PLORQfrS2-ZMeRUeZMcc-rTp6ToiDbicIt)
+# Enlaces pendientes
+
+- [Enlaces pendientes](#enlaces-pendientes)
+  - [Cursos pendientes](#cursos-pendientes)
+
+---
+
   * [Curso Sass de codeacademy](https://www.codecademy.com/learn/learn-sass?utm_source=customerio&utm_campaign=sass_announcement_html_css&utm_medium=email_newsletter&utm_content=cta)
   * http://electron.atom.io/docs/tutorial/quick-start/
   * [Trabajando con Sass](http://html5facil.com/tutoriales/maquetando-sass-html5-parte-1/)
@@ -53,4 +57,9 @@
      * [Tutoriales en castellano muy variados](http://www.es.w3eacademy.com/)
   * **Virtualización**
 	  * [Listado de cursos online y gratuitos de VMware en Español](http://www.dbigcloud.com/virtualizacion/224-listado-de-cursos-online-y-gratuitos-de-vmware-en-espanol.html)
+ 
+  ## Cursos pendientes
+  * Fundamentos de Android: https://www.coursera.org/learn/fundamentos/lecture/DCCFL/definicion-evolucion-y-composicion-de-android
+  * Aprende inglés: https://www.udemy.com/course/english-launch-learn-english-for-free-upgrade-all-areas/learn/lecture/7001658#overview
+  * Curso de Angular 17: https://www.youtube.com/watch?v=soInCF7nbDw
   
