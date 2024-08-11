@@ -62,4 +62,5 @@
   * Fundamentos de Android: https://www.coursera.org/learn/fundamentos/lecture/DCCFL/definicion-evolucion-y-composicion-de-android
   * Aprende inglés: https://www.udemy.com/course/english-launch-learn-english-for-free-upgrade-all-areas/learn/lecture/7001658#overview
   * Curso de Angular 17: https://www.youtube.com/watch?v=soInCF7nbDw
+  * Curso de Symphony: https://www.udemy.com/course/symofny-7/learn/lecture/42606926#overview
   
