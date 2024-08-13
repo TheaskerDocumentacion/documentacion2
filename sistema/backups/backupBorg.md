@@ -29,6 +29,17 @@ Dando la información y agregando fecha y hora:
     $ sudo borg create --list -vp --stats ssh://ubuntu@podereuropeo.duckdns.org:22/home/ubuntu/borgbackups::$(hostname)_$(date
  +%Y-%m-%d_%H:%M:%S)_docker /home/ubuntu/docker --info
 
+## Crear un backup localmente de un host remoto
+```bash
+# Backup a remote host locally ("pull" style) using sshfs
+$ mkdir sshfs-mount
+$ sshfs root@example.com:/ sshfs-mount
+$ cd sshfs-mount
+$ borg create /path/to/repo::example.com-root-{now:%Y-%m-%d} .
+$ cd ..
+$ fusermount -u sshfs-mount
+```
+
 ## Listar los backups de un repositorio
 
     $ sudo borg list ssh://ubuntu@podereuropeo.duckdns.org:22/home/ubuntu/borgbackups
@@ -77,3 +88,4 @@ Bibliografía
  * https://howtoforge.es/copias-de-seguridad-solo-con-borg-en-otro-vps-o-servidor-dedicado/
  * https://www.cloudcenterandalucia.es/blog/una-historia-sobre-backups-borg-la-resistencia-es-inutil/
  * https://atareao.es/podcast/hice-un-rm-rf-salvado-por-borg/
+ * Ejemplo de copia de seguridad de base de datos docker: https://immich.app/docs/guides/template-backup-script/
