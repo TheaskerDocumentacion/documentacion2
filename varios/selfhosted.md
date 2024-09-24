@@ -1,1 +1,2 @@
  * https://github.com/meichthys/foss_photo_libraries
+ * **Paperless-NGX**: Gestor documental con OCR y escaneo.  => https://www.flopy.es/instalacion-del-gestor-documental-paperless-ngx-usando-docker-compose/

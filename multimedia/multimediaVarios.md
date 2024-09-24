@@ -18,7 +18,7 @@
 ## Youtube
  * https://github.com/yt-dlp/yt-dlp
 ```bash
-yt-dlp --print filename --write-auto-subs -o "%(upload_date>%Y-%m-%d)s %(channel)s - %(title)s.%(ext)s" <youtube_url>
+yt-dlp --print filename --write-auto-subs -o "%(upload_date>%Y-%m-%d)s %(channel)s - %(playlist_index) %(title)s.%(ext)s" <youtube_url>
 ```
 
 ## Varios

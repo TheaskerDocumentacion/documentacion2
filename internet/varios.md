@@ -13,3 +13,6 @@
 ## Alojamiento
 * https://kinsta.com/es/alojamiento-sitios-estaticos/ => Alojamiento gratuito de sitios web estáticos
 * Comparativa de alojamientos en la nube => https://www.adslzone.net/reportajes/internet/comparativa-almacenamiento-nube/
+
+## Creación de documentación
+* **Material for MkDocs** -> https://squidfunk.github.io/mkdocs-material/getting-started/
